@@ -1,0 +1,136 @@
+version: '3.9'
+
+services:
+  rabbitmq-container:
+    image: rabbitmq:3.11-management
+    hostname: rabbitmq-container
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    networks:
+      - internal
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '5173:5173'
+    volumes:
+      - .:/frontend/app
+      - .:/fronend/app/node_modules
+    networks:
+      - internal
+
+  product-db:
+    image: postgres:12
+    container_name: product-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - .:/product-service/
+    environment:
+      POSTGRES_USER: product-db
+      POSTGRES_PASSWORD: product-db
+      POSTGRES_DB: product-db
+    networks:
+      - internal
+
+  product-service:
+    container_name: product-service
+    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - product-db
+      - rabbitmq-container
+    volumes:
+      - .:/product-service/app
+    links:
+      - product-db
+    networks:
+      - internal
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://product-db:5432/product-db
+      - spring_rabbitmq_host=rabbitmq-container
+      - spring_rabbitmq_port=5672
+
+  notification-db:
+    image: postgres:12
+    container_name: notification-db
+    ports:
+      - '5433:5432'
+    volumes:
+      - .:/notification-service/
+    environment:
+      POSTGRES_USER: notification-db
+      POSTGRES_PASSWORD: notification-db
+      POSTGRES_DB: notification-db
+    networks:
+      - internal
+
+  notification-service:
+    container_name: notification-service
+    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    ports:
+      - '8081:8080'
+    depends_on:
+      - notification-db
+      - rabbitmq-container
+    volumes:
+      - .:/notification-service/app
+    links:
+      - notification-db
+    networks:
+      - internal
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://notification-db:5432/notification-db
+      - spring_rabbitmq_host=rabbitmq-container
+      - spring_rabbitmq_port=5672
+
+  keycloak-db:
+    image: postgres:12
+    container_name: keycloak-db
+    ports:
+      - '5435:5432'
+    volumes:
+      - .:/keycloak/
+    environment:
+      POSTGRES_DB: keycloak-db
+      POSTGRES_USER: keycloak-db
+      POSTGRES_PASSWORD: keycloak-db
+    networks:
+      - internal
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:legacy
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-db
+      DB_DATABASE: keycloak-db
+      DB_USER: keycloak-db
+      DB_SCHEMA: public
+      DB_PASSWORD: keycloak-db
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - '8090:8080'
+    links:
+      - keycloak-db
+    depends_on:
+      - keycloak-db
+      - rabbitmq-container
+    networks:
+      - internal
+
+
+networks:
+  internal:
+    name: internal

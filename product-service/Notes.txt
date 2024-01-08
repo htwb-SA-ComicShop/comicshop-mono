@@ -1,0 +1,4 @@
+1. tabelle braucht kein ID attribut oder?
+2. Hat Tobi gesagt, wir sollen UUID benutzen statt integer als die Klasse für id ?
+3. Tobis Muster-Code soll abgeändert werden oder ?
+4. Muss man jedes mal nach einem Codeäbderung den Container neustarten/neubilden ?
