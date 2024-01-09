@@ -18,8 +18,8 @@ services:
     ports:
       - '5173:5173'
     volumes:
-      - .:/frontend/app
-      - .:/fronend/app/node_modules
+      - ./frontend:/app
+      - /app/node_modules
     networks:
       - internal
 
@@ -29,7 +29,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - .:/product-service/
+      - product-data:/var/lib/postgresql/data/
     environment:
       POSTGRES_USER: product-db
       POSTGRES_PASSWORD: product-db
@@ -65,7 +65,7 @@ services:
     ports:
       - '5433:5432'
     volumes:
-      - .:/notification-service/
+      - notification-data:/var/lib/postgresql/data/
     environment:
       POSTGRES_USER: notification-db
       POSTGRES_PASSWORD: notification-db
@@ -101,7 +101,7 @@ services:
     ports:
       - '5435:5432'
     volumes:
-      - .:/keycloak/
+      - keycloak-data:/var/lib/postgresql/data/
     environment:
       POSTGRES_DB: keycloak-db
       POSTGRES_USER: keycloak-db
@@ -130,7 +130,11 @@ services:
     networks:
       - internal
 
-
 networks:
   internal:
     name: internal
+
+volumes:
+  product-data:
+  notification-data:
+  keycloak-data:
