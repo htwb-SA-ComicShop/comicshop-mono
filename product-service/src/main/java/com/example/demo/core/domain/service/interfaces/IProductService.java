@@ -17,4 +17,6 @@ public interface IProductService
     Product getProduct(UUID id) throws ProductNotFoundException;
 
     List<Product> getAllProducts();
+
+    long getCountOfProducts();
 }

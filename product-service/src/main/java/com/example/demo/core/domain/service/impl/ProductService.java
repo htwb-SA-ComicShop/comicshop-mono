@@ -19,13 +19,22 @@ public class ProductService implements IProductService {
     @Autowired
     private final IProductRepository productRepository;
 
+    @Override
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
     @Override
     public Product updateProduct(Product product) {
-        return productRepository.save(product);
+        UUID id = product.getId();
+        Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
+        existingProduct.setName(product.getName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setAuthor(product.getAuthor());
+        existingProduct.setPages(product.getPages());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setImgUrl(product.getImgUrl());
+        return productRepository.save(existingProduct);
     }
 
     @Override
@@ -49,5 +58,10 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public long getCountOfProducts() {
+        return productRepository.count();
     }
 }
