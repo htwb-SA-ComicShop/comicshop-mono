@@ -1,9 +1,10 @@
 import { Outlet } from 'react-router';
-import { NavBar } from '../global/components';
+import { AdminStatusBar, NavBar } from '../../global/components';
 
 const NavBarWrapper = () => {
   return (
     <>
+      <AdminStatusBar />
       <NavBar />
       <Outlet />
     </>
