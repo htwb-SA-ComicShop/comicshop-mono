@@ -59,6 +59,8 @@ In order to set up keycloak locally, you have to do the following things:
 - In the **Realms** dropdown, create a `Profile-service` realm
 
 - In **Clients**, create a new client for the **frontend** with the following details:
+<img width="953" alt="Screenshot 2024-01-10 at 14 27 30" src="https://github.com/htwb-SA-ComicShop/comicshop-mono/assets/37245841/a2634c8a-fa28-4bd4-81bf-cf11d6adc99a">
+
 
 - In **Realm Roles**, create two new roles: `customer` and `shop-admin`
 - In **Users**, create two new users (one customer, on admin), name them how you like
