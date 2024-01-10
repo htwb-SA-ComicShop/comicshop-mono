@@ -1,8 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom';
 import ProductsListPage from '../product/pages/ProductsListPage';
-import NavBarWrapper from './NavBarWrapper';
+import NavBarWrapper from './components/NavBarWrapper';
 import productLoader from './loaders/productLoader';
 import EditProductPage from '../product/pages/EditProductPage';
+import PrivateRouteWrapper from './components/PrivateRouteWrapper';
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/edit-product/:id',
-        element: <EditProductPage />,
+        element: (
+          <PrivateRouteWrapper role='admin'>
+            <EditProductPage />
+          </PrivateRouteWrapper>
+        ),
         // @ts-expect-error: React Router internal type issues
         loader: productLoader,
       },

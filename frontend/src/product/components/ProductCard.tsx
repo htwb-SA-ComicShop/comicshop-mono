@@ -12,6 +12,7 @@ import {
 import { ReactElement } from 'react';
 import { Product } from '../../types';
 import { Link } from 'react-router-dom';
+import AuthWrapper from '../../auth/components/AuthWrapper';
 
 const ProductCard = ({
   name,
@@ -52,14 +53,16 @@ const ProductCard = ({
           <Button variant='solid' colorScheme='teal'>
             Add to cart
           </Button>
-          <Button
-            variant='outline'
-            colorScheme='teal'
-            as={Link}
-            to={`/edit-product/${id}`}
-          >
-            Edit
-          </Button>
+          <AuthWrapper role='admin'>
+            <Button
+              variant='outline'
+              colorScheme='teal'
+              as={Link}
+              to={`/edit-product/${id}`}
+            >
+              Edit
+            </Button>
+          </AuthWrapper>
         </ButtonGroup>
       </CardFooter>
     </Card>

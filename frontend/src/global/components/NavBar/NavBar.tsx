@@ -8,6 +8,7 @@ import {
   useDisclosure,
   useColorMode,
   Heading,
+  Button,
 } from '@chakra-ui/react';
 import { ReactElement } from 'react';
 import {
@@ -19,10 +20,12 @@ import {
 import { DesktopNav } from './DesktopNav';
 import { MobileNav } from './MobileNav';
 import { NavItem } from '../../../types';
+import useAuth from '../../../auth/hooks/useAuth.hook';
 
 export default function NavBar(): ReactElement {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { isLoggedIn, login, logout, username } = useAuth();
 
   const NavItems: NavItem[] = [
     {
@@ -78,6 +81,14 @@ export default function NavBar(): ReactElement {
         </Flex>
 
         <Stack flex={{ base: 1, md: 0 }} justify='flex-end' direction='row'>
+          <Button
+            display={{ base: 'none', md: 'flex' }}
+            onClick={() => {
+              isLoggedIn ? logout() : login();
+            }}
+          >
+            {isLoggedIn ? `Logout ${username}` : 'Login'}
+          </Button>
           <IconButton
             onClick={toggleColorMode}
             borderRadius='full'

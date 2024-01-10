@@ -1,18 +1,10 @@
 import { Heading, Image, Text, VStack } from '@chakra-ui/react';
-import { Navigate, useLoaderData } from 'react-router';
+import { useLoaderData } from 'react-router';
 import { Product } from '../../types';
 import ProductForm from '../components/ProductForm';
 
 function EditProductPage() {
-  const { comic: defaults } = useLoaderData() as {
-    comic: Product;
-  };
-
-  // FIXME: Check admin status using keycloak
-  const isAdmin = true;
-  if (!isAdmin) {
-    return <Navigate to='/' replace />;
-  }
+  const { comic: defaults } = useLoaderData() as { comic: Product };
 
   return (
     <main>

@@ -1,4 +1,4 @@
-import { Flex, Stack, Text } from '@chakra-ui/react';
+import { Button, Flex, Stack, Text } from '@chakra-ui/react';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { NavItem } from '../../../types';
@@ -10,6 +10,9 @@ export const MobileNav = ({ items }: { items: NavItem[] }): ReactElement => {
         {items.map((navItem) => (
           <MobileNavItem key={navItem.label} {...navItem} />
         ))}
+        <Button variant='unstyled' color='teal'>
+          Login
+        </Button>
       </Stack>
     </Flex>
   );
