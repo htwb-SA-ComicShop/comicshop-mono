@@ -1,19 +1,10 @@
 import { Heading, Image, Text, VStack } from '@chakra-ui/react';
-import { useAtomValue } from 'jotai';
-import { Navigate, useLoaderData } from 'react-router';
+import { useLoaderData } from 'react-router';
 import { Product } from '../../types';
-import AuthAtom from '../../stores/authStore';
 import ProductForm from '../components/ProductForm';
 
 function EditProductPage() {
-  const { comic: defaults } = useLoaderData() as {
-    comic: Product;
-  };
-
-  const { isLoggedIn, isAdmin } = useAtomValue(AuthAtom);
-  if (!isLoggedIn || !isAdmin) {
-    return <Navigate to='/' replace />;
-  }
+  const { comic: defaults } = useLoaderData() as { comic: Product };
 
   return (
     <main>
