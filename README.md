@@ -24,7 +24,7 @@ To start the project simple execute the docker compose file
 - Keycloak via Docker Compose
 - RabbitMQ via Docker Compose
 
-## Instructions :construction_worker:
+## Development Instructions :construction_worker:
 
 ### Docker Compose
 
@@ -49,6 +49,22 @@ To start the project simple execute the docker compose file
     - Therefore I can quickly refresh my dev environment for the local service but still have the other stuff available in Docker
 
 - This does not count for the frontend -- it's forwarding the hot-module-reloading and all code changes are directly visible in the Docker instance
+
+### Setting up Keycloak
+
+In order to set up keycloak locally, you have to do the following things:
+
+- Login with username `admin` and password `admin` under `localhost:8090`
+  - You're now in the `Master` realm. We need to create our own on, though
+- In the **Realms** dropdown, create a `Profile-service` realm
+
+- In **Clients**, create a new client for the **frontend** with the following details:
+
+- In **Realm Roles**, create two new roles: `customer` and `shop-admin`
+- In **Users**, create two new users (one customer, on admin), name them how you like
+- After entering the info, don't forget to add **non-temporary** credentials!!!
+- After creating them, you may have to manually select them again to add them to to a group
+  - `Users` -> select your created user -> `Role Mapping` -> `Assign Role` -> Select the role
 
 ### Adding new services
 
