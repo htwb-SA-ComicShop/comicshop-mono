@@ -1,8 +1,6 @@
 import { Heading, Image, Text, VStack } from '@chakra-ui/react';
-import { useAtomValue } from 'jotai';
 import { Navigate, useLoaderData } from 'react-router';
 import { Product } from '../../types';
-import AuthAtom from '../../stores/authStore';
 import ProductForm from '../components/ProductForm';
 
 function EditProductPage() {
@@ -10,8 +8,9 @@ function EditProductPage() {
     comic: Product;
   };
 
-  const { isLoggedIn, isAdmin } = useAtomValue(AuthAtom);
-  if (!isLoggedIn || !isAdmin) {
+  // FIXME: Check admin status using keycloak
+  const isAdmin = true;
+  if (isAdmin) {
     return <Navigate to='/' replace />;
   }
 

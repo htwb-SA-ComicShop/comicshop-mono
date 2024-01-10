@@ -12,8 +12,6 @@ import {
 import { ReactElement } from 'react';
 import { Product } from '../../types';
 import { Link } from 'react-router-dom';
-import { useAtomValue } from 'jotai';
-import AuthAtom from '../../stores/authStore';
 
 const ProductCard = ({
   name,
@@ -25,7 +23,6 @@ const ProductCard = ({
   description,
   imgUrl,
 }: Product): ReactElement => {
-  const { isAdmin, isLoggedIn } = useAtomValue(AuthAtom);
   return (
     <Card maxW='sm' variant='filled'>
       <CardBody>
@@ -55,16 +52,14 @@ const ProductCard = ({
           <Button variant='solid' colorScheme='teal'>
             Add to cart
           </Button>
-          {isLoggedIn && isAdmin && (
-            <Button
-              variant='outline'
-              colorScheme='teal'
-              as={Link}
-              to={`/edit-product/${id}`}
-            >
-              Edit
-            </Button>
-          )}
+          <Button
+            variant='outline'
+            colorScheme='teal'
+            as={Link}
+            to={`/edit-product/${id}`}
+          >
+            Edit
+          </Button>
         </ButtonGroup>
       </CardFooter>
     </Card>
