@@ -1,8 +1,7 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Product } from '../../types';
-import { Box, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Flex, Spinner, Text, VStack } from '@chakra-ui/react';
 import ProductGrid from '../components/ProductGrid';
-import { Link } from 'react-router-dom';
 
 const ProductsListPage = (): ReactElement => {
   const [comics, setComics] = useState<Product[]>([]);
