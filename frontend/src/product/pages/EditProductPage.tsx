@@ -10,7 +10,7 @@ function EditProductPage() {
 
   // FIXME: Check admin status using keycloak
   const isAdmin = true;
-  if (isAdmin) {
+  if (!isAdmin) {
     return <Navigate to='/' replace />;
   }
 

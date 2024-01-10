@@ -34,7 +34,8 @@ const ProductsListPage = (): ReactElement => {
       <Flex as='footer' pb={6} pt={12} justify='center' w='80%' mx='auto'>
         <Text fontSize='sm'>ComicShop© 2024</Text>
         <Box w={11} />
-        <Text as={Link} to='/admin' fontSize='sm' textDecor='underline'>
+        <Text as={Link} to='/' fontSize='sm' textDecor='underline'>
+          {/* FIXME: Add link to auth service */}
           Admin Login
         </Text>
       </Flex>
