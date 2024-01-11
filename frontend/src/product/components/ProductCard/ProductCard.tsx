@@ -10,9 +10,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { ReactElement } from 'react';
-import { Product } from '../../types';
+import { Product } from '../../../types';
 import { Link } from 'react-router-dom';
-import AuthWrapper from '../../auth/components/AuthWrapper';
+import AuthWrapper from '../../../auth/components/AuthWrapper';
+import AddToCartButton from './AddToCartButton';
 
 const ProductCard = ({
   name,
@@ -50,9 +51,7 @@ const ProductCard = ({
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing='2'>
-          <Button variant='solid' colorScheme='teal'>
-            Add to cart
-          </Button>
+          <AddToCartButton />
           <AuthWrapper role='admin'>
             <Button
               variant='outline'
