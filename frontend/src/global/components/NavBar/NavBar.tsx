@@ -20,12 +20,14 @@ import { DesktopNav } from './DesktopNav';
 import { MobileNav } from './MobileNav';
 import { NavItem } from '../../../types';
 import LogInOutButton from './LoginOutButton';
+import useAuth from '../../../auth/hooks/useAuth.hook';
 
 export default function NavBar(): ReactElement {
   const { isOpen, onToggle } = useDisclosure();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { isLoggedIn } = useAuth();
 
-  const NavItems: NavItem[] = [
+  const loggedOutNavItems: NavItem[] = [
     {
       label: 'Products',
       href: '/',
@@ -34,11 +36,17 @@ export default function NavBar(): ReactElement {
       label: 'Shopping Cart',
       href: '/',
     },
+  ];
+
+  const loggedInNavItems = [
+    ...loggedOutNavItems,
     {
       label: 'Profile',
       href: '/',
     },
   ];
+
+  const navItems = isLoggedIn ? loggedInNavItems : loggedOutNavItems;
 
   return (
     <Box
@@ -74,7 +82,7 @@ export default function NavBar(): ReactElement {
           </Heading>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-            <DesktopNav items={NavItems} />
+            <DesktopNav items={navItems} />
           </Flex>
         </Flex>
 
@@ -91,7 +99,7 @@ export default function NavBar(): ReactElement {
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
-        <MobileNav items={NavItems} />
+        <MobileNav items={navItems} />
       </Collapse>
     </Box>
   );
