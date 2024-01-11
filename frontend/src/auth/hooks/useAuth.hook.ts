@@ -2,7 +2,6 @@ import { useKeycloak } from '@react-keycloak/web';
 
 export default function useAuth() {
   const { keycloak } = useKeycloak();
-  console.log(keycloak);
   const { login, logout, authenticated, tokenParsed } = keycloak;
   const email = tokenParsed?.email;
   const username = tokenParsed?.preferred_username;
