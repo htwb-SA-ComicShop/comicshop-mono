@@ -16,6 +16,7 @@ interface ValidatedInputProps {
   defaultValue?: string | number | readonly string[] | undefined;
   errorMsg: string | undefined;
   type?: React.HTMLInputTypeAttribute;
+  step?: string | number | undefined;
   isTextArea?: boolean;
 }
 
@@ -27,6 +28,7 @@ const ValidatedInput = ({
   errorMsg,
   errors,
   type = 'text',
+  step = undefined,
   isTextArea = false,
 }: ValidatedInputProps): ReactElement => {
   return (
@@ -42,6 +44,7 @@ const ValidatedInput = ({
       ) : (
         <Input
           type={type}
+          step={step}
           id={id}
           placeholder={label}
           defaultValue={defaultValue}

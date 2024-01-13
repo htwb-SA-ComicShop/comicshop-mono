@@ -3,6 +3,7 @@ import ValidatedInput from './ValidatedInput';
 import { Button, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router';
 import { Product } from '../../../types';
+import useAuth from '../../../auth/hooks/useAuth.hook';
 
 interface FormProps {
   defaults?: Product;
@@ -16,6 +17,8 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
     register,
     formState: { errors, isSubmitting },
   } = useForm<Product>();
+
+  const { token } = useAuth();
 
   const hasErrors = Object.keys(errors).length > 0;
 
@@ -32,13 +35,18 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
     const payload: Omit<Product, 'id'> | Product = data;
     try {
       const response = await fetch(url, {
-        method,
+        method: 'PUT',
         mode: 'cors',
         cache: 'no-cache',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
-      await response.json();
+      if (!response.ok) {
+        throw new Error('Something went wrong!');
+      }
       navigate('/');
       toast({
         title: 'All right!',
@@ -119,6 +127,7 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
         label='Pages'
         errors={errors}
         type='number'
+        step={1}
         defaultValue={defaults?.pages}
         errorMsg={errors?.pages?.message}
         registerReturn={register('pages', { required: 'Required' })}
@@ -128,9 +137,10 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
         label='Price ($)'
         errors={errors}
         type='number'
+        step={0.01}
         defaultValue={defaults?.price}
         errorMsg={errors?.price?.message}
-        registerReturn={register('pages', { required: 'Required' })}
+        registerReturn={register('price', { required: 'Required' })}
       />
       <ValidatedInput
         isTextArea

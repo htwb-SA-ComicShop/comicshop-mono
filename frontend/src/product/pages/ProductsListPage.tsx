@@ -7,7 +7,9 @@ const ProductsListPage = (): ReactElement => {
   const [comics, setComics] = useState<Product[]>([]);
   useEffect(() => {
     async function fetchComics() {
-      const response = await fetch('http://localhost:8080/products');
+      const response = await fetch('http://localhost:8080/products', {
+        mode: 'cors',
+      });
       const receivedComics: Product[] = await response.json();
       setComics(receivedComics);
     }
