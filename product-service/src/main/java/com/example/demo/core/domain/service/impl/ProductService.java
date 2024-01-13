@@ -25,8 +25,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        UUID id = product.getId();
+    public Product updateProduct(Product product, UUID id) {
         Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
         existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
