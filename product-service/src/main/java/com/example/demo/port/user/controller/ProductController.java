@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-@CrossOrigin(origins = "http://localhost:5173")
+
 @RestController
 public class ProductController {
 
     @Autowired
     private IProductService productService;
+
 
     @PostMapping(path = "/product")
     @ResponseStatus(HttpStatus.OK)
@@ -23,20 +24,24 @@ public class ProductController {
         productService.createProduct(product);
     }
 
+    @PutMapping(path = "/product/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @CrossOrigin(origins = "*")
+    public @ResponseBody void update(@RequestBody Product product, @PathVariable UUID id) {
+        System.out.println("Updating product: " + product);
+        productService.updateProduct(product, id);
+    }
+
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable UUID id) {
         Product product = productService.getProduct(id);
-
-        if (product == null) {
-            throw new ProductNotFoundException(id);
-        }
-
+        if (product == null) throw new ProductNotFoundException(id);
         return product;
     }
 
-    @DeleteMapping(path = "/product")
-    public @ResponseBody void deleteProduct(@RequestBody UUID productId) {
-        productService.deleteProduct(productId);
+    @DeleteMapping(path = "/product/{id}")
+    public @ResponseBody void deleteProduct(@PathVariable UUID id) {
+        productService.deleteProduct(id);
     }
 
     @GetMapping("/products")
@@ -44,9 +49,15 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @PostMapping(path = "/add-to-cart")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody void addToCart(@RequestBody Product product) {
+        System.out.println("Adding to cart: " + product);
+    }
+
     @GetMapping("/seed-database")
     public void seedDataBase() {
-        if(productService.getCountOfProducts() == 0){
+        if (productService.getCountOfProducts() == 0) {
             String dummyDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed suscipit justo leo, vitae tincidunt arcu tristique in. Donec consequat gravida imperdiet.";
             Product a = new Product(
                     "Asterix in Britain",
