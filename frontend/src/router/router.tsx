@@ -32,8 +32,6 @@ const router = createBrowserRouter([
             <AddProductPage />
           </PrivateRouteWrapper>
         ),
-        // @ts-expect-error: React Router internal type issues
-        loader: productLoader,
       },
     ],
   },
