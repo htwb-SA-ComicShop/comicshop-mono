@@ -14,6 +14,7 @@ import { Product } from '../../../types';
 import { Link } from 'react-router-dom';
 import AuthWrapper from '../../../auth/components/AuthWrapper';
 import AddToCartButton from './AddToCartButton';
+import DeleteButton from './DeleteButton';
 
 const ProductCard = ({
   name,
@@ -44,7 +45,7 @@ const ProductCard = ({
           </Text>
           <Text>{pages} Pages</Text>
           <Text>{description}</Text>
-          <Text color='teal.600' fontSize='2xl'>
+          <Text fontSize='2xl' fontWeight='bold'>
             ${price}
           </Text>
         </Stack>
@@ -61,6 +62,9 @@ const ProductCard = ({
             >
               Edit
             </Button>
+          </AuthWrapper>
+          <AuthWrapper role='admin'>
+            <DeleteButton id={id ?? ''} />
           </AuthWrapper>
         </ButtonGroup>
       </CardFooter>
