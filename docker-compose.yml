@@ -110,6 +110,7 @@ services:
       - internal
 
   keycloak:
+    container_name: keycloak
     image: quay.io/keycloak/keycloak:legacy
     environment:
       DB_VENDOR: POSTGRES
