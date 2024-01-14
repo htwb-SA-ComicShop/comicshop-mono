@@ -5,7 +5,7 @@ export interface NavItem {
 }
 
 export interface Product {
-  id: string;
+  id: string | null;
   name: string;
   author: string;
   publisher: string;

@@ -1,7 +1,9 @@
 import { ReactElement, useEffect, useState } from 'react';
 import { Product } from '../../types';
-import { Flex, Spinner, Text, VStack } from '@chakra-ui/react';
+import { Button, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
 import ProductGrid from '../components/ProductGrid';
+import { Link } from 'react-router-dom';
+import AuthWrapper from '../../auth/components/AuthWrapper';
 
 const ProductsListPage = (): ReactElement => {
   const [comics, setComics] = useState<Product[]>([]);
@@ -18,7 +20,7 @@ const ProductsListPage = (): ReactElement => {
 
   return (
     <main>
-      <VStack w='80%' mx='auto'>
+      <VStack w='80%' mx='auto' gap={12}>
         {comics.length > 0 ? (
           <ProductGrid products={comics} />
         ) : (
@@ -31,6 +33,16 @@ const ProductsListPage = (): ReactElement => {
             thickness='5px'
           />
         )}
+        <AuthWrapper role='admin'>
+          <Button
+            as={Link}
+            to='/add-product'
+            colorScheme='teal'
+            variant='outline'
+          >
+            Produkt hinzufügen
+          </Button>
+        </AuthWrapper>
       </VStack>
       <Flex as='footer' pb={6} pt={12} justify='center' w='80%' mx='auto'>
         <Text fontSize='sm'>ComicShop© 2024</Text>

@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ValidatedInput from './ValidatedInput';
-import { Button, useToast } from '@chakra-ui/react';
+import { Button, Stack, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router';
 import { Product } from '../../../types';
 import useAuth from '../../../auth/hooks/useAuth.hook';
@@ -28,14 +28,14 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
 
   const url =
     method === 'POST'
-      ? 'http://localhost:8080/product/'
+      ? 'http://localhost:8080/product'
       : `http://localhost:8080/product/${id}`;
 
   const onSubmit: SubmitHandler<Product> = async (data: Product) => {
-    const payload: Omit<Product, 'id'> | Product = data;
+    const payload: Product = method === 'PUT' ? data : { ...data, id: null };
     try {
       const response = await fetch(url, {
-        method: 'PUT',
+        method,
         mode: 'cors',
         cache: 'no-cache',
         headers: {
@@ -76,25 +76,23 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <Stack as='form' onSubmit={handleSubmit(onSubmit)} w='100%' spacing={4}>
       <ValidatedInput
         id='title'
-        label='Titel'
-        errors={errors}
+        label='Title'
         defaultValue={defaults?.name}
         errorMsg={errors?.name?.message}
         registerReturn={register('name', {
           required: 'Required',
           minLength: {
             value: 3,
-            message: 'Titel muss mindestens 3 Zeichen lang sein',
+            message: 'Title has to be at least 3 characters long',
           },
         })}
       />
       <ValidatedInput
         id='imageSrc'
-        label='Bild-Link'
-        errors={errors}
+        label='Image URL'
         defaultValue={defaults?.imgUrl}
         errorMsg={errors?.imgUrl?.message}
         registerReturn={register('imgUrl', {
@@ -102,14 +100,17 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
           pattern: {
             value:
               /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi,
-            message: 'Bitte einen valide HTTP/HTTPS URL angeben',
+            message: 'Please enter a valid HTTP/HTTPS URL',
+          },
+          maxLength: {
+            value: 250,
+            message: 'The URL has to be at most 250 characters long',
           },
         })}
       />
       <ValidatedInput
         id='author'
         label='Author'
-        errors={errors}
         defaultValue={defaults?.author}
         errorMsg={errors?.author?.message}
         registerReturn={register('author', { required: 'Required' })}
@@ -117,7 +118,6 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
       <ValidatedInput
         id='publisher'
         label='Publisher'
-        errors={errors}
         defaultValue={defaults?.publisher}
         errorMsg={errors?.publisher?.message}
         registerReturn={register('publisher', { required: 'Required' })}
@@ -125,7 +125,6 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
       <ValidatedInput
         id='pages'
         label='Pages'
-        errors={errors}
         type='number'
         step={1}
         defaultValue={defaults?.pages}
@@ -135,7 +134,6 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
       <ValidatedInput
         id='price'
         label='Price ($)'
-        errors={errors}
         type='number'
         step={0.01}
         defaultValue={defaults?.price}
@@ -145,15 +143,14 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
       <ValidatedInput
         isTextArea
         id='description'
-        label='Beschreibung'
-        errors={errors}
+        label='Description'
         defaultValue={defaults?.description}
         errorMsg={errors?.description?.message}
         registerReturn={register('description', {
           required: 'Required',
           minLength: {
             value: 5,
-            message: 'Beschreibung muss mindestens 5 Zeichen lang sein',
+            message: 'The description has to be at least 5 characters long',
           },
         })}
       />
@@ -163,16 +160,16 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
         isDisabled={hasErrors}
         type='submit'
       >
-        Speichern
+        Save
       </Button>
       <Button
         colorScheme='teal'
         variant='outline'
         onClick={() => navigate('/')}
       >
-        Zurück
+        Back
       </Button>
-    </form>
+    </Stack>
   );
 };
 

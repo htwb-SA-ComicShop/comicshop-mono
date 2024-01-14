@@ -4,6 +4,7 @@ import NavBarWrapper from './components/NavBarWrapper';
 import productLoader from './loaders/productLoader';
 import EditProductPage from '../product/pages/EditProductPage';
 import PrivateRouteWrapper from './components/PrivateRouteWrapper';
+import AddProductPage from '../product/pages/AddProductPage';
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,16 @@ const router = createBrowserRouter([
         element: (
           <PrivateRouteWrapper role='admin'>
             <EditProductPage />
+          </PrivateRouteWrapper>
+        ),
+        // @ts-expect-error: React Router internal type issues
+        loader: productLoader,
+      },
+      {
+        path: '/add-product',
+        element: (
+          <PrivateRouteWrapper role='admin'>
+            <AddProductPage />
           </PrivateRouteWrapper>
         ),
         // @ts-expect-error: React Router internal type issues

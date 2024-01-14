@@ -16,21 +16,27 @@ function EditProductPage() {
           objectFit='cover'
           src={defaults.imgUrl ?? './placeholder.png'}
           alt={`Image of ${defaults.name}`}
+          mb={8}
         />
         <VStack
           direction={{ base: 'column', sm: 'row' }}
           align='start'
           overflow='hidden'
+          w='100%'
           mb={{ base: 8, sm: 4 }}
         >
-          <VStack align='start' spacing={4}>
+          <VStack align='start' spacing={4} w='100%'>
             <Heading>
-              {defaults.name}{' '}
               <Text as='span' fontWeight={400}>
-                bearbeiten
+                Edit{' '}
               </Text>
+              {defaults.name}
             </Heading>
-            <ProductForm method='PUT' defaults={defaults} id={defaults.id} />
+            <ProductForm
+              method='PUT'
+              defaults={defaults}
+              id={defaults.id ?? ''}
+            />
           </VStack>
         </VStack>
       </VStack>

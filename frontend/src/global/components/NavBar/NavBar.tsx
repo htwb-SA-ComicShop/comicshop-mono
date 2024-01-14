@@ -21,6 +21,7 @@ import { MobileNav } from './MobileNav';
 import { NavItem } from '../../../types';
 import LogInOutButton from './LoginOutButton';
 import useAuth from '../../../auth/hooks/useAuth.hook';
+import { Link } from 'react-router-dom';
 
 export default function NavBar(): ReactElement {
   const { isOpen, onToggle } = useDisclosure();
@@ -33,7 +34,7 @@ export default function NavBar(): ReactElement {
       href: '/',
     },
     {
-      label: 'Shopping Cart',
+      label: 'Cart',
       href: '/',
     },
   ];
@@ -76,6 +77,8 @@ export default function NavBar(): ReactElement {
         >
           <Heading
             size='lg'
+            as={Link}
+            to={'/'}
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
           >
             ComicShop

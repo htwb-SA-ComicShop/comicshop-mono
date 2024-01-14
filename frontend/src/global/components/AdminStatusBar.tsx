@@ -10,7 +10,7 @@ import { ReactElement } from 'react';
 const AdminStatusBar = (): ReactElement => {
   const { isAdmin } = useAuth();
   return isAdmin ? (
-    <Alert status='warning' position='sticky' top={0} zIndex={100}>
+    <Alert status='warning' variant='top-accent'>
       <AlertIcon />
       <AlertTitle>Superpowers activated! 🚀</AlertTitle>
       <AlertDescription>You're logged in as administrator!</AlertDescription>

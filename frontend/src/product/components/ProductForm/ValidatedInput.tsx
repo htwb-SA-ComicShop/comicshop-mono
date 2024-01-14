@@ -6,10 +6,9 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { ReactElement } from 'react';
-import { FieldErrors, UseFormRegisterReturn } from 'react-hook-form';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface ValidatedInputProps {
-  errors: FieldErrors;
   label: string;
   id: string;
   registerReturn: UseFormRegisterReturn;
@@ -26,16 +25,16 @@ const ValidatedInput = ({
   registerReturn,
   defaultValue,
   errorMsg,
-  errors,
   type = 'text',
   step = undefined,
   isTextArea = false,
 }: ValidatedInputProps): ReactElement => {
   return (
-    <FormControl isInvalid={!!errors[id]}>
+    <FormControl isInvalid={!!errorMsg}>
       <FormLabel htmlFor={id}>{label}</FormLabel>
       {isTextArea ? (
         <Textarea
+          minH={200}
           id={id}
           placeholder={label}
           defaultValue={defaultValue}
