@@ -21,7 +21,17 @@ public class ProductController {
     @PostMapping(path = "/product")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void create(@RequestBody Product product) {
-        productService.createProduct(product);
+        Product newProduct = new Product(
+                product.getName(),
+                product.getAuthor(),
+                product.getPublisher(),
+                product.getDescription(),
+                product.getImgUrl(),
+                product.getPublishYear(),
+                product.getPages(),
+                product.getPrice()
+        );
+        productService.createProduct(newProduct);
     }
 
     @PutMapping(path = "/product/{id}")
@@ -40,6 +50,7 @@ public class ProductController {
     }
 
     @DeleteMapping(path = "/product/{id}")
+    @CrossOrigin(origins = "*")
     public @ResponseBody void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
     }

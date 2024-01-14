@@ -44,7 +44,6 @@ class SecurityConfig  {
                 .requestMatchers(HttpMethod.GET, "/product/**").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.POST, "/product").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.GET, "/seed-database").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.POST, "/add-to-cart").hasRole("customer")
