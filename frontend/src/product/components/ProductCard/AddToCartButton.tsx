@@ -9,16 +9,53 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import useAuth from '../../../auth/hooks/useAuth.hook';
+import { Product } from '../../../types';
 
-const AddToCartButton = () => {
-  const { isLoggedIn, login, signup } = useAuth();
+const AddToCartButton = ({ product }: { product: Product }) => {
+  const { isLoggedIn, login, signup, token } = useAuth();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const toast = useToast();
 
-  const handleAddToCartClick = () => {
+  const handleAddToCartClick = async () => {
     if (isLoggedIn) {
-      console.log('add to cart');
+      console.log(`Adding product ${product.id} to cart...`);
+      try {
+        const response = await fetch('http://localhost:8080/add-to-cart', {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(product),
+        });
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
+        }
+        toast({
+          title: 'All right!',
+          description: 'Product was added to cart!',
+          position: 'top',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      } catch (error) {
+        if (error instanceof Error) {
+          toast({
+            title: 'Ooops!',
+            description: 'Something went wrong!',
+            position: 'top',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      }
     } else {
       onOpen();
     }

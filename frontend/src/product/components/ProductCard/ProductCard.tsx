@@ -16,16 +16,9 @@ import AuthWrapper from '../../../auth/components/AuthWrapper';
 import AddToCartButton from './AddToCartButton';
 import DeleteButton from './DeleteButton';
 
-const ProductCard = ({
-  name,
-  id,
-  author,
-  publisher,
-  pages,
-  price,
-  description,
-  imgUrl,
-}: Product): ReactElement => {
+const ProductCard = (product: Product): ReactElement => {
+  const { name, id, author, publisher, pages, price, description, imgUrl } =
+    product;
   return (
     <Card maxW='sm' variant='filled'>
       <CardBody>
@@ -52,7 +45,7 @@ const ProductCard = ({
       </CardBody>
       <CardFooter>
         <ButtonGroup spacing='2'>
-          <AddToCartButton />
+          <AddToCartButton product={product} />
           <AuthWrapper role='admin'>
             <Button
               variant='outline'
