@@ -95,6 +95,42 @@ services:
       - spring_rabbitmq_host=rabbitmq-container
       - spring_rabbitmq_port=5672
 
+  cart-db:
+    image: postgres:12
+    container_name: cart-db
+    ports:
+      - '5434:5432'
+    volumes:
+      - cart-data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: cart-db
+      POSTGRES_PASSWORD: cart-db
+      POSTGRES_DB: cart-db
+    networks:
+      - internal
+
+  cart-service:
+    container_name: cart-service
+    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    build:
+      context: ./cart-service
+      dockerfile: Dockerfile
+    ports:
+      - '8082:8080'
+    depends_on:
+      - cart-db
+      - rabbitmq-container
+    volumes:
+      - .:/cart-service/app
+    links:
+      - cart-db
+    networks:
+      - internal
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://cart-db:5432/cart-db
+      - spring_rabbitmq_host=rabbitmq-container
+      - spring_rabbitmq_port=5672
+
   keycloak-db:
     image: postgres:12
     container_name: keycloak-db
@@ -139,3 +175,4 @@ volumes:
   product-data:
   notification-data:
   keycloak-data:
+  cart-data:
