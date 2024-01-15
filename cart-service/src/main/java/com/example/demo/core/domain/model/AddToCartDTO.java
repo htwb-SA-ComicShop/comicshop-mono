@@ -23,14 +23,24 @@ public class AddToCartDTO implements Serializable {
     private String imgUrl;
     private double price;
 
-    public AddToCartDTO(String username, String email, Product product) {
-        this.productId = product.getId();
-        this.productName = product.getName();
-        this.author = product.getAuthor();
-        this.imgUrl = product.getImgUrl();
-        this.price = product.getPrice();
+    public AddToCartDTO(
+            UUID id,
+            String username,
+            String email,
+            UUID productId,
+            String productName,
+            String author,
+            String imgUrl,
+            double price
+    ) {
+        this.id = id;
         this.username = username;
         this.email = email;
+        this.productId = productId;
+        this.productName = productName;
+        this.author = author;
+        this.imgUrl = imgUrl;
+        this.price = price;
     }
 
     public UUID getId() { return id;}

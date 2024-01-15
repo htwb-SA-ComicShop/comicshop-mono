@@ -40,13 +40,8 @@ class SecurityConfig  {
         http.
                 csrf().disable().
                 authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                .requestMatchers(HttpMethod.GET, "/product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.POST, "/product").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.GET, "/seed-database").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.POST, "/add-to-cart").hasRole("customer")
+                .requestMatchers(HttpMethod.GET, "/cart/**").hasRole("customer")
+                .requestMatchers(HttpMethod.GET, "/test").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()

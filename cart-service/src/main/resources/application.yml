@@ -3,7 +3,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:postgresql://localhost:5432/cart-db
+    url: jdbc:postgresql://localhost:5434/cart-db
     username: cart-db
     password: cart-db
     driver-class-name: org.postgresql.Driver
