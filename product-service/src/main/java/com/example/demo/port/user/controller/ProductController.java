@@ -1,14 +1,20 @@
 package com.example.demo.port.user.controller;
 
+import com.example.demo.core.domain.model.AddToCartDTO;
 import com.example.demo.core.domain.model.Product;
 import com.example.demo.core.domain.service.interfaces.IProductService;
+import com.example.demo.port.shoppingcart.producer.AddProductProducer;
 import com.example.demo.port.user.exception.ProductNotFoundException;
 
+import com.example.demo.port.user.producer.ProductProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -17,6 +23,8 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
+    @Autowired
+    AddProductProducer addProductProducer;
 
     @PostMapping(path = "/product")
     @ResponseStatus(HttpStatus.OK)
@@ -63,7 +71,15 @@ public class ProductController {
     @PostMapping(path = "/add-to-cart")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void addToCart(@RequestBody Product product) {
-        System.out.println("Adding to cart: " + product);
+        JwtAuthenticationToken authToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> tokenAttributes = authToken.getTokenAttributes();
+        String userName = (String) tokenAttributes.get("preferred_username");
+        String email = (String) tokenAttributes.get("email");
+        System.out.println("Adding to cart: " + product.getName());
+        System.out.println("userName: " + userName);
+        System.out.println("email: " + email);
+        AddToCartDTO cartItem = new AddToCartDTO(userName, email, product);
+        addProductProducer.sendToCart(cartItem);
     }
 
     @GetMapping("/seed-database")
