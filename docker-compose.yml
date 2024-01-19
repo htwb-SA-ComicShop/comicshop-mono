@@ -131,6 +131,24 @@ services:
       - spring_rabbitmq_host=rabbitmq-container
       - spring_rabbitmq_port=5672
 
+  checkout-service:
+    container_name: checkout-service
+    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    build:
+      context: ./checkout-service
+      dockerfile: Dockerfile
+    ports:
+      - '8083:8080'
+    depends_on:
+      - rabbitmq-container
+    volumes:
+      - .:/checkout-service/app
+    networks:
+      - internal
+    environment:
+      - spring_rabbitmq_host=rabbitmq-container
+      - spring_rabbitmq_port=5672
+
   keycloak-db:
     image: postgres:12
     container_name: keycloak-db
