@@ -1,7 +1,6 @@
 package com.example.demo.port.user.controller;
 
-import com.example.demo.port.shoppingcart.producer.AddProductProducer;
-import com.example.demo.port.user.producer.ProductProducer;
+import com.example.demo.port.user.producer.CheckoutProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 
 	@Autowired
-	ProductProducer productProducer;
+    CheckoutProducer checkoutProducer;
 
 	@GetMapping("/product-queue")
 	public void triggerProductQueue() {
 		try {
-			productProducer.sendMessage("product");
+			checkoutProducer.sendMessage("product");
 		} catch (Exception e) {
 		}
 	}

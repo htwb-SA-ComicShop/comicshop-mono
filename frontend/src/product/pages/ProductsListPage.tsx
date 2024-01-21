@@ -36,7 +36,7 @@ const ProductsListPage = (): ReactElement => {
         <AuthWrapper role='admin'>
           <Button
             as={Link}
-            to='/add-product'
+            to='/add-order'
             colorScheme='teal'
             variant='outline'
           >

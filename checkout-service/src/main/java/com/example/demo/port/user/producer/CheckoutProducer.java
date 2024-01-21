@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductProducer {
+public class CheckoutProducer {
 
     @Value("product_exchange")
     private String exchange;
@@ -15,11 +15,11 @@ public class ProductProducer {
     @Value("product_routing_key")
     private String routingKey;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutProducer.class);
 
     private final RabbitTemplate rabbitTemplate;
 
-    public ProductProducer(RabbitTemplate rabbitTemplate) {
+    public CheckoutProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 

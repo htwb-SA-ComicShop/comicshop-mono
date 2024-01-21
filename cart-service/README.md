@@ -10,8 +10,8 @@
 
 ### TestController to send messages
 * TestController path: com.example.demo.port.user.controller
-  * localhost:8080/product-queue 
-  * localhost:8080/product-update-queue
+  * localhost:8080/order-queue 
+  * localhost:8080/order-update-queue
 
 
 ## Userful Commands

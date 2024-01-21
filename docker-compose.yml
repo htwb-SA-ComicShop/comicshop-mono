@@ -131,6 +131,20 @@ services:
       - spring_rabbitmq_host=rabbitmq-container
       - spring_rabbitmq_port=5672
 
+  checkout-db:
+    image: postgres:12
+    container_name: checkout-db
+    ports:
+      - '5436:5432'
+    volumes:
+      - checkout-data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: checkout-db
+      POSTGRES_PASSWORD: checkout-db
+      POSTGRES_DB: checkout-db
+    networks:
+      - internal
+
   checkout-service:
     container_name: checkout-service
     command: java -jar target/demo-0.0.1-SNAPSHOT.jar

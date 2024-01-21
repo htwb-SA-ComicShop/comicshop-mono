@@ -1,6 +1,6 @@
-package com.example.demo.port.shoppingcart.producer;
+package com.example.demo.port.notification.producer;
 
-import com.example.demo.core.domain.model.AddToCartDTO;
+import com.example.demo.core.domain.model.SendOrderToNotificationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddProductProducer {
+public class AddCheckoutProducer {
 
     @Value("product_exchange")
     private String exchange;
@@ -16,15 +16,15 @@ public class AddProductProducer {
     @Value("cart_item_routing_key")
     private String routingKey;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AddProductProducer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddCheckoutProducer.class);
 
     private final RabbitTemplate rabbitTemplate;
 
-    public AddProductProducer(RabbitTemplate rabbitTemplate) {
+    public AddCheckoutProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendToCart(AddToCartDTO cartItem){
+    public void sendToCart(SendOrderToNotificationDTO cartItem){
         rabbitTemplate.convertAndSend(exchange, routingKey, cartItem);
         LOGGER.info(String.format("Message sent -> %s by %s", cartItem.getProductName(), cartItem.getUsername()));
     }

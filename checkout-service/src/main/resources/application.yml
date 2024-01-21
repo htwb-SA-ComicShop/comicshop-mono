@@ -3,9 +3,9 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:postgresql://localhost:5432/product-db
-    username: product-db
-    password: product-db
+    url: jdbc:postgresql://localhost:5432/checkout-db
+    username: checkout-db
+    password: checkout-db
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

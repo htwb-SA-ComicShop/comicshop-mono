@@ -34,8 +34,8 @@ To start the project simple execute the docker compose file
   - alternatively, you can use the IntelliJ Docker Plugin or the Docker Desktop Dashboard (Mac/Win)
 - Sometimes, the `depends_on` order does not work, tho
 - To get it right, just manually shutdown the dependant and start them manually after the dependencies are up
-  - e.g. `product-service` sometimes can't connect to `product-db` or `rabbitmq-container`
-  - therefore, just wait for the db & mq to be completely online and restart `product-service` via Docker Dashboard/IntelliJ
+  - e.g. `order-service` sometimes can't connect to `order-db` or `rabbitmq-container`
+  - therefore, just wait for the db & mq to be completely online and restart `order-service` via Docker Dashboard/IntelliJ
 
 ### Local Development in Docker
 
@@ -81,6 +81,6 @@ In order to set up keycloak locally, you have to do the following things:
 - When adding the services to docker, make sure to forward it to a port that is not yet taken!
 - e.g. spring services run on `localhost:8080` per default. We'll have ~6 spring services & they can't all run on the same port
 - for such occasions, Docker has a `port-forwarding` mechanism that we use in the top-level `docker-compose` file
-- This way we can map the services to different ports, e.g. `8080` for `product-service`, `8081` for `notification-service`, etc...
+- This way we can map the services to different ports, e.g. `8080` for `order-service`, `8081` for `notification-service`, etc...
 - The notation is always read as `machine_port:container_port` -> i.e. `8081:8080` for the notification service
 - The same goes for postgres db ports, etc
