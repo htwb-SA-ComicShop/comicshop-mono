@@ -1,9 +1,9 @@
 package com.example.checkout.port.user.controller;
 
-import com.example.checkout.core.domain.model.SendOrderToNotificationDTO;
+import com.example.checkout.core.domain.model.SendOrderInfoToNotificationDTO;
 import com.example.checkout.core.domain.model.Order;
 import com.example.checkout.core.domain.service.interfaces.ICheckoutService;
-import com.example.checkout.port.notification.producer.AddCheckoutProducer;
+import com.example.checkout.port.notification.producer.AddOrderInfoProducer;
 import com.example.checkout.port.user.exception.ProductNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class OrderController {
     private ICheckoutService checkoutService;
 
     @Autowired
-    AddCheckoutProducer addCheckoutProducer;
+    AddOrderInfoProducer addOrderInfoProducer;
 
     @PostMapping(path = "/order")
     @ResponseStatus(HttpStatus.OK)
@@ -64,9 +64,9 @@ public class OrderController {
         String linkToInvoice = "linkToInvoice";
         String recipient = "adobe@gmx.net";
 
-        SendOrderToNotificationDTO sendOrder = new SendOrderToNotificationDTO(linkToContent, linkToInvoice, recipient);
+        SendOrderInfoToNotificationDTO sendOrder = new SendOrderInfoToNotificationDTO(linkToContent, linkToInvoice, recipient);
        //TODO change addCheckoutProducer
-        addCheckoutProducer.sendToNotification(sendOrder);
+        addOrderInfoProducer.sendToNotification(sendOrder);
     }
 
 }

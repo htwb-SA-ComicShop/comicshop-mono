@@ -21,6 +21,6 @@ public class CheckoutConsumer {
     public void consume(String message){
 
         LOGGER.info(String.format("Received message -> %s", message));
-        productService.getProduct(new UUID(1L, 2L));
+
     }
 }
