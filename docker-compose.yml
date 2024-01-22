@@ -208,3 +208,4 @@ volumes:
   notification-data:
   keycloak-data:
   cart-data:
+  checkout-data:
