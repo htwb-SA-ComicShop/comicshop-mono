@@ -39,7 +39,7 @@ services:
 
   product-service:
     container_name: product-service
-    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    command: java -jar target/product-0.0.1-SNAPSHOT.jar
     build:
       context: ./product-service
       dockerfile: Dockerfile
@@ -75,7 +75,7 @@ services:
 
   notification-service:
     container_name: notification-service
-    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    command: java -jar target/notification-0.0.1-SNAPSHOT.jar
     build:
       context: ./notification-service
       dockerfile: Dockerfile
@@ -111,7 +111,7 @@ services:
 
   cart-service:
     container_name: cart-service
-    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    command: java -jar target/cart-0.0.1-SNAPSHOT.jar
     build:
       context: ./cart-service
       dockerfile: Dockerfile
@@ -147,7 +147,7 @@ services:
 
   checkout-service:
     container_name: checkout-service
-    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    command: java -jar target/checkout-0.0.1-SNAPSHOT.jar
     build:
       context: ./checkout-service
       dockerfile: Dockerfile

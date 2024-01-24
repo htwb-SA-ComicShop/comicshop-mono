@@ -1,7 +1,7 @@
-package com.example.demo.core.domain.service.impl;
+package com.example.cart.core.domain.service.impl;
 
-import com.example.demo.core.domain.service.interfaces.ICartRepository;
-import com.example.demo.core.domain.service.interfaces.ICartService;
+import com.example.cart.core.domain.service.interfaces.ICartRepository;
+import com.example.cart.core.domain.service.interfaces.ICartService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

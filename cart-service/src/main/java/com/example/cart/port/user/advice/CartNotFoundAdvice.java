@@ -1,6 +1,6 @@
-package com.example.demo.port.user.advice;
+package com.example.cart.port.user.advice;
 
-import com.example.demo.port.user.exception.CartNotFoundException;
+import com.example.cart.port.user.exception.CartNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

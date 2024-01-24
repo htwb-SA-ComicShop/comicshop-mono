@@ -1,4 +1,4 @@
-package com.example.demo.port.config;
+package com.example.cart.port.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

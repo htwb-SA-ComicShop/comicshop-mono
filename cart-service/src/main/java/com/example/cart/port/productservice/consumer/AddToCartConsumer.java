@@ -1,7 +1,7 @@
-package com.example.demo.port.productservice.consumer;
+package com.example.cart.port.productservice.consumer;
 
-import com.example.demo.core.domain.model.AddToCartDTO;
-import com.example.demo.core.domain.service.interfaces.ICartService;
+import com.example.cart.core.domain.service.interfaces.ICartService;
+import com.example.cart.core.domain.model.AddToCartDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

@@ -1,4 +1,4 @@
-package com.example.demo.port.user.exception;
+package com.example.cart.port.user.exception;
 
 public class CartNotFoundException extends RuntimeException {
 

@@ -1,6 +1,6 @@
-package com.example.demo.port.user.controller;
+package com.example.cart.port.user.controller;
 
-import com.example.demo.core.domain.service.interfaces.ICartService;
+import com.example.cart.core.domain.service.interfaces.ICartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

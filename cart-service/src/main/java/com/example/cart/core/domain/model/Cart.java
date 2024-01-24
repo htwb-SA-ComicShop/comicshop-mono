@@ -1,4 +1,4 @@
-package com.example.demo.core.domain.model;
+package com.example.cart.core.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

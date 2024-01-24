@@ -1,6 +1,6 @@
-package com.example.demo.core.domain.service.interfaces;
+package com.example.cart.core.domain.service.interfaces;
 
-import com.example.demo.core.domain.model.Cart;
+import com.example.cart.core.domain.model.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
