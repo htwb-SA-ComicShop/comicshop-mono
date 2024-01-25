@@ -4,7 +4,7 @@ import com.example.checkout.core.domain.model.SendOrderInfoToNotificationDTO;
 import com.example.checkout.core.domain.model.Order;
 import com.example.checkout.core.domain.service.interfaces.ICheckoutService;
 import com.example.checkout.port.notification.producer.AddOrderInfoProducer;
-import com.example.checkout.port.user.exception.ProductNotFoundException;
+import com.example.checkout.port.user.exception.OrderNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +39,7 @@ public class OrderController {
     @GetMapping("/order/{id}")
     public Order getOrder(@PathVariable UUID id) {
         Order order = checkoutService.getOrder(id);
-        if (order == null) throw new ProductNotFoundException(id);
+        if (order == null) throw new OrderNotFoundException(id);
         return order;
     }
 

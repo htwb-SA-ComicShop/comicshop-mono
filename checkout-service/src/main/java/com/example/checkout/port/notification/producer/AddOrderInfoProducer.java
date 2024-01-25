@@ -25,7 +25,7 @@ public class AddOrderInfoProducer {
     }
 
     public void sendToNotification(SendOrderInfoToNotificationDTO orderInfo){
-        rabbitTemplate.convertAndSend(exchange, routingKey, orderInfo);
-        LOGGER.info(String.format("Message sent to %s invoice: %s content: %s ", orderInfo.getRecipient(), orderInfo.getLinkToInvoice(), orderInfo.getLinkToContent()));
+        rabbitTemplate.convertAndSend(exchange, routingKey, orderInfo.toJson());
+        LOGGER.info(String.format("Message sent: %s", orderInfo.toJson()));
     }
 }

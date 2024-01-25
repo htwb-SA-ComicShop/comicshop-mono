@@ -2,7 +2,7 @@ package com.example.checkout.core.domain.service.impl;
 
 import com.example.checkout.core.domain.model.Order;
 import com.example.checkout.core.domain.service.interfaces.ICheckoutRepository;
-import com.example.checkout.port.user.exception.ProductNotFoundException;
+import com.example.checkout.port.user.exception.OrderNotFoundException;
 import com.example.checkout.core.domain.service.interfaces.ICheckoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +25,12 @@ public class CheckoutService implements ICheckoutService {
     }
 
     @Override
-    public void deleteOrder(UUID id) throws ProductNotFoundException {
+    public void deleteOrder(UUID id) throws OrderNotFoundException {
 
     }
 
     @Override
-    public Order getOrder(UUID id) throws ProductNotFoundException {
+    public Order getOrder(UUID id) throws OrderNotFoundException {
         return null;
     }
 

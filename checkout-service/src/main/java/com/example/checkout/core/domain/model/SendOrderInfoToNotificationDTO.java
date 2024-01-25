@@ -1,5 +1,7 @@
 package com.example.checkout.core.domain.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -8,10 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class SendOrderInfoToNotificationDTO implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 4242L;
-
+public class SendOrderInfoToNotificationDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -50,5 +49,15 @@ public class SendOrderInfoToNotificationDTO implements Serializable {
 
     public void setRecipient(String recipient) {
         this.recipient = recipient;
+    }
+
+    public String toJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

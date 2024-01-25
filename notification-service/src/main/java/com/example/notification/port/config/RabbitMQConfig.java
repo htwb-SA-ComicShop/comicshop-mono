@@ -14,8 +14,8 @@ public class RabbitMQConfig {
     @Value("notification")
     private String queue;
 
-    @Value("item")
-    private String itemQueue;
+    @Value("orderInfo")
+    private String orderQueue;
 
     @Value("notification_exchange")
     private String exchange;
@@ -23,8 +23,8 @@ public class RabbitMQConfig {
     @Value("notification_routing_key")
     private String routingKey;
 
-    @Value("item_routing_key")
-    private String itemRoutingKey;
+    @Value("order_info_routing_key")
+    private String orderInfoRoutingKey;
 
     @Bean
     public Queue queue(){
@@ -33,7 +33,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue itemQueue(){
-        return new Queue(itemQueue);
+        return new Queue(orderQueue);
     }
 
     @Bean
@@ -54,7 +54,7 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(itemQueue())
                 .to(exchange())
-                .with(itemRoutingKey);
+                .with(orderInfoRoutingKey);
     }
 
 }

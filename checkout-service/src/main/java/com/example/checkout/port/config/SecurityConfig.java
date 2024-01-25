@@ -47,6 +47,7 @@ class SecurityConfig  {
                 .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.GET, "/seed-database").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.POST, "/add-to-cart").hasRole("customer")
+                .requestMatchers(HttpMethod.GET, "/send-to-notification").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()

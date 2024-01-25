@@ -1,6 +1,6 @@
 package com.example.notification.port.user.consumer;
 
-import com.example.checkout.core.domain.model.SendOrderInfoToNotificationDTO;
+
 import com.example.notification.core.domain.model.KindOfNotification;
 import com.example.notification.core.domain.model.Notification;
 import com.example.notification.core.domain.service.interfaces.INotificationService;
@@ -27,11 +27,12 @@ public class NotificationConsumer {
         notificationService.getNotification(new UUID(1L, 2L));
     }
     @RabbitListener(queues = {"notification.order"})
-    public void consumeOrderInfo(SendOrderInfoToNotificationDTO orderInfo){
+    public void consumeOrderInfo(String orderInfo){
 
         LOGGER.info(String.format("Received message -> %s", orderInfo));
 
-        Notification notification = new Notification(orderInfo.getRecipient(), orderInfo.getId(), orderInfo.getLinkToContent(), orderInfo.getLinkToInvoice(), KindOfNotification.ORDER);
-        notificationService.createNotification(notification);
+
+        //Notification notification = new Notification(orderInfo.getRecipient(), orderInfo.getId(), orderInfo.getLinkToContent(), orderInfo.getLinkToInvoice(), KindOfNotification.ORDER);
+        //notificationService.createNotification(notification);
     }
 }

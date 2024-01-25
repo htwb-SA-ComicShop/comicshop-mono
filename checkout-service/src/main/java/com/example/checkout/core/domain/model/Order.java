@@ -1,8 +1,6 @@
 package com.example.checkout.core.domain.model;
 
 
-import com.example.product.core.domain.model.AddToCartDTO;
-import com.example.product.core.domain.model.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,8 +24,8 @@ public class Order {
 
     private double price;
     //TODO Rename because its should be a cart not a product
-    @ElementCollection
-    private ArrayList<AddToCartDTO> content;
+    //@ElementCollection
+    //private ArrayList<AddToCartDTO> content;
     private Date date;
     public Order(){}
 

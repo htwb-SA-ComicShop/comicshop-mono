@@ -13,7 +13,7 @@ public class CartNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(value = CartNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String productNotFoundHandler(CartNotFoundException ex){
+    String cartNotFoundHandler(CartNotFoundException ex){
         return ex.getMessage();
     }
 
