@@ -10,7 +10,7 @@ public class PriceChangeConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PriceChangeConsumer.class);
 
-    @RabbitListener(queues = {"item"})
+    @RabbitListener(queues = {"cart_item"})
     public void consume(String message) {
 
         LOGGER.info(String.format("Received message -> %s", message));
