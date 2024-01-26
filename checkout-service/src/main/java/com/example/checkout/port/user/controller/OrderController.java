@@ -48,7 +48,7 @@ public class OrderController {
         return checkoutService.getAllOrder();
     }
 
-    @PostMapping(path = "/send-to-notification")
+    @PostMapping(path = "/seed-database")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void sendToNotification(@RequestBody Order order) {
         JwtAuthenticationToken authToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();

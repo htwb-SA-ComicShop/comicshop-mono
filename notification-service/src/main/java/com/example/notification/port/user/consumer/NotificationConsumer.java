@@ -26,7 +26,7 @@ public class NotificationConsumer {
         LOGGER.info(String.format("Received message -> %s", message));
         notificationService.getNotification(new UUID(1L, 2L));
     }
-    @RabbitListener(queues = {"notification.order"})
+    @RabbitListener(queues = {"notification"})
     public void consumeOrderInfo(String orderInfo){
 
         LOGGER.info(String.format("Received message -> %s", orderInfo));
