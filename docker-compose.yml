@@ -154,12 +154,16 @@ services:
     ports:
       - '8083:8080'
     depends_on:
+      - checkout-db
       - rabbitmq-container
     volumes:
       - .:/checkout-service/app
+    links:
+      - checkout-db
     networks:
       - internal
     environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://checkout-db:5432/checkout-db
       - spring_rabbitmq_host=rabbitmq-container
       - spring_rabbitmq_port=5672
 
