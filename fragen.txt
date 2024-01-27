@@ -1,0 +1,3 @@
+Wie viele Tests?
+Testcontainers erlaubt ?
+RestController "/addProduct" statt "product"
