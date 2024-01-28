@@ -14,16 +14,20 @@ public class SendOrderInfoToNotificationDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    private final UUID oderId;
+
     private String linkToInvoice;
 
     private String linkToContent;
     private String recipient;
 
 
-    public SendOrderInfoToNotificationDTO(String linkToContent, String linkToInvoice, String recipient) {
+    public SendOrderInfoToNotificationDTO(String linkToContent, String linkToInvoice, String recipient, UUID orderId) {
         this.linkToContent = linkToContent;
         this.linkToInvoice = linkToInvoice;
         this.recipient = recipient;
+        this.oderId = orderId;
     }
 
     public UUID getId() { return id;}

@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,23 +49,27 @@ public class OrderController {
         return checkoutService.getAllOrder();
     }
 
-    @RequestMapping(path = "/seed-database")
+    @GetMapping(path = "/seed-database")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody void sendToNotification(@RequestBody Order order) {
-        JwtAuthenticationToken authToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        Map<String, Object> tokenAttributes = authToken.getTokenAttributes();
-        String userName = (String) tokenAttributes.get("preferred_username");
-        String email = (String) tokenAttributes.get("email");
-        System.out.println("Sending to Notification: " + order.getId());
-        System.out.println("userName: " + userName);
-        System.out.println("email: " + email);
+    public @ResponseBody void sendToNotification() {
+        //TODO maybe get order as parameter @RequestBody?
+        Date date = new Date(12345678654321L);
+        Order order = new Order(12, date);
+        //JwtAuthenticationToken authToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        //Map<String, Object> tokenAttributes = authToken.getTokenAttributes();
+        //String userName = (String) tokenAttributes.get("preferred_username");
+        //String email = (String) tokenAttributes.get("email");
+        //System.out.println("Sending to Notification: " + order.getId());
+        //System.out.println("userName: " + userName);
+        //System.out.println("email: " + email);
 
         //TODO make real strings
         String linkToContent = "linkToContent";
         String linkToInvoice = "linkToInvoice";
         String recipient = "adobe@gmx.net";
+        UUID orderId = new UUID(1233L, 234L);
 
-        SendOrderInfoToNotificationDTO sendOrder = new SendOrderInfoToNotificationDTO(linkToContent, linkToInvoice, recipient);
+        SendOrderInfoToNotificationDTO sendOrder = new SendOrderInfoToNotificationDTO(linkToContent, linkToInvoice, recipient, orderId);
        //TODO change addCheckoutProducer
         addOrderInfoProducer.sendToNotification(sendOrder);
     }

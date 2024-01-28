@@ -11,8 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
+    /*
     @Value("cart_exchange")
     private String exchange;
+
 
     @Value("cart")
     private String queue;
@@ -25,36 +27,51 @@ public class RabbitMQConfig {
 
     @Value("order_info_routing_key")
     private String orderInfoRoutingKey;
+     */
+
+    @Value("order_exchange")
+    private String exchange;
+
+    @Value("orderInfo")
+    private String queue;
+
+    @Value("order_info_routing_key")
+    private String routingKey;
 
     @Bean
-    public Queue queue(){
+    public Queue queue() {
         return new Queue(queue);
     }
 
+    /*
     @Bean
-    public Queue cartQueue(){
+    public Queue cartQueue() {
         return new Queue(orderQueue);
     }
+     */
 
     @Bean
-    public TopicExchange exchange(){
+    public TopicExchange exchange() {
         return new TopicExchange(exchange);
     }
 
     @Bean
-    public Binding binding(){
+    public Binding binding() {
         return BindingBuilder
                 .bind(queue())
                 .to(exchange())
                 .with(routingKey);
     }
 
+    /*
     @Bean
-    public Binding itemBinding(){
+    public Binding itemBinding() {
         return BindingBuilder
                 .bind(cartQueue())
                 .to(exchange())
                 .with(orderInfoRoutingKey);
     }
+
+     */
 
 }
