@@ -1,20 +1,13 @@
 package com.example.demo;
 
-
 import com.example.demo.core.domain.model.Product;
-import com.example.demo.core.domain.service.interfaces.IProductRepository;
-import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.domain.Example;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
-import java.util.UUID;
-
+import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class IntTest_ProductController {
