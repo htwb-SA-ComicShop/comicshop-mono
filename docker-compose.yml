@@ -39,7 +39,7 @@ services:
 
   product-service:
     container_name: product-service
-    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    command: java -jar target/product-0.0.1-SNAPSHOT.jar
     build:
       context: ./product-service
       dockerfile: Dockerfile
@@ -75,7 +75,7 @@ services:
 
   notification-service:
     container_name: notification-service
-    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    command: java -jar target/notification-0.0.1-SNAPSHOT.jar
     build:
       context: ./notification-service
       dockerfile: Dockerfile
@@ -111,7 +111,7 @@ services:
 
   cart-service:
     container_name: cart-service
-    command: java -jar target/demo-0.0.1-SNAPSHOT.jar
+    command: java -jar target/cart-0.0.1-SNAPSHOT.jar
     build:
       context: ./cart-service
       dockerfile: Dockerfile
@@ -128,6 +128,42 @@ services:
       - internal
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://cart-db:5432/cart-db
+      - spring_rabbitmq_host=rabbitmq-container
+      - spring_rabbitmq_port=5672
+
+  checkout-db:
+    image: postgres:12
+    container_name: checkout-db
+    ports:
+      - '5436:5432'
+    volumes:
+      - checkout-data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: checkout-db
+      POSTGRES_PASSWORD: checkout-db
+      POSTGRES_DB: checkout-db
+    networks:
+      - internal
+
+  checkout-service:
+    container_name: checkout-service
+    command: java -jar target/checkout-0.0.1-SNAPSHOT.jar
+    build:
+      context: ./checkout-service
+      dockerfile: Dockerfile
+    ports:
+      - '8083:8080'
+    depends_on:
+      - checkout-db
+      - rabbitmq-container
+    volumes:
+      - .:/checkout-service/app
+    links:
+      - checkout-db
+    networks:
+      - internal
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://checkout-db:5432/checkout-db
       - spring_rabbitmq_host=rabbitmq-container
       - spring_rabbitmq_port=5672
 
@@ -176,3 +212,4 @@ volumes:
   notification-data:
   keycloak-data:
   cart-data:
+  checkout-data:
