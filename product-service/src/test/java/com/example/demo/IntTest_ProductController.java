@@ -37,7 +37,7 @@ class IntTest_ProductController {
 
     @Test
     public void TestAddingTwoProducts(){
-        url = url.concat(":").concat(port + "").concat("/product");
+        url = url.concat(":").concat(port + "").concat("/add-product");
 
         List<Product> productsInH2 = h2Repository.findAll();
         assertEquals(0, productsInH2.size());
