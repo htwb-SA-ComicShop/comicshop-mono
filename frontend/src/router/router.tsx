@@ -18,7 +18,7 @@ const router = createBrowserRouter([
       {
         path: '/edit-product/:id',
         element: (
-          <PrivateRouteWrapper role='admin'>
+          <PrivateRouteWrapper role='shop-admin'>
             <EditProductPage />
           </PrivateRouteWrapper>
         ),
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       {
         path: '/add-product',
         element: (
-          <PrivateRouteWrapper role='admin'>
+          <PrivateRouteWrapper role='shop-admin'>
             <AddProductPage />
           </PrivateRouteWrapper>
         ),
