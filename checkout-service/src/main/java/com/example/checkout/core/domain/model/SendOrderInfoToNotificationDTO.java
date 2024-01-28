@@ -13,7 +13,7 @@ public class SendOrderInfoToNotificationDTO {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private final String orderId;
+    private String orderId;
 
     private String linkToInvoice;
 

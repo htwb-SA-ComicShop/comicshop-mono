@@ -41,12 +41,12 @@ public class NotificationConsumer {
 
         try {
             JsonNode jsonNode = mapper.readTree(orderInfo);
-            String oderId = jsonNode.has("orderId") ? jsonNode.get("id").asText() : null;
+            String orderId = jsonNode.has("orderId") ? jsonNode.get("orderId").asText() : null;
             String linkToInvoice = jsonNode.has("linkToInvoice") ? jsonNode.get("linkToInvoice").asText() : null;
             String linkToContent = jsonNode.has("linkToContent") ? jsonNode.get("linkToContent").asText() : null;
             String recipient = jsonNode.has("recipient") ? jsonNode.get("recipient").asText() : null;
 
-            Notification notification = new Notification(recipient, oderId, linkToContent, linkToInvoice, KindOfNotification.ORDER);
+            Notification notification = new Notification(recipient, orderId, linkToContent, linkToInvoice, KindOfNotification.ORDER);
 
             System.out.println("NOTIFICATION RECEIVED. BODY IS: " + notification.getBodyText());
 
