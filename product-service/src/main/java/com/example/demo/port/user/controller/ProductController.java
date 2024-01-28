@@ -26,7 +26,7 @@ public class ProductController {
     @Autowired
     AddProductProducer addProductProducer;
 
-    @PostMapping(path = "/product")
+    @PostMapping(path = "/add-product")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void create(@RequestBody Product product) {
         System.out.println("HEREEEEEEEEEEEEEE*********" + product.getName());
