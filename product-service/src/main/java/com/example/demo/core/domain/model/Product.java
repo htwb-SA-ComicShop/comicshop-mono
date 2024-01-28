@@ -24,9 +24,9 @@ public class Product {
     private String publisher;
     private String description;
     private String imgUrl;
-    private int publishYear;
-    private int pages;
-    private double price;
+    private Integer publishYear;
+    private Integer pages;
+    private Double price;
 
     public Product(){}
 
