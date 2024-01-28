@@ -30,7 +30,6 @@ public class EmailService implements IEmailService {
         message.setSubject(subject);
         message.setText(text);
         emailSender.send(message);
-
     }
 
     @Override
@@ -49,7 +48,6 @@ public class EmailService implements IEmailService {
         FileSystemResource file
                 = new FileSystemResource(new File(pathToAttachment));
         helper.addAttachment("Invoice", file);
-
         emailSender.send(message);
     }
 }

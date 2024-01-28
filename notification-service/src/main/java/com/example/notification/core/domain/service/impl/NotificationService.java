@@ -28,9 +28,10 @@ public class NotificationService implements INotificationService {
     public void createNotification(Notification notification) {
         if (sendNotification(notification)) {
             System.out.println("EMAIL SUCCESSFULLY SENT!");
+            //TODO: find workaround saving bodyText -> too long for DB
+            notification.setBodyText("--");
             notificationRepository.save(notification);
-        }
-        System.out.println("EMAIL NOT SENT!");
+        } else { System.out.println("EMAIL NOT SENT!"); }
     }
 
     @Override

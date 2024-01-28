@@ -1,6 +1,7 @@
 package com.example.notification.core.domain.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,10 +21,14 @@ public class Notification {
     @Column(name = "id")
     private UUID id;
 
-    private UUID orderId;
+    @JsonProperty
+    private String orderId;
+    @JsonProperty
     private String recipient;
+    @JsonProperty
     private String linkToContent;
 
+    @JsonProperty
     private String linkToInvoice;
     private String bodyText;
     private Date timeStamp;
@@ -41,11 +46,21 @@ public class Notification {
         this.subject = crateSubject();
     }
 
-    public Notification(String recipient, UUID orderId, String linkToContent, String linkToInvoice, KindOfNotification kind) {
+    public Notification(String recipient, String orderId, String linkToContent, String linkToInvoice, KindOfNotification kind) {
         this.recipient = recipient;
         this.linkToContent = linkToContent;
         this.orderId = orderId;
         this.kind = kind;
+        this.bodyText = crateBodyText();
+        this.subject = crateSubject();
+        this.linkToInvoice = linkToInvoice;
+    }
+
+    //TODO do we need two constructors here??
+    public Notification(String recipient, String orderId, String linkToContent, String linkToInvoice) {
+        this.recipient = recipient;
+        this.linkToContent = linkToContent;
+        this.orderId = orderId;
         this.bodyText = crateBodyText();
         this.subject = crateSubject();
         this.linkToInvoice = linkToInvoice;
@@ -137,5 +152,9 @@ public class Notification {
 
     public String getSubject() {
         return subject;
+    }
+
+    public void setKind(KindOfNotification kind){
+        this.kind = kind;
     }
 }

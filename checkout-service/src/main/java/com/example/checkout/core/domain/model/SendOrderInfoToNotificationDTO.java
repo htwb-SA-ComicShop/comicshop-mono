@@ -6,8 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.UUID;
 
 public class SendOrderInfoToNotificationDTO {
@@ -15,7 +13,7 @@ public class SendOrderInfoToNotificationDTO {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private final UUID oderId;
+    private final String orderId;
 
     private String linkToInvoice;
 
@@ -23,11 +21,11 @@ public class SendOrderInfoToNotificationDTO {
     private String recipient;
 
 
-    public SendOrderInfoToNotificationDTO(String linkToContent, String linkToInvoice, String recipient, UUID orderId) {
+    public SendOrderInfoToNotificationDTO(String linkToContent, String linkToInvoice, String recipient, String orderId) {
         this.linkToContent = linkToContent;
         this.linkToInvoice = linkToInvoice;
         this.recipient = recipient;
-        this.oderId = orderId;
+        this.orderId = orderId;
     }
 
     public UUID getId() { return id;}
@@ -54,6 +52,8 @@ public class SendOrderInfoToNotificationDTO {
     public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
+
+    public String getOrderId(){ return this.orderId; }
 
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();

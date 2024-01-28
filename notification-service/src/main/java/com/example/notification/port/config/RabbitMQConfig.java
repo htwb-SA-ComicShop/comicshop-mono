@@ -11,25 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("notification")
-    private String queue;
-
     @Value("orderInfo")
     private String orderQueue;
 
-    @Value("notification_exchange")
+    @Value("order_exchange")
     private String exchange;
-
-    @Value("notification_routing_key")
-    private String routingKey;
 
     @Value("order_info_routing_key")
     private String orderInfoRoutingKey;
-
-    @Bean
-    public Queue queue(){
-        return new Queue(queue);
-    }
 
     @Bean
     public Queue itemQueue(){
@@ -39,14 +28,6 @@ public class RabbitMQConfig {
     @Bean
     public TopicExchange exchange(){
         return new TopicExchange(exchange);
-    }
-
-    @Bean
-    public Binding binding(){
-        return BindingBuilder
-                .bind(queue())
-                .to(exchange())
-                .with(routingKey);
     }
 
     @Bean

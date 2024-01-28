@@ -8,13 +8,10 @@ import com.example.checkout.port.user.exception.OrderNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -67,9 +64,9 @@ public class OrderController {
         String linkToContent = "linkToContent";
         String linkToInvoice = "linkToInvoice";
         String recipient = "adobe@gmx.net";
-        UUID orderId = new UUID(1233L, 234L);
+        UUID orderId = new UUID(1L, 2L);
 
-        SendOrderInfoToNotificationDTO sendOrder = new SendOrderInfoToNotificationDTO(linkToContent, linkToInvoice, recipient, orderId);
+        SendOrderInfoToNotificationDTO sendOrder = new SendOrderInfoToNotificationDTO(linkToContent, linkToInvoice, recipient, orderId.toString());
        //TODO change addCheckoutProducer
         addOrderInfoProducer.sendToNotification(sendOrder);
     }
