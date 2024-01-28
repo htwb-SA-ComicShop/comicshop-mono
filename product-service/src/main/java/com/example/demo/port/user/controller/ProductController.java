@@ -29,6 +29,7 @@ public class ProductController {
     @PostMapping(path = "/product")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void create(@RequestBody Product product) {
+        System.out.println("HEREEEEEEEEEEEEEE*********" + product.getName());
         Product newProduct = new Product(
                 product.getName(),
                 product.getAuthor(),
