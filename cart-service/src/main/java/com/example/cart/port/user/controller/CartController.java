@@ -62,7 +62,6 @@ public class CartController {
     @GetMapping(path = "/cart/buy-cart/{id}")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void buyCart(@PathVariable UUID id) {
-        //TODO maybe get cart as parameter @RequestBody?
         //JwtAuthenticationToken authToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         //Map<String, Object> tokenAttributes = authToken.getTokenAttributes();
         //String userName = (String) tokenAttributes.get("preferred_username");
