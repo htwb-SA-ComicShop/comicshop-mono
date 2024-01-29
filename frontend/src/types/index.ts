@@ -30,3 +30,16 @@ export interface LoginCredentials {
   username: string;
   password: string;
 }
+
+export interface CartItem {
+  id: string | null;
+  name: string;
+  author: string;
+  price: number;
+  linkToProduct: string;
+  imgUrl?: string;
+}
+
+export interface CartItemGridProps {
+  cartItems: CartItem[];
+}

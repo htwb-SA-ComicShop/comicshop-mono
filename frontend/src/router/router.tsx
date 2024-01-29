@@ -5,6 +5,7 @@ import productLoader from './loaders/productLoader';
 import EditProductPage from '../product/pages/EditProductPage';
 import PrivateRouteWrapper from './components/PrivateRouteWrapper';
 import AddProductPage from '../product/pages/AddProductPage';
+import CartPage from "../cart/pages/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
           </PrivateRouteWrapper>
         ),
       },
+      {
+        path: '/shopping-cart',
+        element: (
+            <PrivateRouteWrapper role='customer'>
+              <CartPage />
+            </PrivateRouteWrapper>
+        )
+      }
     ],
   },
 ]);
