@@ -14,7 +14,7 @@ public class RabbitMQConfig {
     @Value("orderInfo")
     private String orderQueue;
 
-    @Value("order_exchange")
+    @Value("cart_exchange")
     private String exchange;
 
     @Value("order_info_routing_key")

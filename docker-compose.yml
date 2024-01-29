@@ -131,42 +131,6 @@ services:
       - spring_rabbitmq_host=rabbitmq-container
       - spring_rabbitmq_port=5672
 
-  checkout-db:
-    image: postgres:12
-    container_name: checkout-db
-    ports:
-      - '5436:5432'
-    volumes:
-      - checkout-data:/var/lib/postgresql/data/
-    environment:
-      POSTGRES_USER: checkout-db
-      POSTGRES_PASSWORD: checkout-db
-      POSTGRES_DB: checkout-db
-    networks:
-      - internal
-
-  checkout-service:
-    container_name: checkout-service
-    command: java -jar target/checkout-0.0.1-SNAPSHOT.jar
-    build:
-      context: ./checkout-service
-      dockerfile: Dockerfile
-    ports:
-      - '8083:8080'
-    depends_on:
-      - checkout-db
-      - rabbitmq-container
-    volumes:
-      - .:/checkout-service/app
-    links:
-      - checkout-db
-    networks:
-      - internal
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://checkout-db:5432/checkout-db
-      - spring_rabbitmq_host=rabbitmq-container
-      - spring_rabbitmq_port=5672
-
   keycloak-db:
     image: postgres:12
     container_name: keycloak-db
@@ -212,4 +176,3 @@ volumes:
   notification-data:
   keycloak-data:
   cart-data:
-  checkout-data:

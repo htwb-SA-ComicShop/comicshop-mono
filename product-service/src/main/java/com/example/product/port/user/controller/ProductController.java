@@ -4,7 +4,7 @@ import com.example.product.core.domain.model.AddToCartDTO;
 import com.example.product.core.domain.model.Product;
 import com.example.product.core.domain.service.interfaces.IProductService;
 import com.example.product.port.shoppingcart.producer.AddProductProducer;
-import com.example.product.port.user.exception.ProductNotFoundException;
+import com.example.product.port.user.exception.CartItemNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +52,7 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable UUID id) {
         Product product = productService.getProduct(id);
-        if (product == null) throw new ProductNotFoundException(id);
+        if (product == null) throw new CartItemNotFoundException(id);
         return product;
     }
 
