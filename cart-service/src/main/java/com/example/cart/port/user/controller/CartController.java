@@ -54,7 +54,7 @@ public class CartController {
     }
 
 
-    @GetMapping("/cart")
+    @GetMapping("/carts")
     public @ResponseBody List<Cart> getCarts() {
         return cartService.getAllCarts();
     }
