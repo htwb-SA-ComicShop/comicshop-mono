@@ -36,11 +36,11 @@ const ProductsListPage = (): ReactElement => {
         <AuthWrapper role='admin'>
           <Button
             as={Link}
-            to='/add-order'
+            to='/add-product'
             colorScheme='teal'
             variant='outline'
           >
-            Produkt hinzufügen
+            Add Product
           </Button>
         </AuthWrapper>
       </VStack>
