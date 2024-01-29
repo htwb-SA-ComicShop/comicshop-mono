@@ -6,27 +6,30 @@ import java.util.UUID;
 
 @Entity
 public class CartItem {
+
+    //TODO are these taks needed
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
 
 
     //TODO image
 
-    private  String name;
-    private  String author;
-    private  double price;
-    private  String linkToProduct;
+    private String name;
+    private String author;
+    private double price;
+    private String linkToProduct;
 
-    public CartItem(String name, String author, double price, String linkToProduct) {
+    public CartItem(UUID id, String name, String author, double price, String linkToProduct) {
+        this.id = id;
         this.name = name;
         this.author = author;
         this.price = price;
         this.linkToProduct = linkToProduct;
     }
 
-    public CartItem() {}
+    public CartItem() {
+    }
 
     public String getName() {
         return name;
@@ -46,10 +49,5 @@ public class CartItem {
 
     public UUID getId() {
         return id;
-    }
-
-    public CartItem safeInDb(){
-        //TODO safe in db to get UUID
-        return null;
     }
 }

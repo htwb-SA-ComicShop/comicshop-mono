@@ -53,7 +53,7 @@ public class Cart {
     }
 
     public String generateInvoice() {
-        //TODO generate a file and and safe it in drive and generate link
+        //TODO generate a file, safe it and sent it to stripe
         if(boughtAt!=null) {
             StringBuilder invoiceBuilder = new StringBuilder();
 
