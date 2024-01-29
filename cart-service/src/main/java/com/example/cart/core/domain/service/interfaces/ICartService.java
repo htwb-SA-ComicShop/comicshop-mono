@@ -2,7 +2,6 @@ package com.example.cart.core.domain.service.interfaces;
 
 import com.example.cart.core.domain.model.Cart;
 import com.example.cart.core.domain.model.CartItem;
-import com.example.cart.core.domain.model.Order;
 import com.example.cart.port.user.exception.CartItemNotFoundException;
 import com.example.cart.port.user.exception.CartNotFoundException;
 
@@ -22,20 +21,26 @@ public interface ICartService {
     /**
      * adds a Cart Item to the Cart
      * @param item which is added to the cart
+     * @param cartId of the cart to which the item is to be added to
+     *@throws CartNotFoundException if there is no Cart with that id
      */
-    void addToCart(CartItem item);
+    void addToCart(CartItem item, UUID cartId) throws CartNotFoundException;
 
     /**
      * removes a Card Item from the Cart
      * @param itemId of the item which is to be removed
+     * @param cartId of the cart from which the item is to be removed
      * @throws CartItemNotFoundException if there is no Cart Item with the given id in the Cart
+     * @throws CartNotFoundException if there is no Cart with that id
      */
-    void removeFromCart(UUID itemId) throws CartItemNotFoundException;
+    void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException, CartNotFoundException;
 
     /**
      * Transfers the Cart into an Order
+     * @param id of the cart which is to be bought
+     * @throws CartItemNotFoundException if there is no Cart with that id
      */
-    Cart buyCart();
+    Cart buyCart(UUID id) throws CartNotFoundException;
 
     /**
      * deletes a cart from the db
@@ -50,7 +55,7 @@ public interface ICartService {
      * @return the card with the specified username
      * @throws CartNotFoundException when there is no cart with that id
      */
-    Order getCart(UUID id) throws CartNotFoundException;
+    Cart getCart(UUID id) throws CartNotFoundException;
 
     /**
      * reads all carts from the database

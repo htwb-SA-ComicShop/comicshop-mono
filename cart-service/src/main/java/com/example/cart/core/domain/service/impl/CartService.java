@@ -2,7 +2,6 @@ package com.example.cart.core.domain.service.impl;
 
 import com.example.cart.core.domain.model.Cart;
 import com.example.cart.core.domain.model.CartItem;
-import com.example.cart.core.domain.model.Order;
 import com.example.cart.core.domain.service.interfaces.ICartRepository;
 import com.example.cart.core.domain.service.interfaces.ICartService;
 import com.example.cart.port.user.exception.CartItemNotFoundException;
@@ -23,18 +22,15 @@ import java.util.UUID;
 public class CartService implements ICartService {
     @Autowired
     private final ICartRepository cartRepository;
-    private Cart cart;
 
     @Override
     public Cart createCart(Cart cart) {
-        this.cart = cart;
-
-        //TODO safe in db
-        return cart;
+        return cartRepository.save(cart);
     }
 
     @Override
-    public void addToCart(CartItem item) {
+    public void addToCart(CartItem item, UUID cartId) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
         double newTotalPrice = cart.getTotalPrice();
         newTotalPrice += item.getPrice();
         cart.setTotalPrice(newTotalPrice);
@@ -42,10 +38,12 @@ public class CartService implements ICartService {
         HashMap<UUID, CartItem> cartItems = cart.getCartItems();
         cartItems.put(item.getId(), item);
         cart.setCartItems(cartItems);
+        cartRepository.save(cart);
     }
 
     @Override
-    public void removeFromCart(UUID itemId) throws CartItemNotFoundException {
+    public void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
         HashMap<UUID, CartItem> newCartItems = cart.getCartItems();
         if (newCartItems.containsKey(itemId)) {
             double newTotalPrice = cart.getTotalPrice();
@@ -54,39 +52,45 @@ public class CartService implements ICartService {
 
             newCartItems.remove(itemId);
             cart.setCartItems(newCartItems);
+            cartRepository.save(cart);
 
         } else {
             throw new CartItemNotFoundException(itemId);
         }
     }
+
     @Override
-    public Cart buyCart() {
-    //TODO Stripe
-    cart.setBoughtAt(LocalDate.now());
-    return updateCart(cart, cart.getId());
+    public Cart buyCart(UUID id) {
+        Cart boughtCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
+        //TODO Stripe
+        boughtCart.setBoughtAt(LocalDate.now());
+        return cartRepository.save(boughtCart);
     }
 
     @Override
     public void deleteCart(UUID id) throws CartNotFoundException {
-    //TODO delete cart from db
+        cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
+        cartRepository.deleteById(id);
     }
 
     @Override
-    public Order getCart(UUID id) throws CartNotFoundException {
-        //TODO get cart from db
-        return null;
+    public Cart getCart(UUID id) throws CartNotFoundException {
+        return cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
     }
 
     @Override
     public List<Cart> getAllCarts() {
-        //TODO get carts from db
-        return null;
+        return cartRepository.findAll();
     }
 
     @Override
     public Cart updateCart(Cart cart, UUID id) throws CartNotFoundException {
-        //TODO Update cart in DB
-        return null;
+        Cart updatedCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
+        updatedCart.setUsername(cart.getUsername());
+        updatedCart.setCartItems(cart.getCartItems());
+        updatedCart.setTotalPrice(cart.getTotalPrice());
+        updatedCart.setBoughtAt(cart.getBoughtAt());
+        return cartRepository.save(updatedCart);
     }
 
 }
