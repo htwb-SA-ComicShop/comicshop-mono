@@ -1,4 +1,4 @@
-package com.example.cart.port.consumer;
+package com.example.cart.port.user.consumer;
 
 import com.example.cart.core.domain.service.interfaces.ICartService;
 import org.slf4j.Logger;

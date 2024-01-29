@@ -8,9 +8,12 @@ import com.example.cart.port.user.exception.CartNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -59,16 +62,15 @@ public class CartController {
         return cartService.getAllCarts();
     }
 
+    @DeleteMapping(path = "/cart/items/{itemId}")
+    @CrossOrigin("*")
+    public @ResponseBody void deleteItemFromCart(UUID cartId, @PathVariable UUID itemId){
+        cartService.removeFromCart(itemId, cartId);
+    }
+
     @GetMapping(path = "/cart/buy-cart/{id}")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void buyCart(@PathVariable UUID id) {
-        //JwtAuthenticationToken authToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        //Map<String, Object> tokenAttributes = authToken.getTokenAttributes();
-        //String userName = (String) tokenAttributes.get("preferred_username");
-        //String email = (String) tokenAttributes.get("email");
-        //System.out.println("Sending to Notification: " + order.getId());
-        //System.out.println("userName: " + userName);
-        //System.out.println("email: " + email);
 
         cartService.buyCart(id);
         //TODO make real put in buy method

@@ -8,8 +8,10 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -30,6 +32,8 @@ public class Cart {
     private double totalPrice;
     private LocalDate boughtAt;
 
+    private boolean isBought = false;
+
     public Cart() {}
 
     public String getUsername() {
@@ -38,6 +42,7 @@ public class Cart {
 
     public void setCartItems(HashMap<UUID, CartItem> cartItems) {
         this.cartItems = cartItems;
+        this.totalPrice = calculateTotalPrice();
     }
 
     public HashMap<UUID, CartItem> getCartItems() {
@@ -48,13 +53,17 @@ public class Cart {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrize) {
-        this.totalPrice = totalPrize;
+    public double calculateTotalPrice(){
+        return this.cartItems
+                .values()
+                .stream()
+                .map(CartItem::getPrice)
+                .reduce(0.0, Double::sum);
     }
 
     public String generateInvoice() {
         //TODO generate a file, safe it and sent it to stripe
-        if(boughtAt!=null) {
+        if(isBought) {
             StringBuilder invoiceBuilder = new StringBuilder();
 
             // Invoice Header
@@ -88,11 +97,23 @@ public class Cart {
         this.boughtAt = boughtAt;
     }
 
+    public LocalDate getBoughtAt() {
+        return boughtAt;
+    }
+
     public UUID getId() {
         return id;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setBought(boolean bought) {
+        isBought = bought;
+    }
+
+    public boolean isBought() {
+        return isBought;
     }
 }

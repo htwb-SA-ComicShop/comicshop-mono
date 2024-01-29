@@ -6,6 +6,7 @@ import com.example.cart.core.domain.service.interfaces.ICartRepository;
 import com.example.cart.core.domain.service.interfaces.ICartService;
 import com.example.cart.port.user.exception.CartItemNotFoundException;
 import com.example.cart.port.user.exception.CartNotFoundException;
+import com.example.cart.port.user.exception.NoPurchaseException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,6 @@ public class CartService implements ICartService {
     @Override
     public void addToCart(CartItem item, UUID cartId) {
         Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
-        double newTotalPrice = cart.getTotalPrice();
-        newTotalPrice += item.getPrice();
-        cart.setTotalPrice(newTotalPrice);
 
         HashMap<UUID, CartItem> cartItems = cart.getCartItems();
         cartItems.put(item.getId(), item);
@@ -46,10 +44,6 @@ public class CartService implements ICartService {
         Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
         HashMap<UUID, CartItem> newCartItems = cart.getCartItems();
         if (newCartItems.containsKey(itemId)) {
-            double newTotalPrice = cart.getTotalPrice();
-            newTotalPrice -= newCartItems.get(itemId).getPrice();
-            cart.setTotalPrice(newTotalPrice);
-
             newCartItems.remove(itemId);
             cart.setCartItems(newCartItems);
             cartRepository.save(cart);
@@ -85,12 +79,11 @@ public class CartService implements ICartService {
 
     @Override
     public Cart updateCart(Cart cart, UUID id) throws CartNotFoundException {
-        Cart updatedCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
-        updatedCart.setUsername(cart.getUsername());
-        updatedCart.setCartItems(cart.getCartItems());
-        updatedCart.setTotalPrice(cart.getTotalPrice());
-        updatedCart.setBoughtAt(cart.getBoughtAt());
-        return cartRepository.save(updatedCart);
-    }
+        Cart cartToBeUpdated = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
+        if (cartToBeUpdated.isBought()){ throw new NoPurchaseException(); }
+        cartToBeUpdated.setUsername(cart.getUsername());
+        cartToBeUpdated.setCartItems(cart.getCartItems());
 
+        return cartRepository.save(cartToBeUpdated);
+    }
 }
