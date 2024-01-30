@@ -5,14 +5,11 @@ import com.example.demo.core.domain.model.Product;
 import com.example.demo.core.domain.service.interfaces.IProductService;
 import com.example.demo.port.shoppingcart.producer.AddProductProducer;
 import com.example.demo.port.user.exception.ProductNotFoundException;
-
-import com.example.demo.port.user.producer.ProductProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
