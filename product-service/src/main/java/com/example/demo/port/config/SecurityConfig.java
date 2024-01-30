@@ -41,7 +41,7 @@ class SecurityConfig  {
                 csrf().disable().
                 authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                .requestMatchers(HttpMethod.GET, "/product/**").hasRole("shop-admin")
+                .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/product").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("shop-admin")
