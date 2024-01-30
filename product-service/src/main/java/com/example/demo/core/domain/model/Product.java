@@ -19,18 +19,33 @@ public class Product {
     @Column(name = "id")
     private UUID id;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "author")
     private String author;
+
+    @Column(name = "publisher")
     private String publisher;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "imgurl")
     private String imgUrl;
+
+    @Column(name = "publishyear")
     private Integer publishYear;
+
+    @Column(name = "pages")
     private Integer pages;
+
+    @Column(name = "price")
     private Double price;
 
     public Product(){}
 
-    public Product(String name, String author, String publisher, String description, String imgUrl, int publishYear, int pages, double price) {
+    public Product(String name, String author, String publisher, String description, String imgUrl, Integer publishYear, Integer pages, Double price) {
         this.name = name;
         this.author = author;
         this.publisher = publisher;
@@ -57,15 +72,15 @@ public class Product {
 
     public void setPublisher(String publisher) { this.publisher = publisher; }
 
-    public int getPublishYear() { return publishYear; }
+    public Integer getPublishYear() { return publishYear; }
 
-    public void setPublishDate(int publishYear) { this.publishYear = publishYear; }
+    public void setPublishDate(Integer publishYear) { this.publishYear = publishYear; }
 
-    public int getPages() {return pages; }
+    public Integer getPages() {return pages; }
 
-    public void setPages(int pages) {this.pages = pages; }
+    public void setPages(Integer pages) {this.pages = pages; }
 
-    public void setPrice(double price) { this.price = price; }
+    public void setPrice(Double price) { this.price = price; }
 
     public String getDescription() {
         return description;
