@@ -196,6 +196,4 @@ class IntTest_ProductController {
         productExists = allProductsInH2.stream().anyMatch(product -> product.getId().equals(apiUUID2));
         assertFalse(productExists);
     }
-
-
 }
