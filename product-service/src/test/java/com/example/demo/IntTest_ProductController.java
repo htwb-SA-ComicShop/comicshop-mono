@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.List;
+import java.util.UUID;
 import com.example.demo.core.domain.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,7 @@ import org.junit.jupiter.api.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import java.util.List;
-import java.util.UUID;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -60,7 +61,8 @@ class IntTest_ProductController {
                 .content(new ObjectMapper().writeValueAsString((product1))))
                 .andExpect(status().isOk());
 
-       List<Product> productsInH2 = h2Repository.findAll();
+       String sql = "SELECT * FROM product";
+       List<Product> productsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
 
        assertEquals(1, productsInH2.size());
        assertEquals(productsInH2.get(0).getName(), product1.getName());
