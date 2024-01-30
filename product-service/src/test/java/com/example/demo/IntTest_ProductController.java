@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
 import org.junit.jupiter.api.*;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -62,17 +62,47 @@ class IntTest_ProductController {
                 .andExpect(status().isOk());
 
        String sql = "SELECT * FROM product";
-       List<Product> productsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
+       List<Product> allProductsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
 
-       assertEquals(1, productsInH2.size());
-       assertEquals(productsInH2.get(0).getName(), product1.getName());
-       assertEquals(productsInH2.get(0).getAuthor(), product1.getAuthor());
-       assertEquals(productsInH2.get(0).getPublisher(), product1.getPublisher());
-       assertEquals(productsInH2.get(0).getDescription(), product1.getDescription());
-       assertEquals(productsInH2.get(0).getImgUrl(), product1.getImgUrl());
-       assertEquals(productsInH2.get(0).getPublishYear(), product1.getPublishYear());
-       assertEquals(productsInH2.get(0).getPages(), product1.getPages());
-       assertEquals(productsInH2.get(0).getPrice(), product1.getPrice());
+       assertEquals(1, allProductsInH2.size());
+       assertEquals(allProductsInH2.get(0).getName(), product1.getName());
+       assertEquals(allProductsInH2.get(0).getAuthor(), product1.getAuthor());
+       assertEquals(allProductsInH2.get(0).getPublisher(), product1.getPublisher());
+       assertEquals(allProductsInH2.get(0).getDescription(), product1.getDescription());
+       assertEquals(allProductsInH2.get(0).getImgUrl(), product1.getImgUrl());
+       assertEquals(allProductsInH2.get(0).getPublishYear(), product1.getPublishYear());
+       assertEquals(allProductsInH2.get(0).getPages(), product1.getPages());
+       assertEquals(allProductsInH2.get(0).getPrice(), product1.getPrice());
+    }
+
+    @Test
+    public void putProductTest() throws Exception {
+        Product testProduct = new Product("Initial Name", "Initial Author", "Initial Publisher", "Initial Description", "Initial ImageUrl", 1, 1, 1.00);
+        String apiUUID = UUID.randomUUID().toString();
+        String insertUUID = apiUUID.replace("-", "");
+        String insertSQL = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID + "', '" + testProduct.getName() + "', '" + testProduct.getAuthor() + "', '" + testProduct.getPublisher() + "', '" + testProduct.getDescription() + "', '" + testProduct.getImgUrl() + "', " + testProduct.getPublishYear() + ", " + testProduct.getPages() + ", " + testProduct.getPrice() + ")";
+        url = url + port + "/product/" + apiUUID;
+
+        jdbcTemplate.execute(insertSQL);
+
+        testProduct.setName("Updated Name");
+        testProduct.setAuthor("Updated Author");
+        testProduct.setPublishYear(2);
+        testProduct.setPrice(2.0);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/product/{id}", apiUUID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(testProduct)))
+                .andExpect(status().isOk());
+
+        String sql = "SELECT * FROM product";
+        List<Product> allProductsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
+
+        assertEquals(1, allProductsInH2.size());
+        assertEquals("Updated Name", allProductsInH2.get(0).getName());
+        assertEquals("Updated Author", testProduct.getAuthor());
+        assertEquals(2, testProduct.getPublishYear());
+        assertEquals(2.0, testProduct.getPrice());
     }
 
     @Test
@@ -131,11 +161,41 @@ class IntTest_ProductController {
                 .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].name").value(product1.getName()))
                 .andExpect(jsonPath("$[1].author").value(product2.getAuthor()))
-                .andExpect(jsonPath("$[2].publisher").value(product3.getPublisher()))
-                ;
-
-
-
-
+                .andExpect(jsonPath("$[2].publisher").value(product3.getPublisher()));
     }
+
+    @Test
+    public void deleteProductTest() throws Exception {
+
+        Product product1 = new Product("name1", "author1", "publisher1", "description1", "imageUrl1", 1, 1, 1.00);
+        Product product2 = new Product("name2", "author2", "publisher2", "description2", "imageUrl2", 2, 2, 3.00);
+
+        String apiUUID1 = UUID.randomUUID().toString();
+        String apiUUID2 = UUID.randomUUID().toString();
+
+        String insertUUID1 = apiUUID1.replace("-", "");
+        String insertUUID2 = apiUUID2.replace("-", "");
+
+        String insertSQL1 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID1 + "', '" + product1.getName() + "', '" + product1.getAuthor() + "', '" + product1.getPublisher() + "', '" + product1.getDescription() + "', '" + product1.getImgUrl() + "', " + product1.getPublishYear() + ", " + product1.getPages() + ", " + product1.getPrice() + ")";
+        String insertSQL2 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID2 + "', '" + product2.getName() + "', '" + product2.getAuthor() + "', '" + product2.getPublisher() + "', '" + product2.getDescription() + "', '" + product2.getImgUrl() + "', " + product2.getPublishYear() + ", " + product2.getPages() + ", " + product2.getPrice() + ")";
+
+        jdbcTemplate.execute(insertSQL1);
+        jdbcTemplate.execute(insertSQL2);
+
+        String sql = "SELECT * FROM product";
+        List<Product> allProductsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
+
+        assertEquals(2, allProductsInH2.size());
+        boolean productExists = allProductsInH2.stream().anyMatch(product -> product.getId().toString().equals(apiUUID2));
+        assertTrue(productExists);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", apiUUID2)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        productExists = allProductsInH2.stream().anyMatch(product -> product.getId().equals(apiUUID2));
+        assertFalse(productExists);
+    }
+
+
 }
