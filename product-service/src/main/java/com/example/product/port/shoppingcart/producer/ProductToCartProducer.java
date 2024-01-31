@@ -25,7 +25,7 @@ public class ProductToCartProducer {
     }
 
     public void sendToCart(AddToCartDTO cartItem){
-        rabbitTemplate.convertAndSend(exchange, routingKey, cartItem);
+        rabbitTemplate.convertAndSend(exchange, routingKey, cartItem.toJson());
         LOGGER.info(String.format("Message sent -> %s by %s", cartItem.getProductName(), cartItem.getUsername()));
     }
 }

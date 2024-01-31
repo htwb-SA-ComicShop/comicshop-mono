@@ -20,11 +20,14 @@ public class CartItem {
     private double price;
     private String linkToProduct;
 
-    public CartItem(UUID id, String name, String author, double price, String linkToProduct) {
+    private String imgUrl;
+
+    public CartItem(UUID id, String name, String author, double price, String imgUrl, String linkToProduct) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.price = price;
+        this.imgUrl = imgUrl;
         this.linkToProduct = linkToProduct;
     }
 

@@ -18,7 +18,7 @@ import java.util.UUID;
 @Service
 public class NotificationConsumer {
 
-    ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationConsumer.class);
 
