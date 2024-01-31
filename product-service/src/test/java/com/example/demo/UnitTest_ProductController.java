@@ -76,8 +76,6 @@ public class UnitTest_ProductController {
 
         given(productService.getProduct(productId)).willReturn(mockProduct);
 
-        Mockito.verify(productService, Mockito.times(1)).getProduct(Mockito.eq(productId));
-
         mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", productId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("TestName"))
@@ -88,6 +86,8 @@ public class UnitTest_ProductController {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.publishYear").value(2022))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.pages").value(100))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(99.99));
+
+        Mockito.verify(productService, Mockito.times(1)).getProduct(Mockito.eq(productId));
     }
 
     @Test
@@ -101,8 +101,6 @@ public class UnitTest_ProductController {
 
         given(productService.getAllProducts()).willReturn(mockProducts);
 
-        Mockito.verify(productService, Mockito.times(1)).getAllProducts();
-
         mockMvc.perform(MockMvcRequestBuilders.get("/products"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(2)))
@@ -110,6 +108,8 @@ public class UnitTest_ProductController {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].author").value("TestAuthor1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("TestName2"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].author").value("TestAuthor2"));
+
+        Mockito.verify(productService, Mockito.times(1)).getAllProducts();
     }
 
     @Test
