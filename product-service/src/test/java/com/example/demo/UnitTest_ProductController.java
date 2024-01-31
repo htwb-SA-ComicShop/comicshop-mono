@@ -2,12 +2,12 @@ package com.example.demo;
 
 import com.example.demo.core.domain.model.Product;
 import com.example.demo.core.domain.service.impl.ProductService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import static org.mockito.BDDMockito.given;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -75,7 +74,9 @@ public class UnitTest_ProductController {
         Product mockProduct = new Product("TestName", "TestAuthor", "TestPublisher",
                 "TestDescription", "TestImgUrl", 2022, 100, 99.99);
 
-        Mockito.when(productService.getProduct(Mockito.eq(productId))).thenReturn(mockProduct);
+        given(productService.getProduct(productId)).willReturn(mockProduct);
+
+        Mockito.verify(productService, Mockito.times(1)).getProduct(Mockito.eq(productId));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", productId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -87,10 +88,6 @@ public class UnitTest_ProductController {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.publishYear").value(2022))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.pages").value(100))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(99.99));
-
-        Mockito.verify(productService, Mockito.times(1)).getProduct(Mockito.eq(productId));
-
-
     }
 
     @Test
@@ -102,7 +99,9 @@ public class UnitTest_ProductController {
                         "TestDescription2", "TestImgUrl2", 2023, 150, 129.99)
         );
 
-        Mockito.when(productService.getAllProducts()).thenReturn(mockProducts);
+        given(productService.getAllProducts()).willReturn(mockProducts);
+
+        Mockito.verify(productService, Mockito.times(1)).getAllProducts();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/products"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -111,8 +110,6 @@ public class UnitTest_ProductController {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].author").value("TestAuthor1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("TestName2"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].author").value("TestAuthor2"));
-
-        Mockito.verify(productService, Mockito.times(1)).getAllProducts();
     }
 
     @Test
