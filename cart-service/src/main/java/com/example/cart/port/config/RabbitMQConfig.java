@@ -11,31 +11,54 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("product_exchange")
+
+    @Value("cart_exchange")
     private String exchange;
 
-    @Value("cart_item")
+    @Value("cart")
     private String cartQueue;
 
     @Value("cart_item_routing_key")
-    private String cartItemRoutingKey;
+    private String cartRoutingKey;
+
+    @Value("orderInfo")
+    private String orderQue;
+
+    @Value("order_info_routing_key")
+    private String orderRoutingKey;
 
     @Bean
-    public Queue cartQueue(){
+    public Queue queue() {
+        return new Queue(orderQue);
+    }
+
+    @Bean
+    public Queue cartQueue() {
         return new Queue(cartQueue);
     }
 
     @Bean
-    public TopicExchange exchange(){
+    public TopicExchange exchange() {
         return new TopicExchange(exchange);
     }
 
     @Bean
-    public Binding itemBinding(){
+    public Binding binding() {
+        return BindingBuilder
+                .bind(queue())
+                .to(exchange())
+                .with(orderRoutingKey);
+    }
+
+
+    @Bean
+    public Binding itemBinding() {
         return BindingBuilder
                 .bind(cartQueue())
                 .to(exchange())
-                .with(cartItemRoutingKey);
+                .with(cartRoutingKey);
     }
+
+
 
 }

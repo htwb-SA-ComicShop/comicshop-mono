@@ -1,4 +1,4 @@
-package com.example.checkout.port.user.producer;
+package com.example.cart.port.user.producer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CheckoutProducer {
 
-    @Value("order_exchange")
+    @Value("cart_exchange")
     private String exchange;
 
     @Value("order_info_routing_key")

@@ -1,6 +1,6 @@
-package com.example.checkout.port.user.controller;
+package com.example.cart.port.user.controller;
 
-import com.example.checkout.port.user.producer.CheckoutProducer;
+import com.example.cart.port.user.producer.CheckoutProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

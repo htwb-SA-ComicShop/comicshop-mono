@@ -1,4 +1,4 @@
-package com.example.checkout.core.domain.model;
+package com.example.cart.core.domain.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,7 @@ public class SendOrderInfoToNotificationDTO {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private final String orderId;
+    private String orderId;
 
     private String linkToInvoice;
 

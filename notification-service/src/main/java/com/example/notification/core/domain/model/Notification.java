@@ -27,7 +27,6 @@ public class Notification {
     private String recipient;
     @JsonProperty
     private String linkToContent;
-
     @JsonProperty
     private String linkToInvoice;
     private String bodyText;

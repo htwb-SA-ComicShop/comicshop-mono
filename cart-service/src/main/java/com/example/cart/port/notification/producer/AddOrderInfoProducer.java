@@ -1,6 +1,6 @@
-package com.example.checkout.port.notification.producer;
+package com.example.cart.port.notification.producer;
 
-import com.example.checkout.core.domain.model.SendOrderInfoToNotificationDTO;
+import com.example.cart.core.domain.model.SendOrderInfoToNotificationDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

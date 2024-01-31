@@ -2,9 +2,9 @@ package com.example.cart.port.user.exception;
 
 import java.util.UUID;
 
-public class CartNotFoundException extends RuntimeException {
+public class CartItemNotFoundException extends RuntimeException {
 
-    public CartNotFoundException(UUID id) {
+    public CartItemNotFoundException(UUID id) {
       super("Could not find product " +id);
     }
 }

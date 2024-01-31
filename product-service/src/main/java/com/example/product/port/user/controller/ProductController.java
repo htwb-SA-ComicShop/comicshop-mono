@@ -3,7 +3,7 @@ package com.example.product.port.user.controller;
 import com.example.product.core.domain.model.AddToCartDTO;
 import com.example.product.core.domain.model.Product;
 import com.example.product.core.domain.service.interfaces.IProductService;
-import com.example.product.port.shoppingcart.producer.AddProductProducer;
+import com.example.product.port.shoppingcart.producer.ProductToCartProducer;
 import com.example.product.port.user.exception.ProductNotFoundException;
 
 import com.example.product.port.user.producer.ProductProducer;
@@ -24,7 +24,7 @@ public class ProductController {
     private IProductService productService;
 
     @Autowired
-    AddProductProducer addProductProducer;
+    ProductToCartProducer productToCartProducer;
 
     @PostMapping(path = "/add-product")
     @ResponseStatus(HttpStatus.OK)
@@ -79,7 +79,7 @@ public class ProductController {
         System.out.println("userName: " + userName);
         System.out.println("email: " + email);
         AddToCartDTO cartItem = new AddToCartDTO(userName, email, product);
-        addProductProducer.sendToCart(cartItem);
+        productToCartProducer.sendToCart(cartItem);
     }
 
     @GetMapping("/seed-database")
