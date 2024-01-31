@@ -3,6 +3,7 @@ package com.example.demo;
 import java.util.List;
 import java.util.UUID;
 import com.example.demo.core.domain.model.Product;
+import com.example.demo.port.user.exception.ProductNotFoundException;
 import com.example.demo.testUtil.ProductRowMapper;
 import com.example.demo.testUtil.TestH2Repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +33,6 @@ class IntTest_ProductController {
     private int port;
 
     private String url = "http://localhost:";
-    private static RestTemplate restTemplate;
 
     @Autowired
     private TestH2Repository h2Repository;
@@ -49,7 +49,7 @@ class IntTest_ProductController {
     }
 
     @Test
-    public void addProductTest() throws Exception {
+    public void shouldAddProduct() throws Exception {
         url = url + port + "/add-product";
         Product product1 = new Product("name1", "author1", "publisher1", "description1", "imageUrl1", 2001, 201, 101.00);
 
@@ -58,8 +58,8 @@ class IntTest_ProductController {
                 .content(new ObjectMapper().writeValueAsString((product1))))
                 .andExpect(status().isOk());
 
-       String sql = "SELECT * FROM product";
-       List<Product> allProductsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
+       String sqlStatement = "SELECT * FROM product";
+       List<Product> allProductsInH2 = jdbcTemplate.query(sqlStatement, new ProductRowMapper());
 
        assertEquals(1, allProductsInH2.size());
        assertEquals(allProductsInH2.get(0).getName(), product1.getName());
@@ -73,14 +73,51 @@ class IntTest_ProductController {
     }
 
     @Test
-    public void putProductTest() throws Exception {
+    public void shouldGetProduct() throws Exception{
+        Product testProduct = new Product("testName", "testAuthor", "testPublisher", "testDescription", "testImageUrl", 200, 100, 10.00);
+        String apiUUID = UUID.randomUUID().toString();
+        String insertUUID = apiUUID.replace("-", "");
+        String sqlStatement = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID + "', '" + testProduct.getName() + "', '" + testProduct.getAuthor() + "', '" + testProduct.getPublisher() + "', '" + testProduct.getDescription() + "', '" + testProduct.getImgUrl() + "', " + testProduct.getPublishYear() + ", " + testProduct.getPages() + ", " + testProduct.getPrice() + ")";
+        url = url + port + "/product/" + apiUUID;
+        jdbcTemplate.execute(sqlStatement);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", apiUUID)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(apiUUID))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(testProduct.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.author").value(testProduct.getAuthor()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.publisher").value(testProduct.getPublisher()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(testProduct.getDescription()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.imgUrl").value(testProduct.getImgUrl()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.publishYear").value(testProduct.getPublishYear()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.pages").value(testProduct.getPages()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(testProduct.getPrice()));
+    }
+
+    /*@Test
+    public void getProduct_ifNotExists_shouldThrowException() throws Exception {
+        UUID uuid = UUID.randomUUID();
+        String apiUUID = uuid.toString();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", apiUUID));
+
+        assertThrows(ProductNotFoundException.class, () -> {
+        mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", apiUUID)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+        });
+    }*/
+
+    @Test
+    public void shouldUpdateProduct() throws Exception {
         Product testProduct = new Product("Initial Name", "Initial Author", "Initial Publisher", "Initial Description", "Initial ImageUrl", 1, 1, 1.00);
         String apiUUID = UUID.randomUUID().toString();
         String insertUUID = apiUUID.replace("-", "");
-        String insertSQL = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID + "', '" + testProduct.getName() + "', '" + testProduct.getAuthor() + "', '" + testProduct.getPublisher() + "', '" + testProduct.getDescription() + "', '" + testProduct.getImgUrl() + "', " + testProduct.getPublishYear() + ", " + testProduct.getPages() + ", " + testProduct.getPrice() + ")";
+        String sqlStatement = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID + "', '" + testProduct.getName() + "', '" + testProduct.getAuthor() + "', '" + testProduct.getPublisher() + "', '" + testProduct.getDescription() + "', '" + testProduct.getImgUrl() + "', " + testProduct.getPublishYear() + ", " + testProduct.getPages() + ", " + testProduct.getPrice() + ")";
         url = url + port + "/product/" + apiUUID;
 
-        jdbcTemplate.execute(insertSQL);
+        jdbcTemplate.execute(sqlStatement);
 
         testProduct.setName("Updated Name");
         testProduct.setAuthor("Updated Author");
@@ -92,37 +129,14 @@ class IntTest_ProductController {
                 .content(new ObjectMapper().writeValueAsString(testProduct)))
                 .andExpect(status().isOk());
 
-        String sql = "SELECT * FROM product";
-        List<Product> allProductsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
+        sqlStatement = "SELECT * FROM product";
+        List<Product> allProductsInH2 = jdbcTemplate.query(sqlStatement, new ProductRowMapper());
 
         assertEquals(1, allProductsInH2.size());
         assertEquals("Updated Name", allProductsInH2.get(0).getName());
         assertEquals("Updated Author", testProduct.getAuthor());
         assertEquals(2, testProduct.getPublishYear());
         assertEquals(2.0, testProduct.getPrice());
-    }
-
-    @Test
-    public void getProductTest() throws Exception{
-        Product testProduct = new Product("testName", "testAuthor", "testPublisher", "testDescription", "testImageUrl", 200, 100, 10.00);
-        String apiUUID = UUID.randomUUID().toString();
-        String insertUUID = apiUUID.replace("-", "");
-        String insertSQL = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID + "', '" + testProduct.getName() + "', '" + testProduct.getAuthor() + "', '" + testProduct.getPublisher() + "', '" + testProduct.getDescription() + "', '" + testProduct.getImgUrl() + "', " + testProduct.getPublishYear() + ", " + testProduct.getPages() + ", " + testProduct.getPrice() + ")";
-        url = url + port + "/product/" + apiUUID;
-        jdbcTemplate.execute(insertSQL);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", apiUUID)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(apiUUID))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(testProduct.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.author").value(testProduct.getAuthor()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.publisher").value(testProduct.getPublisher()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.description").value(testProduct.getDescription()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.imgUrl").value(testProduct.getImgUrl()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.publishYear").value(testProduct.getPublishYear()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.pages").value(testProduct.getPages()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(testProduct.getPrice()));
     }
 
     @Test
@@ -139,17 +153,17 @@ class IntTest_ProductController {
         String insertUUID2 = apiUUID2.replace("-", "");
         String insertUUID3 = apiUUID3.replace("-", "");
 
-        String insertSQL1 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID1 + "', '" + product1.getName() + "', '" + product1.getAuthor() + "', '" + product1.getPublisher() + "', '" + product1.getDescription() + "', '" + product1.getImgUrl() + "', " + product1.getPublishYear() + ", " + product1.getPages() + ", " + product1.getPrice() + ")";
-        String insertSQL2 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID2 + "', '" + product2.getName() + "', '" + product2.getAuthor() + "', '" + product2.getPublisher() + "', '" + product2.getDescription() + "', '" + product2.getImgUrl() + "', " + product2.getPublishYear() + ", " + product2.getPages() + ", " + product2.getPrice() + ")";
-        String insertSQL3 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID3 + "', '" + product3.getName() + "', '" + product3.getAuthor() + "', '" + product3.getPublisher() + "', '" + product3.getDescription() + "', '" + product3.getImgUrl() + "', " + product3.getPublishYear() + ", " + product3.getPages() + ", " + product3.getPrice() + ")";
+        String sqlStatement1 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID1 + "', '" + product1.getName() + "', '" + product1.getAuthor() + "', '" + product1.getPublisher() + "', '" + product1.getDescription() + "', '" + product1.getImgUrl() + "', " + product1.getPublishYear() + ", " + product1.getPages() + ", " + product1.getPrice() + ")";
+        String sqlStatement2 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID2 + "', '" + product2.getName() + "', '" + product2.getAuthor() + "', '" + product2.getPublisher() + "', '" + product2.getDescription() + "', '" + product2.getImgUrl() + "', " + product2.getPublishYear() + ", " + product2.getPages() + ", " + product2.getPrice() + ")";
+        String sqlStatement3 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID3 + "', '" + product3.getName() + "', '" + product3.getAuthor() + "', '" + product3.getPublisher() + "', '" + product3.getDescription() + "', '" + product3.getImgUrl() + "', " + product3.getPublishYear() + ", " + product3.getPages() + ", " + product3.getPrice() + ")";
 
         String url1 = url + port + "/product/" + apiUUID1;
         String url2 = url + port + "/product/" + apiUUID2;
         String url3 = url + port + "/product/" + apiUUID3;
 
-        jdbcTemplate.execute(insertSQL1);
-        jdbcTemplate.execute(insertSQL2);
-        jdbcTemplate.execute(insertSQL3);
+        jdbcTemplate.execute(sqlStatement1);
+        jdbcTemplate.execute(sqlStatement2);
+        jdbcTemplate.execute(sqlStatement3);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/products"))
                 .andExpect(status().isOk())
@@ -173,14 +187,14 @@ class IntTest_ProductController {
         String insertUUID1 = apiUUID1.replace("-", "");
         String insertUUID2 = apiUUID2.replace("-", "");
 
-        String insertSQL1 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID1 + "', '" + product1.getName() + "', '" + product1.getAuthor() + "', '" + product1.getPublisher() + "', '" + product1.getDescription() + "', '" + product1.getImgUrl() + "', " + product1.getPublishYear() + ", " + product1.getPages() + ", " + product1.getPrice() + ")";
-        String insertSQL2 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID2 + "', '" + product2.getName() + "', '" + product2.getAuthor() + "', '" + product2.getPublisher() + "', '" + product2.getDescription() + "', '" + product2.getImgUrl() + "', " + product2.getPublishYear() + ", " + product2.getPages() + ", " + product2.getPrice() + ")";
+        String sqlStatement1 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID1 + "', '" + product1.getName() + "', '" + product1.getAuthor() + "', '" + product1.getPublisher() + "', '" + product1.getDescription() + "', '" + product1.getImgUrl() + "', " + product1.getPublishYear() + ", " + product1.getPages() + ", " + product1.getPrice() + ")";
+        String sqlStatement2 = "insert into product(id, name, author, publisher, description, imgUrl, publishYear, pages, price) values ('"+ insertUUID2 + "', '" + product2.getName() + "', '" + product2.getAuthor() + "', '" + product2.getPublisher() + "', '" + product2.getDescription() + "', '" + product2.getImgUrl() + "', " + product2.getPublishYear() + ", " + product2.getPages() + ", " + product2.getPrice() + ")";
 
-        jdbcTemplate.execute(insertSQL1);
-        jdbcTemplate.execute(insertSQL2);
+        jdbcTemplate.execute(sqlStatement1);
+        jdbcTemplate.execute(sqlStatement2);
 
-        String sql = "SELECT * FROM product";
-        List<Product> allProductsInH2 = jdbcTemplate.query(sql, new ProductRowMapper());
+        String sqlStatement = "SELECT * FROM product";
+        List<Product> allProductsInH2 = jdbcTemplate.query(sqlStatement, new ProductRowMapper());
 
         assertEquals(2, allProductsInH2.size());
         boolean productExists = allProductsInH2.stream().anyMatch(product -> product.getId().toString().equals(apiUUID2));
