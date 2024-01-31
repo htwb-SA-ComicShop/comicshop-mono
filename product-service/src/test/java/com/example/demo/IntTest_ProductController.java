@@ -3,6 +3,8 @@ package com.example.demo;
 import java.util.List;
 import java.util.UUID;
 import com.example.demo.core.domain.model.Product;
+import com.example.demo.testUtil.ProductRowMapper;
+import com.example.demo.testUtil.TestH2Repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

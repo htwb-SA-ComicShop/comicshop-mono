@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.core.domain.model.Product;
 import com.example.demo.core.domain.service.impl.ProductService;
+import com.example.demo.testUtil.TestH2Repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;

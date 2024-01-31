@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.testUtil;
 
 import com.example.demo.core.domain.model.Product;
 import org.springframework.jdbc.core.RowMapper;
