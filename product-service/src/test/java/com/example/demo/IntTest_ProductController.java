@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import com.example.demo.core.domain.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -41,17 +42,12 @@ class IntTest_ProductController {
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    public void setUp() {
-        restTemplate = new RestTemplate();
-    }
-
     @AfterEach
     public void tearDown() {
         h2Repository.deleteAll();
     }
 
-   @Test
+    @Test
     public void addProductTest() throws Exception {
         url = url + port + "/add-product";
         Product product1 = new Product("name1", "author1", "publisher1", "description1", "imageUrl1", 2001, 201, 101.00);
@@ -196,4 +192,5 @@ class IntTest_ProductController {
         productExists = allProductsInH2.stream().anyMatch(product -> product.getId().equals(apiUUID2));
         assertFalse(productExists);
     }
+
 }
