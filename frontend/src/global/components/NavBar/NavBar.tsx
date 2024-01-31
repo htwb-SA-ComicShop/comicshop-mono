@@ -35,7 +35,7 @@ export default function NavBar(): ReactElement {
     },
     {
       label: 'Cart',
-      href: '/',
+      href: '/shopping-cart',
     },
   ];
 

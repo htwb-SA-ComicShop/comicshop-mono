@@ -6,6 +6,7 @@ import com.example.product.core.domain.service.interfaces.IProductService;
 import com.example.product.port.shoppingcart.producer.ProductToCartProducer;
 import com.example.product.port.user.exception.ProductNotFoundException;
 
+import com.example.product.port.user.producer.ProductProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +26,7 @@ public class ProductController {
     @Autowired
     ProductToCartProducer productToCartProducer;
 
-    @PostMapping(path = "/product")
+    @PostMapping(path = "/add-product")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void create(@RequestBody Product product) {
         Product newProduct = new Product(

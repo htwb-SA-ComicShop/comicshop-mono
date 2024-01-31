@@ -1,4 +1,4 @@
-package com.example.product.port.config;
+package com.example.checkout.port.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -41,15 +41,13 @@ class SecurityConfig  {
                 csrf().disable().
                 authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                .requestMatchers(HttpMethod.GET, "/product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.POST, "/product").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("shop-admin")
+                .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/product").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/product/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/product/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/seed-database").permitAll()
+                //.requestMatchers(HttpMethod.POST, "/seed-database").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.POST, "/add-to-cart").hasRole("customer")
-                .requestMatchers(HttpMethod.GET, "/edit-product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.PUT, "/edit-product/**").hasRole("shop-admin")
-                .requestMatchers(HttpMethod.POST, "/edit-product/**").hasRole("shop-admin")
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
