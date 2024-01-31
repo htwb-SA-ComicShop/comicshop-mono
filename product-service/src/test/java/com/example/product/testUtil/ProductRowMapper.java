@@ -1,6 +1,6 @@
-package com.example.demo.testUtil;
+package com.example.product.testUtil;
 
-import com.example.demo.core.domain.model.Product;
+import com.example.product.core.domain.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;

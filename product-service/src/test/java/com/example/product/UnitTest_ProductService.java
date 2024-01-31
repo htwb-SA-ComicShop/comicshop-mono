@@ -1,9 +1,9 @@
-package com.example.demo;
+package com.example.product;
 
-import com.example.demo.core.domain.model.Product;
-import com.example.demo.core.domain.service.impl.ProductService;
-import com.example.demo.core.domain.service.interfaces.IProductRepository;
-import com.example.demo.port.user.exception.ProductNotFoundException;
+import com.example.product.core.domain.model.Product;
+import com.example.product.core.domain.service.impl.ProductService;
+import com.example.product.core.domain.service.interfaces.IProductRepository;
+import com.example.product.port.user.exception.ProductNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
