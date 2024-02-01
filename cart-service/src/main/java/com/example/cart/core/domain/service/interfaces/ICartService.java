@@ -4,6 +4,7 @@ import com.example.cart.core.domain.model.Cart;
 import com.example.cart.core.domain.model.CartItem;
 import com.example.cart.port.user.exception.CartItemNotFoundException;
 import com.example.cart.port.user.exception.CartNotFoundException;
+import com.stripe.exception.StripeException;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,8 +40,9 @@ public interface ICartService {
      * Transfers the Cart into an Order
      * @param id of the cart which is to be bought
      * @throws CartItemNotFoundException if there is no Cart with that id
+     * @throws StripeException when there is an internal stripe error
      */
-    Cart buyCart(UUID id) throws CartNotFoundException;
+    Cart buyCart(UUID id) throws CartNotFoundException, StripeException;
 
     /**
      * deletes a cart from the db

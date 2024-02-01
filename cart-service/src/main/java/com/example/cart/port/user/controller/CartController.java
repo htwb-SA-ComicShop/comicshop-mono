@@ -6,6 +6,7 @@ import com.example.cart.core.domain.service.interfaces.ICartService;
 import com.example.cart.port.notification.producer.AddOrderInfoProducer;
 import com.example.cart.port.user.exception.CartNotFoundException;
 
+import com.stripe.exception.StripeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -70,16 +71,14 @@ public class CartController {
 
     @GetMapping(path = "/cart/buy-cart/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody void buyCart(@PathVariable UUID id) {
+    public @ResponseBody void buyCart(@PathVariable UUID id) throws StripeException {//TODO return different http status instead of an exception
 
-        cartService.buyCart(id);
-        //TODO make real put in buy method
-        String linkToContent = "linkToContent";
-        String linkToInvoice = "linkToInvoice";
-        String recipient = "adobe@gmx.net";
-        UUID orderId = new UUID(1L, 2L);
 
-        SendOrderInfoToNotificationDTO sendOrder = new SendOrderInfoToNotificationDTO(linkToContent, linkToInvoice, recipient, orderId.toString());
+        Cart boughtCart = cartService.buyCart(id);
+
+        SendOrderInfoToNotificationDTO sendOrder =
+                new SendOrderInfoToNotificationDTO(boughtCart.getLinkToContent(),
+                boughtCart.getLinkToInvoice(), boughtCart.getEmail(), boughtCart.getId().toString());
         addOrderInfoProducer.sendToNotification(sendOrder);
     }
 

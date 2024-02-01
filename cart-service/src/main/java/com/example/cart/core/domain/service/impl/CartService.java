@@ -7,10 +7,12 @@ import com.example.cart.core.domain.service.interfaces.ICartService;
 import com.example.cart.port.user.exception.CartItemNotFoundException;
 import com.example.cart.port.user.exception.CartNotFoundException;
 import com.example.cart.port.user.exception.NoPurchaseException;
+import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -23,6 +25,8 @@ import java.util.UUID;
 public class CartService implements ICartService {
     @Autowired
     private final ICartRepository cartRepository;
+
+    StripeService stripeService;
 
     @Override
     public Cart createCart(Cart cart) {
@@ -54,10 +58,14 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Cart buyCart(UUID id) {
+    public Cart buyCart(UUID id) throws StripeException {
+        //TODO rename to checkoutCart
         Cart boughtCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
         //TODO Stripe
         boughtCart.setBoughtAt(LocalDate.now());
+        boughtCart.setLinkToInvoice(
+                stripeService.getLinkToInvoice(
+                        boughtCart.generateInvoice()).toString());
         return cartRepository.save(boughtCart);
     }
 
@@ -86,4 +94,5 @@ public class CartService implements ICartService {
 
         return cartRepository.save(cartToBeUpdated);
     }
+
 }
