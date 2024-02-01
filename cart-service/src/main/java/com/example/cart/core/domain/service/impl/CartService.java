@@ -33,24 +33,22 @@ public class CartService implements ICartService {
     public void addToCart(CartItem item, UUID cartId) {
         Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
 
-        HashMap<UUID, CartItem> cartItems = cart.getCartItems();
-        cartItems.put(item.getId(), item);
-        cart.setCartItems(cartItems);
-        cartRepository.save(cart);
+        List<CartItem> cartItems = cart.getCartItems();
+        if(!cartItems.contains(item)) {
+            cartItems.add(item);
+            cart.setCartItems(cartItems);
+            cartRepository.save(cart);
+        }
+        //TODO exception if cart already contains the item?
     }
 
     @Override
     public void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException {
         Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
-        HashMap<UUID, CartItem> newCartItems = cart.getCartItems();
-        if (newCartItems.containsKey(itemId)) {
-            newCartItems.remove(itemId);
-            cart.setCartItems(newCartItems);
-            cartRepository.save(cart);
-
-        } else {
-            throw new CartItemNotFoundException(itemId);
-        }
+        List<CartItem> newCartItems = cart.getCartItems();
+        newCartItems.removeIf(entry -> entry.getId()==itemId);
+        cart.setCartItems(newCartItems);
+        cartRepository.save(cart);
     }
 
     @Override

@@ -7,10 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -27,9 +24,9 @@ public class Cart {
     private String username;
 
     @OneToMany
-    private HashMap<UUID, CartItem> cartItems = new HashMap<>();;
+    private List<CartItem> cartItems = new LinkedList<>();;
 
-    private double totalPrice;
+    private double totalPrice = 0.0;
     private LocalDate boughtAt;
 
     private boolean isBought = false;
@@ -40,12 +37,12 @@ public class Cart {
         return username;
     }
 
-    public void setCartItems(HashMap<UUID, CartItem> cartItems) {
+    public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
         this.totalPrice = calculateTotalPrice();
     }
 
-    public HashMap<UUID, CartItem> getCartItems() {
+    public List<CartItem> getCartItems() {
         return cartItems;
     }
 
@@ -55,7 +52,6 @@ public class Cart {
 
     public double calculateTotalPrice(){
         return this.cartItems
-                .values()
                 .stream()
                 .map(CartItem::getPrice)
                 .reduce(0.0, Double::sum);
@@ -74,15 +70,15 @@ public class Cart {
 
             // Comic Details
             invoiceBuilder.append("Comics Purchased:\n");
-            for (Map.Entry<UUID, CartItem> entry : cartItems.entrySet()) {
-                String comicId = entry.getKey().toString();
-                String comicTitle = entry.getValue().getName();
-                double comicPrice = entry.getValue().getPrice();
+            cartItems.forEach(entry -> {
+                String comicId = entry.getId().toString();
+                String comicTitle = entry.getName();
+                double comicPrice = entry.getPrice();
                 invoiceBuilder.append("- Comic ID: ").append(comicId)
                         .append(", Title: ").append(comicTitle)
                         .append(", Price: $").append(comicPrice)
                         .append("\n");
-            }
+            });
             invoiceBuilder.append("\n");
 
             // Total Price

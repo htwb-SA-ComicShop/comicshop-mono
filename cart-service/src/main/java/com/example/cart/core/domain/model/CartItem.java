@@ -7,14 +7,10 @@ import java.util.UUID;
 @Entity
 public class CartItem {
 
-    //TODO are these taks needed
+    //TODO are these tags needed
     @Id
     @Column(name = "id")
     private UUID id;
-
-
-    //TODO image
-
     private String name;
     private String author;
     private double price;

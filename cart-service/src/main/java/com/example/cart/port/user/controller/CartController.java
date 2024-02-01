@@ -1,20 +1,25 @@
 package com.example.cart.port.user.controller;
 
 import com.example.cart.core.domain.model.Cart;
+import com.example.cart.core.domain.model.CartItem;
 import com.example.cart.core.domain.model.SendOrderInfoToNotificationDTO;
 import com.example.cart.core.domain.service.interfaces.ICartService;
 import com.example.cart.port.notification.producer.AddOrderInfoProducer;
 import com.example.cart.port.user.exception.CartNotFoundException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
 
 @RestController
 public class CartController {
@@ -26,13 +31,35 @@ public class CartController {
 
     @PostMapping(path = "/cart")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody void create(@RequestBody Cart cart) {
-        Cart newCart = new Cart();
-        newCart.setUsername(cart.getUsername());
-        newCart.setCartItems(cart.getCartItems());
-        newCart.setTotalPrice(cart.getTotalPrice());
-        newCart.setBoughtAt(cart.getBoughtAt());
-        cartService.createCart(newCart);
+    public String create(@RequestBody String cart) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonNode = mapper.readTree(cart);
+            ObjectReader reader = mapper.readerFor(new TypeReference<List<CartItem>>() {
+            });
+            //String id = jsonNode.has("id") ? jsonNode.get("id").asText() : null;
+            String username = jsonNode.has("username") ? jsonNode.get("username").asText() : null;
+            List<CartItem> cartItems = new ArrayList<>();
+            if(jsonNode.has("cartItems")) {
+                cartItems = reader.readValue(jsonNode.get("cartItems"));
+            }
+            Double totalPrice = jsonNode.has("totalPrice") ? jsonNode.get("totalPrice").asDouble() : null;
+            //String email = jsonNode.has("email") ? jsonNode.get("email").asText() : null; TODO read email
+            //if (id==null) {
+                Cart newCart = new Cart();
+                newCart.setUsername(username);
+                newCart.setCartItems(cartItems);
+                newCart.setTotalPrice(totalPrice);
+                UUID newCartId = cartService.createCart(newCart).getId();
+                System.out.println("CART CREATED -> NEW ID: " + newCartId);
+
+                return newCartId.toString();
+            //}
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/cart/{id}")
