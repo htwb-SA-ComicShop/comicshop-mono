@@ -21,14 +21,17 @@ public class Cart {
     @Column(name = "id")
     private UUID id;
 
+    @Column(name = "username")
     private String username;
 
+    @Column(name = "cartItems")
     @OneToMany
     private List<CartItem> cartItems = new LinkedList<>();;
-
+    @Column(name = "totalPrice")
     private double totalPrice = 0.0;
+    @Column(name = "boughtAt")
     private LocalDate boughtAt;
-
+    @Column(name = "isBought")
     private boolean isBought = false;
 
     public Cart() {}

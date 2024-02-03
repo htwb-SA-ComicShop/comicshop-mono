@@ -11,11 +11,15 @@ public class CartItem {
     @Id
     @Column(name = "id")
     private UUID id;
+    @Column
     private String name;
+    @Column
     private String author;
+    @Column
     private double price;
+    @Column
     private String linkToProduct;
-
+    @Column
     private String imgUrl;
 
     public CartItem(UUID id, String name, String author, double price, String imgUrl, String linkToProduct) {
