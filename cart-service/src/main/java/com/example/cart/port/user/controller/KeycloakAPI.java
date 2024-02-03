@@ -44,14 +44,12 @@ public class KeycloakAPI {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-        System.out.println("=========================:" + response.body());
         String searchForString = "\"attributes\":{\"cart_id\":[\"";
 
         if(response.body().indexOf(searchForString) < 0)
             return "NO CART ID";
 
         cartIdStartIndex = response.body().indexOf(searchForString) + searchForString.length();
-        System.out.println(cartIdStartIndex);
         String fromCartIdToEnd = response.body().substring(cartIdStartIndex);
         int cartIdEndingIndex = fromCartIdToEnd.indexOf("\"");
         cartId = fromCartIdToEnd.substring(0, cartIdEndingIndex);
