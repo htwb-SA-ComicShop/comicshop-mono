@@ -72,7 +72,6 @@ public class Cart {
     }
 
     public String generateInvoice() {
-        //TODO generate a file, safe it and sent it to stripe
         if (isBought) {
             StringBuilder invoiceBuilder = new StringBuilder();
 
@@ -99,7 +98,7 @@ public class Cart {
             invoiceBuilder.append("Total Price: $").append(totalPrice).append("\n");
 
             //Save into file
-            Path filePath = Path.of("cart-service/files/invoice.txt");
+            Path filePath = Path.of("cart-service/files/invoice.pdf");
             try {
                 Files.write(filePath, invoiceBuilder.toString().getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             } catch (IOException e) {
@@ -110,8 +109,24 @@ public class Cart {
         throw new NoPurchaseException();
     }
 
+    //TODO get the comic from the db
+    public String getPathToComic(String comicName) {
+        if (isBought) {
+
+            Path filePath = Path.of("cart-service/files/" + comicName + ".pdf");
+            try {
+                Files.write(filePath, comicName.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return filePath.toString();
+        }
+        throw new NoPurchaseException();
+    }
+
     public void setBoughtAt(LocalDate boughtAt) {
         this.boughtAt = boughtAt;
+        this.isBought = true;
     }
 
     public LocalDate getBoughtAt() {
@@ -158,5 +173,5 @@ public class Cart {
         this.email = email;
     }
 
-    
+
 }

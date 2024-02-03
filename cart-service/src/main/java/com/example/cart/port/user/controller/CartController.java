@@ -9,12 +9,9 @@ import com.example.cart.port.user.exception.CartNotFoundException;
 import com.stripe.exception.StripeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -74,7 +71,7 @@ public class CartController {
     public @ResponseBody void buyCart(@PathVariable UUID id) throws StripeException {//TODO return different http status instead of an exception
 
 
-        Cart boughtCart = cartService.buyCart(id);
+        Cart boughtCart = cartService.checkoutCart(id);
 
         SendOrderInfoToNotificationDTO sendOrder =
                 new SendOrderInfoToNotificationDTO(boughtCart.getLinkToContent(),

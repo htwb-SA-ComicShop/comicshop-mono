@@ -35,7 +35,7 @@ public class CartService implements ICartService {
 
     @Override
     public void addToCart(CartItem item, UUID cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
 
         HashMap<UUID, CartItem> cartItems = cart.getCartItems();
         cartItems.put(item.getId(), item);
@@ -45,7 +45,7 @@ public class CartService implements ICartService {
 
     @Override
     public void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
         HashMap<UUID, CartItem> newCartItems = cart.getCartItems();
         if (newCartItems.containsKey(itemId)) {
             newCartItems.remove(itemId);
@@ -58,14 +58,24 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Cart buyCart(UUID id) throws StripeException {
-        //TODO rename to checkoutCart
+    public Cart checkoutCart(UUID id) throws StripeException {
         Cart boughtCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
-        //TODO Stripe
         boughtCart.setBoughtAt(LocalDate.now());
+
         boughtCart.setLinkToInvoice(
                 stripeService.getLinkToFile(
                         boughtCart.generateInvoice()).toString());
+
+        StringBuilder invoiceBuilder = new StringBuilder();
+        for (CartItem item :
+                boughtCart.getCartItems().values()) {
+            invoiceBuilder.append(item.getName()).append(": ")
+                    .append(stripeService.getLinkToFile(
+                            boughtCart.getPathToComic(item.getName())).toString()).append("\n");
+        }
+
+        boughtCart.setLinkToContent(invoiceBuilder.toString());
+
         return cartRepository.save(boughtCart);
     }
 
@@ -88,7 +98,9 @@ public class CartService implements ICartService {
     @Override
     public Cart updateCart(Cart cart, UUID id) throws CartNotFoundException {
         Cart cartToBeUpdated = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
-        if (cartToBeUpdated.isBought()){ throw new NoPurchaseException(); }
+        if (cartToBeUpdated.isBought()) {
+            throw new NoPurchaseException();
+        }
         cartToBeUpdated.setUsername(cart.getUsername());
         cartToBeUpdated.setCartItems(cart.getCartItems());
 

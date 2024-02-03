@@ -42,7 +42,7 @@ public interface ICartService {
      * @throws CartItemNotFoundException if there is no Cart with that id
      * @throws StripeException when there is an internal stripe error
      */
-    Cart buyCart(UUID id) throws CartNotFoundException, StripeException;
+    Cart checkoutCart(UUID id) throws CartNotFoundException, StripeException;
 
     /**
      * deletes a cart from the db
