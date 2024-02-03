@@ -33,14 +33,14 @@ export default function NavBar(): ReactElement {
       label: 'Products',
       href: '/',
     },
-    {
-      label: 'Cart',
-      href: '/shopping-cart',
-    },
   ];
 
   const loggedInNavItems = [
     ...loggedOutNavItems,
+    {
+      label: 'Cart',
+      href: '/shopping-cart',
+    },
     {
       label: 'Profile',
       href: '/',
