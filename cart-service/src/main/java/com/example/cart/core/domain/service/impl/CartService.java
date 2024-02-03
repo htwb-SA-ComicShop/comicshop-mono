@@ -61,7 +61,7 @@ public class CartService implements ICartService {
     public Cart checkoutCart(UUID id) throws StripeException {
         Cart boughtCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
         boughtCart.setBoughtAt(LocalDate.now());
-
+        
         boughtCart.setLinkToInvoice(
                 stripeService.getLinkToFile(
                         boughtCart.generateInvoice()).toString());
@@ -73,7 +73,6 @@ public class CartService implements ICartService {
                     .append(stripeService.getLinkToFile(
                             boughtCart.getPathToComic(item.getName())).toString()).append("\n");
         }
-
         boughtCart.setLinkToContent(invoiceBuilder.toString());
 
         return cartRepository.save(boughtCart);
