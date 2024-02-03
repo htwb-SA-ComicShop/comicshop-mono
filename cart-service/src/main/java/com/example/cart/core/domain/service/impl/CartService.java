@@ -67,6 +67,7 @@ public class CartService implements ICartService {
 
     @Override
     public Cart getCart(UUID id) throws CartNotFoundException {
+        System.out.println("IN CART SERVICE GET CART, ID: " + id);
         return cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
     }
 

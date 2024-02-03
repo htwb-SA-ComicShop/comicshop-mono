@@ -35,52 +35,53 @@ public class CartController {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode jsonNode = mapper.readTree(cart);
-            ObjectReader reader = mapper.readerFor(new TypeReference<List<CartItem>>() {
-            });
+            //ObjectReader reader = mapper.readerFor(new TypeReference<List<CartItem>>() {
+            //});
             //String id = jsonNode.has("id") ? jsonNode.get("id").asText() : null;
             String username = jsonNode.has("username") ? jsonNode.get("username").asText() : null;
-            List<CartItem> cartItems = new ArrayList<>();
-            if(jsonNode.has("cartItems")) {
-                cartItems = reader.readValue(jsonNode.get("cartItems"));
-            }
-            Double totalPrice = jsonNode.has("totalPrice") ? jsonNode.get("totalPrice").asDouble() : null;
+            //List<CartItem> cartItems = new ArrayList<>();
+            //if(jsonNode.has("cartItems")) {
+            //    cartItems = reader.readValue(jsonNode.get("cartItems"));
+            //}
+            //Double totalPrice = jsonNode.has("totalPrice") ? jsonNode.get("totalPrice").asDouble() : null;
             //String email = jsonNode.has("email") ? jsonNode.get("email").asText() : null; TODO read email
             //if (id==null) {
                 Cart newCart = new Cart();
                 newCart.setUsername(username);
-                newCart.setCartItems(cartItems);
-                newCart.setTotalPrice(totalPrice);
+                //newCart.setCartItems(cartItems);
+                //newCart.setTotalPrice(totalPrice);
                 UUID newCartId = cartService.createCart(newCart).getId();
                 System.out.println("CART CREATED -> NEW ID: " + newCartId);
 
+
+
                 return newCartId.toString();
             //}
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @GetMapping("/cart/{id}")
-    public Cart getCart(@PathVariable UUID id) {
-        Cart cart = cartService.getCart(id);
-        if (cart == null) throw new CartNotFoundException(id);
+    public @ResponseBody Cart getCart(@PathVariable String id) {
+        System.out.println("IN GETCART, ID: " + id);
+        Cart cart = cartService.getCart(UUID.fromString(id));
+        if (cart == null) throw new CartNotFoundException(UUID.fromString(id));
         return cart;
     }
 
     @PutMapping(path = "/cart/{id}")
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = "*")
-    public @ResponseBody void updateCart(@RequestBody Cart cart, @PathVariable UUID id) {
+    public @ResponseBody void updateCart(@RequestBody Cart cart, @PathVariable String id) {
         System.out.println("Updating cart: " + cart);
-        cartService.updateCart(cart, id);
+        cartService.updateCart(cart, UUID.fromString(id));
     }
 
     @DeleteMapping(path = "/cart/{id}")
     @CrossOrigin(origins = "*")
-    public @ResponseBody void deleteCart(@PathVariable UUID id) {
-        cartService.deleteCart(id);
+    public @ResponseBody void deleteCart(@PathVariable String id) {
+        cartService.deleteCart(UUID.fromString(id));
     }
 
 
@@ -89,17 +90,23 @@ public class CartController {
         return cartService.getAllCarts();
     }
 
-    @DeleteMapping(path = "/cart/items/{itemId}")
+    @DeleteMapping(path = "/cart/items/{cartId}")
     @CrossOrigin("*")
-    public @ResponseBody void deleteItemFromCart(UUID cartId, @PathVariable UUID itemId){
-        cartService.removeFromCart(itemId, cartId);
+    public @ResponseBody void deleteItemFromCart(@PathVariable String cartId, String itemId){
+        cartService.removeFromCart(UUID.fromString(itemId), UUID.fromString(cartId));
+    }
+
+    @PutMapping(path = "/cart/items/{cartId}")
+    @CrossOrigin("*")
+    public @ResponseBody void addItemToCart(@PathVariable String cartId, @RequestBody CartItem item){
+        cartService.addToCart(item, UUID.fromString(cartId));
     }
 
     @GetMapping(path = "/cart/buy-cart/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody void buyCart(@PathVariable UUID id) {
+    public @ResponseBody void buyCart(@PathVariable String id) {
 
-        cartService.buyCart(id);
+        cartService.buyCart(UUID.fromString(id));
         //TODO make real put in buy method
         String linkToContent = "linkToContent";
         String linkToInvoice = "linkToInvoice";

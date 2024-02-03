@@ -75,10 +75,13 @@ public class ProductController {
         Map<String, Object> tokenAttributes = authToken.getTokenAttributes();
         String userName = (String) tokenAttributes.get("preferred_username");
         String email = (String) tokenAttributes.get("email");
+        String cartId = (String) tokenAttributes.get("cart_id");
+        //TODO if tokenAttributes.replace() then does it replace the value in Keycloak??
         System.out.println("Adding to cart: " + product.getName());
         System.out.println("userName: " + userName);
         System.out.println("email: " + email);
-        AddToCartDTO cartItem = new AddToCartDTO(userName, email, product);
+        System.out.println("cartID: " + cartId);
+        AddToCartDTO cartItem = new AddToCartDTO(cartId, userName, email, product);
         productToCartProducer.sendToCart(cartItem);
     }
 

@@ -41,9 +41,11 @@ class SecurityConfig  {
                 csrf().disable().
                 authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/carts").hasRole("shop-admin")
+                .requestMatchers(HttpMethod.POST, "/cart").permitAll()
                 .requestMatchers(HttpMethod.GET, "/cart/**").hasRole("customer")
-                .requestMatchers(HttpMethod.POST, "/cart").hasRole("customer")
                 .requestMatchers(HttpMethod.PUT, "/cart/**").hasRole("customer")
+                .requestMatchers(HttpMethod.DELETE, "/cart/items/**").hasRole("customer")
+                .requestMatchers(HttpMethod.PUT, "/cart/items/**").hasRole("customer")
                 .requestMatchers(HttpMethod.DELETE, "/cart/**").hasRole("shop-admin")
                 .requestMatchers(HttpMethod.POST, "/cart/buy-cart/**").hasRole("customer")
                 .anyRequest().permitAll()
