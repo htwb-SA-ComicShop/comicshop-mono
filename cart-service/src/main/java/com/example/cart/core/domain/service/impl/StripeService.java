@@ -13,6 +13,11 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////!!DUE TO CONSTRUCTION WORK THIS SECTION IS UNAVAILABLE!!///////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ */
 @Service
 public class StripeService {
 
@@ -34,7 +39,7 @@ public class StripeService {
         return Charge.create(chargeParams);
     }
 
-    public FileLink getLinkToInvoice(String location) throws StripeException {
+    public FileLink getLinkToFile(String location) throws StripeException {
         FileLinkCreateParams params =
                 FileLinkCreateParams.builder().setFile(location).build();
         return FileLink.create(params);

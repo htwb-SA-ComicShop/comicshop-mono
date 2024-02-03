@@ -64,7 +64,7 @@ public class CartService implements ICartService {
         //TODO Stripe
         boughtCart.setBoughtAt(LocalDate.now());
         boughtCart.setLinkToInvoice(
-                stripeService.getLinkToInvoice(
+                stripeService.getLinkToFile(
                         boughtCart.generateInvoice()).toString());
         return cartRepository.save(boughtCart);
     }
