@@ -9,9 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 class Application{
 
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+	public static void main(String[] args) { SpringApplication.run(Application.class, args); }
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
