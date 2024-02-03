@@ -28,7 +28,7 @@ public class AddToCartConsumer {
     private ICartService cartService;
 
     @RabbitListener(queues = {"cart_item"})
-    public void consume(String addToCart){
+    public void consume(String addToCart) {
 
         LOGGER.info(String.format("Received message -> %s", addToCart));
 
@@ -43,16 +43,18 @@ public class AddToCartConsumer {
             String imgUrl = jsonNode.has("imgUrl") ? jsonNode.get("imgUrl").asText() : null;
             Double price = jsonNode.has("price") ? jsonNode.get("price").asDouble() : null;
 
-            if (cartId==null) {
+            if (cartId == null) {
                 throw new CartNotFoundException(null);
             }
-            if (productId == null || price == null || Double.isNaN(price)){
+            if (productId == null || price == null || Double.isNaN(price)) {
                 throw new NullPointerException("product id and price have to be valid");
             }
 
-                CartItem item = new CartItem(UUID.fromString(productId), productName, author, price, imgUrl, "");
-                cartService.addToCart(item, UUID.fromString(cartId));
-                System.out.println("CARTITEM RECEIVED. ID IS: " + item.getId());
+            CartItem item = new CartItem(UUID.fromString(productId), productName, author, price, imgUrl, "");
+            cartService.addToCart(item, UUID.fromString(cartId));
+            cartService.getCart(UUID.fromString(cartId)).setEmail(email);
+            cartService.getCart(UUID.fromString(cartId)).setUsername(username);
+            System.out.println("CARTITEM RECEIVED. ID IS: " + item.getId());
 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

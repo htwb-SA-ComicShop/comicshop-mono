@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -27,14 +31,20 @@ public class Cart {
     private String username;
 
     @OneToMany
-    private HashMap<UUID, CartItem> cartItems = new HashMap<>();;
+    private HashMap<UUID, CartItem> cartItems = new HashMap<>();
+    ;
 
     private double totalPrice;
     private LocalDate boughtAt;
 
+    private String linkToInvoice;
+    private String linkToContent;
+    private String email;
+
     private boolean isBought = false;
 
-    public Cart() {}
+    public Cart() {
+    }
 
     public String getUsername() {
         return username;
@@ -53,7 +63,7 @@ public class Cart {
         return totalPrice;
     }
 
-    public double calculateTotalPrice(){
+    public double calculateTotalPrice() {
         return this.cartItems
                 .values()
                 .stream()
@@ -62,8 +72,7 @@ public class Cart {
     }
 
     public String generateInvoice() {
-        //TODO generate a file, safe it and sent it to stripe
-        if(isBought) {
+        if (isBought) {
             StringBuilder invoiceBuilder = new StringBuilder();
 
             // Invoice Header
@@ -88,13 +97,36 @@ public class Cart {
             // Total Price
             invoiceBuilder.append("Total Price: $").append(totalPrice).append("\n");
 
-            return invoiceBuilder.toString();
+            //Save into file
+            Path filePath = Path.of("cart-service/files/invoice.pdf");
+            try {
+                Files.write(filePath, invoiceBuilder.toString().getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return filePath.toString();
+        }
+        throw new NoPurchaseException();
+    }
+
+    //TODO get the comic from the db
+    public String getPathToComic(String comicName) {
+        if (isBought) {
+
+            Path filePath = Path.of("cart-service/files/" + comicName + ".pdf");
+            try {
+                Files.write(filePath, comicName.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return filePath.toString();
         }
         throw new NoPurchaseException();
     }
 
     public void setBoughtAt(LocalDate boughtAt) {
         this.boughtAt = boughtAt;
+        this.isBought = true;
     }
 
     public LocalDate getBoughtAt() {
@@ -116,4 +148,30 @@ public class Cart {
     public boolean isBought() {
         return isBought;
     }
+
+    public String getLinkToInvoice() {
+        return linkToInvoice;
+    }
+
+    public void setLinkToInvoice(String linkToInvoice) {
+        this.linkToInvoice = linkToInvoice;
+    }
+
+    public String getLinkToContent() {
+        return linkToContent;
+    }
+
+    public void setLinkToContent(String linkToContent) {
+        this.linkToContent = linkToContent;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
 }

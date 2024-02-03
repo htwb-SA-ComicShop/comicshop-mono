@@ -7,10 +7,12 @@ import com.example.cart.core.domain.service.interfaces.ICartService;
 import com.example.cart.port.user.exception.CartItemNotFoundException;
 import com.example.cart.port.user.exception.CartNotFoundException;
 import com.example.cart.port.user.exception.NoPurchaseException;
+import com.stripe.exception.StripeException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -24,6 +26,8 @@ public class CartService implements ICartService {
     @Autowired
     private final ICartRepository cartRepository;
 
+    StripeService stripeService;
+
     @Override
     public Cart createCart(Cart cart) {
         return cartRepository.save(cart);
@@ -31,7 +35,7 @@ public class CartService implements ICartService {
 
     @Override
     public void addToCart(CartItem item, UUID cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
 
         HashMap<UUID, CartItem> cartItems = cart.getCartItems();
         cartItems.put(item.getId(), item);
@@ -41,7 +45,7 @@ public class CartService implements ICartService {
 
     @Override
     public void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
         HashMap<UUID, CartItem> newCartItems = cart.getCartItems();
         if (newCartItems.containsKey(itemId)) {
             newCartItems.remove(itemId);
@@ -54,10 +58,23 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Cart buyCart(UUID id) {
+    public Cart checkoutCart(UUID id) throws StripeException {
         Cart boughtCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
-        //TODO Stripe
         boughtCart.setBoughtAt(LocalDate.now());
+        
+        boughtCart.setLinkToInvoice(
+                stripeService.getLinkToFile(
+                        boughtCart.generateInvoice()).toString());
+
+        StringBuilder invoiceBuilder = new StringBuilder();
+        for (CartItem item :
+                boughtCart.getCartItems().values()) {
+            invoiceBuilder.append(item.getName()).append(": ")
+                    .append(stripeService.getLinkToFile(
+                            boughtCart.getPathToComic(item.getName())).toString()).append("\n");
+        }
+        boughtCart.setLinkToContent(invoiceBuilder.toString());
+
         return cartRepository.save(boughtCart);
     }
 
@@ -80,10 +97,13 @@ public class CartService implements ICartService {
     @Override
     public Cart updateCart(Cart cart, UUID id) throws CartNotFoundException {
         Cart cartToBeUpdated = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
-        if (cartToBeUpdated.isBought()){ throw new NoPurchaseException(); }
+        if (cartToBeUpdated.isBought()) {
+            throw new NoPurchaseException();
+        }
         cartToBeUpdated.setUsername(cart.getUsername());
         cartToBeUpdated.setCartItems(cart.getCartItems());
 
         return cartRepository.save(cartToBeUpdated);
     }
+
 }
