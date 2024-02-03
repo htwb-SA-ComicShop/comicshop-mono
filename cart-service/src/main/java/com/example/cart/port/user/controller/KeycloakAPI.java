@@ -31,6 +31,7 @@ public class KeycloakAPI {
 
     public String getUserCartId(String userName) throws IOException, InterruptedException {
         String cartId;
+        int cartIdStartIndex;
         String authorizationHeaderValue = "Bearer " + getAdminToken();
         String url = "http://localhost:8090/auth/admin/realms/profile-service/users/?username=" + userName + "&exact=true";
 
@@ -43,8 +44,14 @@ public class KeycloakAPI {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("=========================:" + response.body());
         String searchForString = "\"attributes\":{\"cart_id\":[\"";
-        int cartIdStartIndex = response.body().indexOf(searchForString) + searchForString.length();
+
+        if(response.body().indexOf(searchForString) < 0)
+            return "NO CART ID";
+
+        cartIdStartIndex = response.body().indexOf(searchForString) + searchForString.length();
+        System.out.println(cartIdStartIndex);
         String fromCartIdToEnd = response.body().substring(cartIdStartIndex);
         int cartIdEndingIndex = fromCartIdToEnd.indexOf("\"");
         cartId = fromCartIdToEnd.substring(0, cartIdEndingIndex);
