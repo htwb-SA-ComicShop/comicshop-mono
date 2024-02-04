@@ -53,7 +53,7 @@ public class AddToCartConsumer {
 
         String username = cartItem.getString("username");
 
-        /*
+/*
         // TODO fix keycloak!!!
         try {
             cartId = api.getUserCartId(username);
@@ -66,10 +66,12 @@ public class AddToCartConsumer {
             throw new CartNotFoundException(null);
         }
 
-         */
+ */
 
 
-        cartService.addToCart(item, UUID.fromString("b5993af9-9eee-4f01-a279-3817ca7742e2"));
+
+
+        cartService.addToCart(item, UUID.fromString("b5993af9-9eee-4f01-a279-3817ca7742e2")); //"b5993af9-9eee-4f01-a279-3817ca7742e2"
         System.out.println("CART ITEM RECEIVED. ID IS: " + item.getProductId());
     }
 }
