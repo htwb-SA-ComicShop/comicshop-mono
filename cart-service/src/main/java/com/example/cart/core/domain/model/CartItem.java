@@ -18,12 +18,16 @@ public class CartItem {
 
     @Column(name = "name")
     private String name;
+
     @Column(name = "author")
     private String author;
+
     @Column(name = "price")
     private double price;
+
     @Column(name = "linkToProduct")
     private String linkToProduct;
+
     @Column(name = "imgUrl")
     private String imgUrl;
 

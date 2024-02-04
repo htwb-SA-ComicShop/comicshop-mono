@@ -14,7 +14,7 @@ public class KeycloakAPI {
 
     public String getAdminToken() throws IOException, InterruptedException {
 
-        String url = "http://localhost:8090/auth/realms/profile-service/protocol/openid-connect/token/";
+        String url = "http://localhost:8090/auth/realms/master/protocol/openid-connect/token/";
         String formData = "username=admin&password=admin&client_id=admin-cli&grant_type=password";
 
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -25,6 +25,12 @@ public class KeycloakAPI {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println("=======================: ");
+        System.out.println(request);
+        System.out.println(response);
+        System.out.println(response.body());
+
         String token = new JSONObject(response.body()).getString("access_token");
 
         return token;
