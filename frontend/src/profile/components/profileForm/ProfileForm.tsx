@@ -89,7 +89,6 @@ const ProfileForm = ({ defaults, method}: FormProps) => {
         defaultValue={defaults?.imgUrl}
         errorMsg={errors?.imgUrl?.message}
         registerReturn={register('imgUrl', {
-          required: 'Required',
           pattern: {
             value:
               /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)?/gi,

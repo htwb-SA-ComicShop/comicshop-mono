@@ -7,14 +7,14 @@ import { Link } from 'react-router-dom';
 
 
 function ProfilePage() {
-    const {token, username} = useAuth();
+    const { username, email, firstName, lastName} = useAuth();
     return (
         <Box p={4} borderWidth={1} borderRadius="md">
             <Avatar size="xl" name="John Doe" src="https://placekitten.com/700/600"/>
             <VStack align="start" mt={4} spacing={2}>
                 <Text fontSize="xl" fontWeight="bold">{username}</Text>
-                <Text>Email: {token.email}</Text>
-                <Text>Name: {token.firstname}, {token.lastname}</Text>
+                <Text>Email: {email}</Text>
+                <Text>Name: {firstName} ,  {lastName}</Text>
                 <br></br>
             </VStack>
             <ButtonGroup spacing='2'>
