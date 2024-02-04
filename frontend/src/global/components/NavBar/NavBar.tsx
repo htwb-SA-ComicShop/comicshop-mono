@@ -43,7 +43,7 @@ export default function NavBar(): ReactElement {
     ...loggedOutNavItems,
     {
       label: 'Profile',
-      href: '/',
+      href: '/profile',
     },
   ];
 
