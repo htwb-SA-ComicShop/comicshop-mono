@@ -1,9 +1,11 @@
 import {
+    AccordionButton, AccordionIcon,
+    AccordionItem, AccordionPanel, Box,
     Button,
     ButtonGroup,
     Card,
     CardBody,
-    CardFooter,
+    CardFooter, Divider,
     Heading,
     Image,
     Stack,
@@ -13,13 +15,54 @@ import { ReactElement } from 'react';
 import {CartItem, Product} from '../../../types';
 import { Link } from 'react-router-dom';
 import AuthWrapper from '../../../auth/components/AuthWrapper';
+import DeleteButton from "./DeleteButton";
 //import AddToCartButton from './AddToCartButton';
 //import DeleteButton from './DeleteButton';
 
 const CartItemCard = (cartItem: CartItem): ReactElement => {
-    const { name, id, author, price, imgUrl } =
+    const { name, id, productId, author, price, imgUrl } =
         cartItem;
     return (
+        <AccordionItem>
+            <h2>
+                <AccordionButton>
+                    <Box as="span" flex='1' textAlign='left'>
+                        {name}
+                    </Box>
+                    <AccordionIcon />
+                </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+                <Stack direction='row'>
+                    <Box >
+                        <Image src= {imgUrl} boxSize='100px'/>
+                    </Box>
+                    <Divider orientation='vertical' />
+                    <Box >
+                        {author}
+                    </Box>
+                    <Divider orientation='vertical' />
+                    <Box >
+                        {price}
+                    </Box>
+                    <Divider orientation='vertical' />
+                    <Box >
+                        <ButtonGroup spacing='2'>
+                            <Button
+                                variant='outline'
+                                colorScheme='teal'
+                                as={Link}
+                                to={`/product/${productId}`}
+                            >
+                                Go to Product
+                            </Button>
+                            <DeleteButton itemId={id ?? ''} />
+                        </ButtonGroup>
+                    </Box>
+                </Stack>
+            </AccordionPanel>
+        </AccordionItem>
+        /*
         <Card maxW='sm' variant='filled'>
             <CardBody>
                 <Image
@@ -40,23 +83,20 @@ const CartItemCard = (cartItem: CartItem): ReactElement => {
             </CardBody>
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <AddToCartButton product={cartItem} />
-                    <AuthWrapper role='admin'>
                         <Button
                             variant='outline'
                             colorScheme='teal'
                             as={Link}
-                            to={`/edit-product/${id}`}
+                            to={`/product/${productId}`}
                         >
-                            Edit
+                            Go to Product
                         </Button>
-                    </AuthWrapper>
-                    <AuthWrapper role='admin'>
-                        <DeleteButton id={id ?? ''} />
-                    </AuthWrapper>
+                        <DeleteButton itemId={id ?? ''} />
                 </ButtonGroup>
             </CardFooter>
         </Card>
+
+         */
     );
 };
 

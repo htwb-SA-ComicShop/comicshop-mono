@@ -42,6 +42,7 @@ export interface Cart {
 
 export interface CartItem {
   id: string | null;
+  productId: string;
   name: string;
   author: string;
   price: number;
