@@ -2,21 +2,21 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import ValidatedInput from './ValidatedInput';
 import { Button, Stack, useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router';
-import { Product } from '../../../types';
+import { Profile } from '../../../types';
 import useAuth from '../../../auth/hooks/useAuth.hook';
 
 interface FormProps {
-  defaults?: Product;
-  method: 'POST' | 'PUT';
+  defaults?: Profile;
+  method: 'PUT';
   id?: string;
 }
 
-const ProductForm = ({ defaults, method, id }: FormProps) => {
+const ProfileForm = ({ defaults, method}: FormProps) => {
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<Product>();
+  } = useForm<Profile>();
 
   const { token } = useAuth();
 
@@ -26,13 +26,10 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
 
   const toast = useToast();
 
-  const url =
-    method === 'POST'
-      ? 'http://localhost:8080/product'
-      : `http://localhost:8080/product/${id}`;
+  const url = `http://localhost:8080/profile`;
 
-  const onSubmit: SubmitHandler<Product> = async (data: Product) => {
-    const payload: Product = method === 'PUT' ? data : { ...data, id: null };
+  const onSubmit: SubmitHandler<Profile> = async (data: Profile) => {
+    const payload: Profile = data;
     try {
       const response = await fetch(url, {
         method,
@@ -47,12 +44,10 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
-      navigate('/');
+      navigate('/profile');
       toast({
         title: 'All right!',
-        description: `Produkt wurde erfolgreich ${
-          method === 'POST' ? 'angelegt' : 'aktualisiert'
-        }`,
+        description: `Profile successfully updated`,
         position: 'top',
         status: 'success',
         duration: 5000,
@@ -63,9 +58,7 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
         toast({
           title: 'Ooops!',
           description:
-            method === 'POST'
-              ? 'Produkt konnte nicht angelegt werden!'
-              : `${payload.name} konnte nicht geändert werden!`,
+               `${payload.username} could not been updated!`,
           position: 'top',
           status: 'error',
           duration: 5000,
@@ -78,15 +71,15 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
   return (
     <Stack as='form' onSubmit={handleSubmit(onSubmit)} w='100%' spacing={4}>
       <ValidatedInput
-        id='title'
-        label='Title'
-        defaultValue={defaults?.name}
-        errorMsg={errors?.name?.message}
-        registerReturn={register('name', {
+        id='username'
+        label='Username'
+        defaultValue={defaults?.username}
+        errorMsg={errors?.username?.message}
+        registerReturn={register('username', {
           required: 'Required',
           minLength: {
             value: 3,
-            message: 'Title has to be at least 3 characters long',
+            message: 'Username has to be at least 3 characters long',
           },
         })}
       />
@@ -109,44 +102,25 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
         })}
       />
       <ValidatedInput
-        id='author'
-        label='Author'
-        defaultValue={defaults?.author}
-        errorMsg={errors?.author?.message}
-        registerReturn={register('author', { required: 'Required' })}
+        id='firstname'
+        label='Firstname'
+        defaultValue={defaults?.firstname}
+        errorMsg={errors?.firstname?.message}
+        registerReturn={register('firstname', { required: 'Required' })}
       />
       <ValidatedInput
-        id='publisher'
-        label='Publisher'
-        defaultValue={defaults?.publisher}
-        errorMsg={errors?.publisher?.message}
-        registerReturn={register('publisher', { required: 'Required' })}
+        id='lastname'
+        label='Lastname'
+        defaultValue={defaults?.lastname}
+        errorMsg={errors?.lastname?.message}
+        registerReturn={register('lastname', { required: 'Required' })}
       />
       <ValidatedInput
-        id='pages'
-        label='Pages'
-        type='number'
-        step={1}
-        defaultValue={defaults?.pages}
-        errorMsg={errors?.pages?.message}
-        registerReturn={register('pages', { required: 'Required' })}
-      />
-      <ValidatedInput
-        id='price'
-        label='Price ($)'
-        type='number'
-        step={0.01}
-        defaultValue={defaults?.price}
-        errorMsg={errors?.price?.message}
-        registerReturn={register('price', { required: 'Required' })}
-      />
-      <ValidatedInput
-        isTextArea
-        id='description'
-        label='Description'
-        defaultValue={defaults?.description}
-        errorMsg={errors?.description?.message}
-        registerReturn={register('description', {
+        id='email'
+        label='Email'
+        defaultValue={defaults?.email}
+        errorMsg={errors?.email?.message}
+        registerReturn={register('email', {
           required: 'Required',
           minLength: {
             value: 5,
@@ -165,7 +139,7 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
       <Button
         colorScheme='teal'
         variant='outline'
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/profile')}
       >
         Back
       </Button>
@@ -173,4 +147,4 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
   );
 };
 
-export default ProductForm;
+export default ProfileForm;

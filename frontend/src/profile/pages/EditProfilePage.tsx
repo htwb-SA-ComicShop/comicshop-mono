@@ -1,11 +1,9 @@
 import { Heading, Image, Text, VStack } from '@chakra-ui/react';
-import { useLoaderData } from 'react-router';
-import { Product } from '../../types';
-import ProductForm from '../components/ProductForm';
+import ProfilForm from '../components/profileForm/ProfileForm';
+import useAuth from "../../auth/hooks/useAuth.hook";
 
 function EditProductPage() {
-  const { comic: defaults } = useLoaderData() as { comic: Product };
-
+  const {token, username} = useAuth();
   return (
     <main>
       <VStack w='80%' mx='auto' align='start'>
@@ -14,8 +12,8 @@ function EditProductPage() {
           height={{ base: 100, sm: 300 }}
           borderRadius='lg'
           objectFit='cover'
-          src={defaults.imgUrl ?? './placeholder.png'}
-          alt={`Image of ${defaults.name}`}
+          src={'https://placekitten.com/200/200'}
+          alt={`Image of ${username}`}
           mb={8}
         />
         <VStack
@@ -30,12 +28,11 @@ function EditProductPage() {
               <Text as='span' fontWeight={400}>
                 Edit{' '}
               </Text>
-              {defaults.name}
+              {username}
             </Heading>
-            <ProductForm
+            <ProfilForm
               method='PUT'
-              defaults={defaults}
-              id={defaults.id ?? ''}
+              id={token.id ?? ''}
             />
           </VStack>
         </VStack>
