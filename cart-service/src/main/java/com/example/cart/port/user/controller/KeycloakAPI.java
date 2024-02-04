@@ -10,20 +10,11 @@ import java.net.http.HttpResponse;
 
 public class KeycloakAPI {
 
-    public void KeycloakRequest() {}
+    public KeycloakAPI() {}
 
     public String getAdminToken() throws IOException, InterruptedException {
-        /*
-        Keycloak keycloak = Keycloak.getInstance(
-                "http://localhost:8080/auth",
-                "master",
-                "admin",
-                "password",
-                "admin-cli");
-        RealmRepresentation realm = keycloak.realm("master").toRepresentation();
-         */
 
-        String url = "http://localhost:8090/auth/realms/profile-service/protocol/openid-connect/token/";
+        String url = "http://localhost:8090/auth/realms/master/protocol/openid-connect/token/";
         String formData = "username=admin&password=admin&client_id=admin-cli&grant_type=password";
 
         HttpClient httpClient = HttpClient.newHttpClient();
@@ -34,6 +25,12 @@ public class KeycloakAPI {
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println("=======================: ");
+        System.out.println(request);
+        System.out.println(response);
+        System.out.println(response.body());
+
         String token = new JSONObject(response.body()).getString("access_token");
 
         return token;
@@ -56,7 +53,7 @@ public class KeycloakAPI {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         String searchForString = "\"attributes\":{\"cart_id\":[\"";
 
-        if(response.body().indexOf(searchForString) < 0)
+        if(!response.body().contains(searchForString))
             return "NO CART ID";
 
         cartIdStartIndex = response.body().indexOf(searchForString) + searchForString.length();

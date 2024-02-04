@@ -27,11 +27,14 @@ public class Cart {
     @Column(name = "cartItems")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     //@JoinColumn(name = "cart_id")
-    private List<CartItem> cartItems = new LinkedList<>();;
+    private List<CartItem> cartItems = new LinkedList<>();
+
     @Column(name = "totalPrice")
     private double totalPrice = 0.0;
+
     @Column(name = "boughtAt")
     private LocalDate boughtAt;
+
     @Column(name = "isBought")
     private boolean isBought = false;
 
