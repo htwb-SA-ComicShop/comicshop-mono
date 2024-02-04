@@ -47,7 +47,7 @@ public class KeycloakAPI {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         String searchForString = "\"attributes\":{\"cart_id\":[\"";
 
-        if(response.body().indexOf(searchForString) < 0)
+        if(!response.body().contains(searchForString))
             return "NO CART ID";
 
         cartIdStartIndex = response.body().indexOf(searchForString) + searchForString.length();
