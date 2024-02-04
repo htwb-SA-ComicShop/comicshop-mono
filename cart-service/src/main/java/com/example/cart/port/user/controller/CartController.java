@@ -106,12 +106,6 @@ public class CartController {
         cartService.removeFromCart(UUID.fromString(itemId), UUID.fromString(cartId));
     }
 
-    @PutMapping(path = "/cart/items/{cartId}")
-    @CrossOrigin("*")
-    public @ResponseBody void addItemToCart(@PathVariable String cartId, @RequestBody CartItem item){
-        cartService.addToCart(item, UUID.fromString(cartId));
-    }
-
     @GetMapping(path = "/cart/buy-cart/{id}")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void buyCart(@PathVariable String id) {
@@ -148,4 +142,6 @@ public class CartController {
         KeycloakAPI keycloakAPI = new KeycloakAPI();
         return keycloakAPI.resetPassword(username, newPassword);
     }
+    
+
 }

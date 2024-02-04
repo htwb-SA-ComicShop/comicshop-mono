@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,9 +35,10 @@ public class CartService implements ICartService {
         Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
 
         List<CartItem> cartItems = cart.getCartItems();
-        if(!cartItems.contains(item)) {
+        if(cartItems.stream().noneMatch(cartItem -> cartItem.getProductId()==item.getProductId())) {
             cartItems.add(item);
             cart.setCartItems(cartItems);
+            System.out.println("CART ITEMS ARE: " + cart.getCartItems().stream().collect(Collectors.toList()));
             cartRepository.save(cart);
         }
         //TODO exception if cart already contains the item?
@@ -46,7 +48,7 @@ public class CartService implements ICartService {
     public void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException {
         Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
         List<CartItem> newCartItems = cart.getCartItems();
-        newCartItems.removeIf(entry -> entry.getId()==itemId);
+        newCartItems.removeIf(entry -> entry.getProductId()==itemId);
         cart.setCartItems(newCartItems);
         cartRepository.save(cart);
     }

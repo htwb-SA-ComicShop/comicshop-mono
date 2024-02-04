@@ -25,9 +25,8 @@ public class AddToCartDTO implements Serializable {
     private String imgUrl;
     private double price;
 
-    private String cartId;
 
-    public AddToCartDTO(String cartId, String username, String email, Product product) {
+    public AddToCartDTO(String username, String email, Product product) {
         this.productId = product.getId();
         this.productName = product.getName();
         this.author = product.getAuthor();
@@ -35,7 +34,6 @@ public class AddToCartDTO implements Serializable {
         this.price = product.getPrice();
         this.username = username;
         this.email = email;
-        this.cartId = cartId;
     }
 
     public UUID getId() { return id;}
@@ -74,10 +72,6 @@ public class AddToCartDTO implements Serializable {
 
     public double getPrice() {
         return price;
-    }
-
-    public String getCartId() {
-        return cartId;
     }
 
     public String toJson() {

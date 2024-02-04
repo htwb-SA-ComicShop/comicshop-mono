@@ -25,7 +25,8 @@ public class Cart {
     private String username;
 
     @Column(name = "cartItems")
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JoinColumn(name = "cart_id")
     private List<CartItem> cartItems = new LinkedList<>();;
     @Column(name = "totalPrice")
     private double totalPrice = 0.0;
@@ -74,7 +75,7 @@ public class Cart {
             // Comic Details
             invoiceBuilder.append("Comics Purchased:\n");
             cartItems.forEach(entry -> {
-                String comicId = entry.getId().toString();
+                String comicId = entry.getProductId().toString();
                 String comicTitle = entry.getName();
                 double comicPrice = entry.getPrice();
                 invoiceBuilder.append("- Comic ID: ").append(comicId)

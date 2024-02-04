@@ -88,6 +88,12 @@
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-admin-client -->
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>23.0.6</version>
+        </dependency>
     </dependencies>
 
     <build>
