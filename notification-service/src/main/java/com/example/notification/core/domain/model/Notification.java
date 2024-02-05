@@ -107,9 +107,11 @@ public class Notification {
 
         messageBody.append("Dear ").append(recipient).append(",\n\n")
                 .append("Thank you for your order (Order ID: ").append(orderId).append("), ")
-                .append("placed at ").append(timeStamp).append(". ")
+                .append("placed at ").append(timeStamp).append(". \n")
                 .append("You can download your purchased items using the following link:\n")
                 .append(linkToContent).append("\n\n")
+                .append("You can download your invoice here:\n")
+                .append(linkToInvoice).append("\n\n")
                 .append("If you have any questions or need further assistance, feel free to contact us.\n\n")
                 .append("Best regards,\nYour ComicShop");
 
