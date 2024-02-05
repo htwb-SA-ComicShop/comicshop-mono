@@ -68,7 +68,7 @@ public class CartService implements ICartService {
 
         StringBuilder invoiceBuilder = new StringBuilder();
         for (CartItem item :
-                boughtCart.getCartItems().values()) {
+                boughtCart.getCartItems()) {
             invoiceBuilder.append(item.getName()).append(": ")
                     .append(stripeService.getLinkToFile(
                             boughtCart.getPathToComic(item.getName())).toString()).append("\n");

@@ -112,7 +112,12 @@ public class CartController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void buyCart(@PathVariable String id) {
 
-        Cart boughtCart = cartService.checkoutCart(UUID.fromString(id));
+        Cart boughtCart = null;
+        try {
+            boughtCart = cartService.checkoutCart(UUID.fromString(id));
+        } catch (StripeException e) {
+            throw new RuntimeException(e);
+        }
 
         SendOrderInfoToNotificationDTO sendOrder =
                 new SendOrderInfoToNotificationDTO(boughtCart.getLinkToContent(),
