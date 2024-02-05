@@ -5,6 +5,6 @@ import java.util.UUID;
 public class CartItemNotFoundException extends RuntimeException {
 
     public CartItemNotFoundException(UUID id) {
-      super("Could not find product " +id);
+      super("Could not find Cart Item " +id);
     }
 }
