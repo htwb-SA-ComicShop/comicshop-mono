@@ -35,63 +35,9 @@ const CartItemsListPage = (): ReactElement => {
 
     const [currCartId, setCurrCartId] = useState<string>(null);
 
-    /*
-    useEffect(() => {
-        async function putItemsInCart(){
-            const payload: Cart = {
-                "id": "b5993af9-9eee-4f01-a279-3817ca7742e2",
-                "username": "customer",
-                "cartItems": [
-                    {
-                        "productId": "d3780516-f9f2-43f7-a75c-54d5ee7d5440",
-                        "name": "Asterix in Britain",
-                        "author": "René Goscinny & Albert Uderzo",
-                        "price": 5.99,
-                        "linkToProduct": "",
-                        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/4/48/Asterix_Britain.png"
-                    },
-                    {
-                        "productId": "7579b00f-726f-408c-bbb2-47675ba30540",
-                        "name": "Asterix in Switzerland",
-                        "author": "René Goscinny & Albert Uderzo",
-                        "price": 5.99,
-                        "linkToProduct": "",
-                        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/0/06/Asterix_Switzerland.png"
-                    },
-                    {
-                        "productId": "9be1cc05-0ab5-471d-a81e-c112a69c1ffa",
-                        "name": "Asterix in Corsica",
-                        "author": "René Goscinny & Albert Uderzo",
-                        "price": 5.99,
-                        "linkToProduct": "",
-                        "imgUrl": "https://upload.wikimedia.org/wikipedia/en/7/7c/Asterixcover-20.jpg"
-                    }
-                ],
-                "totalPrice": 17.97,
-                "boughtAt": null,
-                "isBought": false
-            }
-
-            const response = await fetch(`http://localhost:8082/cart/${"b5993af9-9eee-4f01-a279-3817ca7742e2"}`,  {
-                    method: 'PUT',
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(payload),
-            });
-            if (!response.ok) {
-                throw new Error('Something went wrong!');
-            }
-            }
-            putItemsInCart();
-    }, []);
-     */
-
     useEffect(() => {
         async function fetchCartId(){
+            /*
             const payload: Cart = {
                 id: null,
                 username: username,
@@ -116,6 +62,8 @@ const CartItemsListPage = (): ReactElement => {
             } else {
                 setCurrCartId(cartId);
             }
+             */
+            setCurrCartId("b5993af9-9eee-4f01-a279-3817ca7742e2");
         }
         fetchCartId();
     }, []);

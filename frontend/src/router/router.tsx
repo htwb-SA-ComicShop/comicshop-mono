@@ -8,6 +8,7 @@ import AddProductPage from '../product/pages/AddProductPage';
 import CartPage from "../cart/pages/CartPage";
 import ProfilePage from "../profile/pages/ProfilePage";
 import EditProfilePage from "../profile/pages/EditProfilePage";
+import ProductDetailPage from "../product/pages/ProductDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,12 @@ const router = createBrowserRouter([
             <PrivateRouteWrapper role='customer'>
               <EditProfilePage />
             </PrivateRouteWrapper>
+        )
+      },
+      {
+        path: '/product/:id',
+        element: (
+            <ProductDetailPage/>
         )
       }
     ],

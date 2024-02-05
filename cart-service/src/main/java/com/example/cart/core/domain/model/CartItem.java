@@ -31,8 +31,8 @@ public class CartItem {
     @Column(name = "imgUrl")
     private String imgUrl;
 
-    public CartItem(UUID id, String name, String author, double price, String imgUrl, String linkToProduct) {
-        this.productId = id;
+    public CartItem(UUID productId, String name, String author, double price, String imgUrl, String linkToProduct) {
+        this.productId = productId;
         this.name = name;
         this.author = author;
         this.price = price;

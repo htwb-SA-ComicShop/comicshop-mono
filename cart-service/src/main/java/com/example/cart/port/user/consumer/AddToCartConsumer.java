@@ -50,7 +50,8 @@ public class AddToCartConsumer {
         }
 
 
-        /*String username = cartItem.getString("username");
+        /*
+        String username = cartItem.getString("username");
         KeycloakAPI keycloakAPI = new KeycloakAPI();
 
         try {
@@ -64,8 +65,7 @@ public class AddToCartConsumer {
         }
         */
 
-
-        cartService.addToCart(item, UUID.fromString("1f9f00fc-46ca-4ae8-a886-b0751dc4a132"));
         System.out.println("CART ITEM RECEIVED. ID IS: " + item.getProductId());
+        cartService.addToCart(item, UUID.fromString("b5993af9-9eee-4f01-a279-3817ca7742e2"));
     }
 }

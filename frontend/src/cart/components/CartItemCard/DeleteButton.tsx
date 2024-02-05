@@ -28,6 +28,7 @@ const DeleteButton = ({ itemId }: { itemId: string }) => {
         headers: {
           Authorization: `Bearer ${token} `,
         },
+        body: "b5993af9-9eee-4f01-a279-3817ca7742e2" //current cart id
       });
       if (!response.ok) {
         throw new Error('Something went wrong!');
@@ -44,7 +45,7 @@ const DeleteButton = ({ itemId }: { itemId: string }) => {
         });
       }
     } finally {
-      navigate(0);
+      window.location.reload();
     }
   };
 

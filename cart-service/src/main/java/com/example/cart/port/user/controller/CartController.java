@@ -102,9 +102,9 @@ public class CartController {
         return cartService.getAllCarts();
     }
 
-    @DeleteMapping(path = "/cart/items/{cartId}")
+    @DeleteMapping(path = "/cart/items/{itemId}")
     @CrossOrigin("*")
-    public @ResponseBody void deleteItemFromCart(@PathVariable String cartId, String itemId){
+    public @ResponseBody void deleteItemFromCart(@PathVariable String itemId, @RequestBody String cartId){
         cartService.removeFromCart(UUID.fromString(itemId), UUID.fromString(cartId));
     }
 
