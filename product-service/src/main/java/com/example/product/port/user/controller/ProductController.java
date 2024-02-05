@@ -27,6 +27,11 @@ public class ProductController {
     @Autowired
     ProductToCartProducer productToCartProducer;
 
+    /**
+     * Creates a new product.
+     *
+     * @param product The product to be created.
+     */
     @PostMapping(path = "/add-product")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void create(@RequestBody Product product) {
@@ -43,6 +48,12 @@ public class ProductController {
         productService.createProduct(newProduct);
     }
 
+    /**
+     * Updates an existing product.
+     *
+     * @param product The updated product details.
+     * @param id      The unique identifier of the product to be updated.
+     */
     @PutMapping(path = "/product/{id}")
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = "*")
@@ -51,6 +62,13 @@ public class ProductController {
         productService.updateProduct(product, id);
     }
 
+    /**
+     * Retrieves a product by its unique identifier.
+     *
+     * @param id The unique identifier of the product.
+     * @return The retrieved product.
+     * @throws ProductNotFoundException If the product with the given ID is not found.
+     */
     @GetMapping("/product/{id}")
     public Product getProduct(@PathVariable UUID id) {
         Product product = productService.getProduct(id);
@@ -58,17 +76,32 @@ public class ProductController {
         return product;
     }
 
+    /**
+     * Deletes a product by its unique identifier.
+     *
+     * @param id The unique identifier of the product to be deleted.
+     */
     @DeleteMapping(path = "/product/{id}")
     @CrossOrigin(origins = "*")
     public @ResponseBody void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
     }
 
+    /**
+     * Retrieves a list of all products.
+     *
+     * @return List of products.
+     */
     @GetMapping("/products")
     public @ResponseBody List<Product> getProducts() {
         return productService.getAllProducts();
     }
 
+    /**
+     * Adds a product to the shopping cart.
+     *
+     * @param product The product to be added to the cart.
+     */
     @PostMapping(path = "/add-to-cart")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void addToCart(@RequestBody Product product) {
@@ -84,6 +117,9 @@ public class ProductController {
         productToCartProducer.sendToCart(cartItem);
     }
 
+    /**
+     * Seeds the database with dummy product data.
+     */
     @GetMapping("/seed-database")
     public void seedDataBase() {
         if (productService.getCountOfProducts() == 0) {

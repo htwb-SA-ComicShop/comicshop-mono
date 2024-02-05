@@ -9,6 +9,9 @@ import com.stripe.exception.StripeException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ *  Service interface for managing Carts.
+ */
 public interface ICartService {
     /**
      * creates a Cart
