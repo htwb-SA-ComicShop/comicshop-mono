@@ -142,6 +142,11 @@ public class CartController {
         KeycloakAPI keycloakAPI = new KeycloakAPI();
         return keycloakAPI.resetPassword(username, newPassword);
     }
-    
 
+    @GetMapping("/test")
+    @CrossOrigin(origins = "*")
+    public String test() {
+        return "TEST";
+    }
+    
 }

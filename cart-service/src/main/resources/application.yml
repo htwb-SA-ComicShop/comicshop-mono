@@ -1,5 +1,3 @@
-#server:
- #port: 8082
 spring:
   mvc:
     pathmatch:
@@ -18,8 +16,8 @@ spring:
       resourceserver:
         jwt:
           #          # Configurations for running locally
-          #          jwk-set-uri: http://localhost:8090/auth/realms/profile-service/protocol/openid-connect/certs
-          #          issuer-uri: http://localhost:8090/auth/realms/profile-service
+          #          #          jwk-set-uri: http://localhost:8090/auth/realms/profile-service/protocol/openid-connect/certs
+          #          #          issuer-uri: http://localhost:8090/auth/realms/profile-service
           # Configurations for running within Docker
           jwk-set-uri: http://keycloak:8080/auth/realms/profile-service/protocol/openid-connect/certs
           issuer-uri: http://localhost:8090/auth/realms/profile-service

@@ -35,8 +35,6 @@ public class AddToCartConsumer {
 
         LOGGER.info(String.format("Received message -> %s", addToCart));
 
-        KeycloakAPI api = new KeycloakAPI();
-
         String cartId;
         JSONObject cartItem = new JSONObject(addToCart);
         CartItem item = new CartItem(
@@ -51,27 +49,23 @@ public class AddToCartConsumer {
             throw new NullPointerException("product id and price have to be valid");
         }
 
-        String username = cartItem.getString("username");
 
-/*
-        // TODO fix keycloak!!!
+        /*String username = cartItem.getString("username");
+        KeycloakAPI keycloakAPI = new KeycloakAPI();
+
         try {
-            cartId = api.getUserCartId(username);
+            cartId = keycloakAPI.getUserCartId(username);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-
         if (cartId==null) {
             throw new CartNotFoundException(null);
         }
-
- */
-
+        */
 
 
-
-        cartService.addToCart(item, UUID.fromString("b5993af9-9eee-4f01-a279-3817ca7742e2")); //"b5993af9-9eee-4f01-a279-3817ca7742e2"
+        cartService.addToCart(item, UUID.fromString("1f9f00fc-46ca-4ae8-a886-b0751dc4a132"));
         System.out.println("CART ITEM RECEIVED. ID IS: " + item.getProductId());
     }
 }
