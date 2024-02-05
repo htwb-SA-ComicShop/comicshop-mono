@@ -1,12 +1,16 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { Product } from '../../types';
+import {Cart, Product} from '../../types';
 import { Button, Flex, Spinner, Text, VStack } from '@chakra-ui/react';
 import ProductGrid from '../components/ProductGrid';
 import { Link } from 'react-router-dom';
 import AuthWrapper from '../../auth/components/AuthWrapper';
+import useAuth from "../../auth/hooks/useAuth.hook";
 
 const ProductsListPage = (): ReactElement => {
+  const { token, cartId, username, isLoggedIn } = useAuth();
+
   const [comics, setComics] = useState<Product[]>([]);
+
   useEffect(() => {
     async function fetchComics() {
       const response = await fetch('http://localhost:8080/products', {
@@ -17,6 +21,34 @@ const ProductsListPage = (): ReactElement => {
     }
     fetchComics();
   }, []);
+
+  useEffect(() => {
+    async function fetchCartId(){
+      const payload: Cart = {
+        id: null,
+        username: `${username}`,
+        cartItems: [],
+        totalPrice: 0,
+      }
+      if (isLoggedIn && (cartId == null || cartId == "null" || cartId == "")){
+        const response = await fetch(`http://localhost:8082/cart`, {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+          throw new Error('Something went wrong!');
+        }
+        //token.cartId = response.text(); TODO assign cartId to user
+      }
+    }
+    fetchCartId();
+  }, [isLoggedIn]);
 
   return (
     <main>

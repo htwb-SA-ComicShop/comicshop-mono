@@ -39,8 +39,18 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface Cart {
+  id: string | null;
+  username: string;
+  cartItems: CartItem[];
+  totalPrice: number;
+  boughtAt?: string | null;
+  isBought: boolean;
+}
+
 export interface CartItem {
   id: string | null;
+  productId: string;
   name: string;
   author: string;
   price: number;
@@ -50,4 +60,8 @@ export interface CartItem {
 
 export interface CartItemGridProps {
   cartItems: CartItem[];
+}
+
+export interface TotalPrice {
+  price: number
 }

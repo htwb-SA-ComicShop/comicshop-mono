@@ -11,10 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -28,34 +25,39 @@ public class Cart {
     @Column(name = "id")
     private UUID id;
 
+    @Column(name = "username")
     private String username;
 
-    @OneToMany
-    private HashMap<UUID, CartItem> cartItems = new HashMap<>();
-    ;
+    @Column(name = "cartItems")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JoinColumn(name = "cart_id")
+    private List<CartItem> cartItems = new LinkedList<>();
 
-    private double totalPrice;
+    @Column(name = "totalPrice")
+    private double totalPrice = 0.0;
+
+    @Column(name = "boughtAt")
     private LocalDate boughtAt;
 
     private String linkToInvoice;
     private String linkToContent;
     private String email;
 
+    @Column(name = "isBought")
     private boolean isBought = false;
 
-    public Cart() {
-    }
+    public Cart() {}
 
     public String getUsername() {
         return username;
     }
 
-    public void setCartItems(HashMap<UUID, CartItem> cartItems) {
+    public void setCartItems(List<CartItem> cartItems) {
         this.cartItems = cartItems;
         this.totalPrice = calculateTotalPrice();
     }
 
-    public HashMap<UUID, CartItem> getCartItems() {
+    public List<CartItem> getCartItems() {
         return cartItems;
     }
 
@@ -63,9 +65,8 @@ public class Cart {
         return totalPrice;
     }
 
-    public double calculateTotalPrice() {
+    public double calculateTotalPrice(){
         return this.cartItems
-                .values()
                 .stream()
                 .map(CartItem::getPrice)
                 .reduce(0.0, Double::sum);
@@ -83,15 +84,15 @@ public class Cart {
 
             // Comic Details
             invoiceBuilder.append("Comics Purchased:\n");
-            for (Map.Entry<UUID, CartItem> entry : cartItems.entrySet()) {
-                String comicId = entry.getKey().toString();
-                String comicTitle = entry.getValue().getName();
-                double comicPrice = entry.getValue().getPrice();
+            cartItems.forEach(entry -> {
+                String comicId = entry.getProductId().toString();
+                String comicTitle = entry.getName();
+                double comicPrice = entry.getPrice();
                 invoiceBuilder.append("- Comic ID: ").append(comicId)
                         .append(", Title: ").append(comicTitle)
                         .append(", Price: $").append(comicPrice)
                         .append("\n");
-            }
+            });
             invoiceBuilder.append("\n");
 
             // Total Price

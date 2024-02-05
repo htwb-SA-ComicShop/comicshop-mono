@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -75,6 +76,7 @@ public class ProductController {
         Map<String, Object> tokenAttributes = authToken.getTokenAttributes();
         String userName = (String) tokenAttributes.get("preferred_username");
         String email = (String) tokenAttributes.get("email");
+        //TODO if tokenAttributes.replace() then does it replace the value in Keycloak??
         System.out.println("Adding to cart: " + product.getName());
         System.out.println("userName: " + userName);
         System.out.println("email: " + email);
@@ -154,5 +156,4 @@ public class ProductController {
             productService.createProduct(f);
         }
     }
-
 }

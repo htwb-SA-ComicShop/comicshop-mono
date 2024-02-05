@@ -1,29 +1,38 @@
 package com.example.cart.core.domain.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.UUID;
 
+@Data
 @Entity
 public class CartItem {
-
-    //TODO are these taks needed
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "productId")
+    private UUID productId;
 
-    //TODO image
-
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "author")
     private String author;
+
+    @Column(name = "price")
     private double price;
+
+    @Column(name = "linkToProduct")
     private String linkToProduct;
 
+    @Column(name = "imgUrl")
     private String imgUrl;
 
     public CartItem(UUID id, String name, String author, double price, String imgUrl, String linkToProduct) {
-        this.id = id;
+        this.productId = id;
         this.name = name;
         this.author = author;
         this.price = price;
@@ -52,5 +61,9 @@ public class CartItem {
 
     public UUID getId() {
         return id;
+    }
+
+    public UUID getProductId() {
+        return productId;
     }
 }

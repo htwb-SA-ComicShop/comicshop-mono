@@ -25,6 +25,7 @@ public class AddToCartDTO implements Serializable {
     private String imgUrl;
     private double price;
 
+
     public AddToCartDTO(String username, String email, Product product) {
         this.productId = product.getId();
         this.productName = product.getName();

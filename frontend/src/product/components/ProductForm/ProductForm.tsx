@@ -28,7 +28,7 @@ const ProductForm = ({ defaults, method, id }: FormProps) => {
 
   const url =
     method === 'POST'
-      ? 'http://localhost:8080/product'
+      ? 'http://localhost:8080/add-product'
       : `http://localhost:8080/product/${id}`;
 
   const onSubmit: SubmitHandler<Product> = async (data: Product) => {

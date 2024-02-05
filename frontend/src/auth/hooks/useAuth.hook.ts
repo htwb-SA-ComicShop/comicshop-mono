@@ -8,6 +8,7 @@ export default function useAuth() {
   const firstName = tokenParsed?.first_name;
   const lastName = tokenParsed?.family_name;
   const username = tokenParsed?.preferred_username;
+  const cartId = tokenParsed?.cartId;
   const isAdmin = keycloak?.hasRealmRole("shop-admin");
   const token = keycloak?.token;
   const signup = () => {
@@ -32,6 +33,7 @@ export default function useAuth() {
     logout,
     email,
     username,
+    cartId,
     lastName,
     firstName,
     signup,
