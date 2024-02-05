@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddOrderInfoProducer {
 
-    @Value("order_exchange")
+    @Value("cart_exchange")
     private String exchange;
 
     @Value("order_info_routing_key")
