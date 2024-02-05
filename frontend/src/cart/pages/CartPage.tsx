@@ -19,6 +19,7 @@ import {Link} from 'react-router-dom';
 import AuthWrapper from '../../auth/components/AuthWrapper';
 import useAuth from "../../auth/hooks/useAuth.hook";
 import DeleteButton from "../components/CartItemCard/DeleteButton";
+import CheckoutButton from "../components/CheckoutButton";
 
 const CartItemsListPage = (): ReactElement => {
     const dummyCart : Cart = {
@@ -164,6 +165,7 @@ const CartItemsListPage = (): ReactElement => {
                     />
                 )}
             </Stack>
+            <CheckoutButton cartId={cartId} />
             <Flex as='footer' pb={6} pt={12} justify='center' w='80%' mx='auto'>
                 <Text fontSize='sm'>ComicShop© 2024</Text>
             </Flex>
