@@ -13,7 +13,7 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import useAuth from '../../auth/hooks/useAuth.hook';
-import {Cart} from '../../types';
+import { Cart} from '../../types';
 
 const CheckoutButton = ({cartId}: { cartId: string }) => {
     const {token} = useAuth();
@@ -35,13 +35,7 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
     const handlePurchaseClick = async () => {
         //TODO handle credit card information
         if (creditCard.length >= 10) {
-            console.log('cart bought successfully with credit card: ', creditCard);
-            setIsPaymentSuccessful(true);
-        } else {
-            setIsCreditCardValid(false);
-        }
-
-        if (isPaymentSuccessful) {
+            alert("going to try")
             try {
                 const response = await fetch(`http://localhost:8082/cart/buy-cart/${cartId}`, {
                     method: 'GET',
@@ -51,24 +45,27 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
-                    body: JSON.stringify(cartId),
+                  //  body: JSON.stringify(cartId),
                 });
                 if (!response.ok) {
-                    throw new Error('Something went wrong!');
+                    alert(`Something went wrong!${response}`);
+                    throw new Error(`Something went wrong!${response}`);
                 }
                 toast({
                     title: 'All right!',
-                    description: 'Product was added to cart!',
+                    description: 'cart was checked out!',
                     position: 'top',
                     status: 'success',
                     duration: 5000,
                     isClosable: true,
                 });
+                alert(`cart bought successfully with credit card: ${creditCard}`);
+                setIsPaymentSuccessful(true);
             } catch (error) {
                 if (error instanceof Error) {
                     toast({
                         title: 'Ooops!',
-                        description: 'Something went wrong!',
+                        description: `Something went wrong!${error}`,
                         position: 'top',
                         status: 'error',
                         duration: 5000,
@@ -76,7 +73,11 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
                     });
                 }
             }
+        } else {
+            setIsCreditCardValid(false);
         }
+
+
     };
 
     return (
@@ -93,7 +94,7 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
                         {!isPaymentSuccessful ? (
                             <>
                                 <Text>
-                                    Please enter your credit card information in order to checkout the cart.
+                                    Your Credit card here:
                                 </Text>
                                 <Input
                                     type='text'
