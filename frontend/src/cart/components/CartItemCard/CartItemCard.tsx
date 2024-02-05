@@ -39,7 +39,7 @@ const CartItemCard = (cartItem: CartItem): ReactElement => {
                     </Box>
                     <Spacer />
                     <Box >
-                        {price}
+                        ${price}
                     </Box>
                     <Divider orientation='vertical' />
                     <Stack direction='column'>

@@ -153,7 +153,7 @@ const CartItemsListPage = (): ReactElement => {
             </Center>
             <Stack spacing={8} direction='column'>
                 {currCart.cartItems.length > 0 ? (
-                    <CartItemStack cartItems={currCart.cartItems} totalPrice={currCart.totalPrice} />
+                    <CartItemStack cartItems={currCart.cartItems}/>
                 ) : (
                     <Spinner
                         my={40}
@@ -162,10 +162,22 @@ const CartItemsListPage = (): ReactElement => {
                         color='teal.500'
                         speed='0.75s'
                         thickness='5px'
+                        justify='center'
                     />
                 )}
             </Stack>
-            <CheckoutButton cartId={cartId} />
+            <Stack p={5} shadow='md' borderWidth='1px' direction='row'>
+                <Box>
+                <Box as="span" flex='1' textAlign='left'>
+                    <Heading fontSize='xl'>Total Price</Heading>
+                </Box>
+                <Box fontSize='xl'>
+                    ${Math.round(currCart.totalPrice * 100) / 100}
+                </Box>
+                </Box>
+                <Spacer />
+                <CheckoutButton cartId={"b5993af9-9eee-4f01-a279-3817ca7742e2"} />
+            </Stack>
             <Flex as='footer' pb={6} pt={12} justify='center' w='80%' mx='auto'>
                 <Text fontSize='sm'>ComicShop© 2024</Text>
             </Flex>

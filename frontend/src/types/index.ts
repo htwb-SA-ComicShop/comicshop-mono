@@ -53,3 +53,7 @@ export interface CartItem {
 export interface CartItemGridProps {
   cartItems: CartItem[];
 }
+
+export interface TotalPrice {
+  price: number
+}
