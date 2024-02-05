@@ -7,7 +7,7 @@ import {
     CardBody,
     CardFooter, Divider,
     Heading,
-    Image,
+    Image, Spacer,
     Stack,
     Text,
 } from '@chakra-ui/react';
@@ -23,31 +23,26 @@ const CartItemCard = (cartItem: CartItem): ReactElement => {
     const { name, id, productId, author, price, imgUrl } =
         cartItem;
     return (
-        <AccordionItem>
-            <h2>
-                <AccordionButton>
-                    <Box as="span" flex='1' textAlign='left'>
-                        {name}
-                    </Box>
-                    <AccordionIcon />
-                </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-                <Stack direction='row'>
-                    <Box >
+        <Box p={5} shadow='md' borderWidth='1px'>
+            <Box as="span" flex='1' textAlign='left'>
+                <Heading fontSize='xl'>{name}</Heading>
+            </Box>
+            <Divider orientation='horizontal' />
+
+            <Stack direction='row'>
+                <Box >
                         <Image src= {imgUrl} boxSize='100px'/>
                     </Box>
                     <Divider orientation='vertical' />
                     <Box >
                         {author}
                     </Box>
-                    <Divider orientation='vertical' />
+                    <Spacer />
                     <Box >
                         {price}
                     </Box>
                     <Divider orientation='vertical' />
-                    <Box >
-                        <ButtonGroup spacing='2'>
+                    <Stack direction='column'>
                             <Button
                                 variant='outline'
                                 colorScheme='teal'
@@ -57,11 +52,9 @@ const CartItemCard = (cartItem: CartItem): ReactElement => {
                                 Go to Product
                             </Button>
                             <DeleteButton itemId={id ?? ''} />
-                        </ButtonGroup>
-                    </Box>
+                    </Stack>
                 </Stack>
-            </AccordionPanel>
-        </AccordionItem>
+        </Box>
         /*
         <Card maxW='sm' variant='filled'>
             <CardBody>

@@ -1,10 +1,24 @@
 import {ReactElement, useEffect, useState} from 'react';
 import {Cart, CartItem} from '../../types';
-import {Accordion, Button, Flex, Heading, Spinner, Text, VStack} from '@chakra-ui/react';
-import CartItemAccordion from '../components/CartItemAccordion';
+import {
+    Accordion,
+    Box,
+    Button, Center,
+    Divider,
+    Flex,
+    Heading,
+    Image,
+    Spacer,
+    Spinner,
+    Stack,
+    Text,
+    VStack
+} from '@chakra-ui/react';
+import CartItemStack from '../components/CartItemStack';
 import {Link} from 'react-router-dom';
 import AuthWrapper from '../../auth/components/AuthWrapper';
 import useAuth from "../../auth/hooks/useAuth.hook";
+import DeleteButton from "../components/CartItemCard/DeleteButton";
 
 const CartItemsListPage = (): ReactElement => {
     const dummyCart : Cart = {
@@ -122,6 +136,7 @@ const CartItemsListPage = (): ReactElement => {
                 //if (cart.isBought == false) {
                 //alert("cart Items are: " + cart.cartItems);
                     setCurrCart(cart);
+                    setCurrCartId(cart.id);
                 //} else {
                   //  alert("CAN'T CHANGE BOUGHT SHOPPING CART!!!");
                 //}
@@ -132,10 +147,12 @@ const CartItemsListPage = (): ReactElement => {
 
     return (
         <main>
-            <Heading as="h2" mb={4}>Shopping Cart</Heading>
-            <Accordion allowMultiple>
+            <Center>
+            <Heading as="h1" mb={4} spacing={5}>Shopping Cart</Heading>
+            </Center>
+            <Stack spacing={8} direction='column'>
                 {currCart.cartItems.length > 0 ? (
-                    <CartItemAccordion cartItems={currCart.cartItems} />
+                    <CartItemStack cartItems={currCart.cartItems} totalPrice={currCart.totalPrice} />
                 ) : (
                     <Spinner
                         my={40}
@@ -146,7 +163,7 @@ const CartItemsListPage = (): ReactElement => {
                         thickness='5px'
                     />
                 )}
-            </Accordion>
+            </Stack>
             <Flex as='footer' pb={6} pt={12} justify='center' w='80%' mx='auto'>
                 <Text fontSize='sm'>ComicShop© 2024</Text>
             </Flex>

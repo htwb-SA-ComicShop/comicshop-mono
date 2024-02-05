@@ -1,10 +1,10 @@
-import {Accordion, SimpleGrid} from '@chakra-ui/react';
+import {Accordion, Box, Heading, SimpleGrid, Spacer, Stack} from '@chakra-ui/react';
 import CartItemCart from './CartItemCard/CartItemCard';
 import { CartItemGridProps } from '../../types';
 
-const CartItemAccordion = ({ cartItems }: CartItemGridProps) => {
+const CartItemStack = ({ cartItems }: CartItemGridProps, { totalPrice }: number) => {
     return (
-        <Accordion>
+        <Stack p={5} shadow='md' borderWidth='1px' spacing={5}>
             {cartItems.map(
                 ({
                      name,
@@ -23,7 +23,16 @@ const CartItemAccordion = ({ cartItems }: CartItemGridProps) => {
                         />
                     )
             )}
-        </Accordion>
+            <Stack p={5} shadow='md' borderWidth='1px' direction='row'>
+                    <Box as="span" flex='1' textAlign='left'>
+                        <Heading fontSize='xl'>Total Price</Heading>
+                    </Box>
+                <Spacer />
+                    <Box >
+                        {totalPrice}
+                    </Box>
+            </Stack>
+        </Stack>
         /*
         <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing={4}>
             {cartItems.map(
@@ -49,4 +58,4 @@ const CartItemAccordion = ({ cartItems }: CartItemGridProps) => {
     );
 };
 
-export default CartItemAccordion;
+export default CartItemStack;
