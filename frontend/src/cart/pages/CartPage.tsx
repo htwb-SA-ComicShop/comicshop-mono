@@ -40,7 +40,7 @@ const ProductsListPage = (): ReactElement => {
                         colorScheme='teal'
                         variant='outline'
                     >
-                        Produkt hinzufügen
+                        add Product
                     </Button>
                 </AuthWrapper>
             </VStack>

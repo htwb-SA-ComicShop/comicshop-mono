@@ -6,6 +6,8 @@ import EditProductPage from '../product/pages/EditProductPage';
 import PrivateRouteWrapper from './components/PrivateRouteWrapper';
 import AddProductPage from '../product/pages/AddProductPage';
 import CartPage from "../cart/pages/CartPage";
+import ProfilePage from "../profile/pages/ProfilePage";
+import EditProfilePage from "../profile/pages/EditProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,22 @@ const router = createBrowserRouter([
         element: (
             <PrivateRouteWrapper role='customer'>
               <CartPage />
+            </PrivateRouteWrapper>
+        )
+      },
+      {
+        path: '/profile',
+        element: (
+            <PrivateRouteWrapper role='customer'>
+              <ProfilePage />
+            </PrivateRouteWrapper>
+        )
+      },
+      {
+        path: '/edit-profile',
+        element: (
+            <PrivateRouteWrapper role='customer'>
+              <EditProfilePage />
             </PrivateRouteWrapper>
         )
       }

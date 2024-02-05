@@ -5,6 +5,8 @@ export default function useAuth() {
   const { keycloak, initialized } = useKeycloak();
   const { login, logout, authenticated, tokenParsed } = keycloak;
   const email = tokenParsed?.email;
+  const firstName = tokenParsed?.first_name;
+  const lastName = tokenParsed?.family_name;
   const username = tokenParsed?.preferred_username;
   const isAdmin = keycloak?.hasRealmRole("shop-admin");
   const token = keycloak?.token;
@@ -30,6 +32,8 @@ export default function useAuth() {
     logout,
     email,
     username,
+    lastName,
+    firstName,
     signup,
   };
 }

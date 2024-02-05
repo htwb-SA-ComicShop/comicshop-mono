@@ -62,7 +62,7 @@ public class CartController {
 
     @DeleteMapping(path = "/cart/items/{itemId}")
     @CrossOrigin("*")
-    public @ResponseBody void deleteItemFromCart(UUID cartId, @PathVariable UUID itemId){
+    public @ResponseBody void deleteItemFromCart(UUID cartId, @PathVariable UUID itemId) {
         cartService.removeFromCart(itemId, cartId);
     }
 
@@ -70,12 +70,11 @@ public class CartController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void buyCart(@PathVariable UUID id) throws StripeException {//TODO return different http status instead of an exception
 
-
         Cart boughtCart = cartService.checkoutCart(id);
 
         SendOrderInfoToNotificationDTO sendOrder =
                 new SendOrderInfoToNotificationDTO(boughtCart.getLinkToContent(),
-                boughtCart.getLinkToInvoice(), boughtCart.getEmail(), boughtCart.getId().toString());
+                        boughtCart.getLinkToInvoice(), boughtCart.getEmail(), boughtCart.getId().toString());
         addOrderInfoProducer.sendToNotification(sendOrder);
     }
 

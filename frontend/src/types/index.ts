@@ -15,6 +15,14 @@ export interface Product {
   imgUrl?: string;
 }
 
+export interface Profile {
+  id: string | null;
+  firstname: string;
+  lastname: string;
+  username: string;
+  imgUrl?: string;
+}
+
 export interface ProductGridProps {
   products: Product[];
 }
