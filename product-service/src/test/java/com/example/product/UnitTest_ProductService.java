@@ -36,7 +36,46 @@ public class UnitTest_ProductService {
     }
 
     @Test
-    public void testPostProduct() {
+    public void shouldGetProduct() {
+        Product productToFind = new Product("ToFindName", "ToFindAuthor", "ToFindPublisher",
+                "ToFindDescription", "ToFindImgUrl", 2022, 100, 99.99);
+        Product savedProduct = productRepository.save(productToFind);
+
+        Product foundProduct = productService.getProduct(savedProduct.getId());
+
+        assertNotNull(foundProduct);
+        assertEquals(savedProduct.getId(), foundProduct.getId());
+
+        Optional<Product> nonExistentProduct = productRepository.findById(UUID.randomUUID());
+        assertTrue(nonExistentProduct.isEmpty());
+
+        assertThrows(ProductNotFoundException.class, () -> productService.getProduct(UUID.randomUUID()));
+    }
+
+    @Test
+    public void shouldGetAllProducts() {
+        Product product1 = new Product("Name1", "Author1", "Publisher1",
+                "Description1", "ImgUrl1", 2022, 100, 99.99);
+        Product product2 = new Product("Name2", "Author2", "Publisher2",
+                "Description2", "ImgUrl2", 2022, 150, 129.99);
+
+        productRepository.saveAll(List.of(product1, product2));
+
+        List<Product> allProducts = productService.getAllProducts();
+
+        assertEquals(2, allProducts.size());
+        assertEquals(product1.getName(), allProducts.get(0).getName());
+        assertEquals(product2.getName(), allProducts.get(1).getName());
+        assertEquals(product1.getPages(), allProducts.get(0).getPages());
+        assertEquals(product2.getPrice(), allProducts.get(1).getPrice());
+
+        productRepository.deleteAll();
+        List<Product> emptyProducts = productService.getAllProducts();
+        assertEquals(0, emptyProducts.size());
+    }
+
+    @Test
+    public void shouldPostProduct() {
         Product product = new Product("TestName", "TestAuthor", "TestPublisher",
                 "TestDescription", "TestImgUrl", 2022, 100, 99.99);
         Product createdProduct = productService.createProduct(product);
@@ -56,7 +95,7 @@ public class UnitTest_ProductService {
     }
 
     @Test
-    public void testUpdateProduct() {
+    public void shouldUpdateProduct() {
 
         Product originalProduct = new Product("OriginalName", "OriginalAuthor", "OriginalPublisher",
                 "OriginalDescription", "OriginalImgUrl", 2022, 100, 99.99);
@@ -80,7 +119,7 @@ public class UnitTest_ProductService {
     }
 
     @Test
-    public void testDeleteProduct() {
+    public void shouldDeleteProduct() {
         Product productToDelete = new Product("ToDeleteName", "ToDeleteAuthor", "ToDeletePublisher",
                 "ToDeleteDescription", "ToDeleteImgUrl", 2022, 100, 99.99);
         Product savedProduct = productRepository.save(productToDelete);
@@ -93,46 +132,7 @@ public class UnitTest_ProductService {
     }
 
     @Test
-    public void testGetProduct() {
-        Product productToFind = new Product("ToFindName", "ToFindAuthor", "ToFindPublisher",
-                "ToFindDescription", "ToFindImgUrl", 2022, 100, 99.99);
-        Product savedProduct = productRepository.save(productToFind);
-
-        Product foundProduct = productService.getProduct(savedProduct.getId());
-
-        assertNotNull(foundProduct);
-        assertEquals(savedProduct.getId(), foundProduct.getId());
-
-        Optional<Product> nonExistentProduct = productRepository.findById(UUID.randomUUID());
-        assertTrue(nonExistentProduct.isEmpty());
-
-        assertThrows(ProductNotFoundException.class, () -> productService.getProduct(UUID.randomUUID()));
-    }
-
-    @Test
-    public void testGetAllProducts() {
-        Product product1 = new Product("Name1", "Author1", "Publisher1",
-                "Description1", "ImgUrl1", 2022, 100, 99.99);
-        Product product2 = new Product("Name2", "Author2", "Publisher2",
-                "Description2", "ImgUrl2", 2022, 150, 129.99);
-
-        productRepository.saveAll(List.of(product1, product2));
-
-        List<Product> allProducts = productService.getAllProducts();
-
-        assertEquals(2, allProducts.size());
-        assertEquals(product1.getName(), allProducts.get(0).getName());
-        assertEquals(product2.getName(), allProducts.get(1).getName());
-        assertEquals(product1.getPages(), allProducts.get(0).getPages());
-        assertEquals(product2.getPrice(), allProducts.get(1).getPrice());
-
-        productRepository.deleteAll();
-        List<Product> emptyProducts = productService.getAllProducts();
-        assertEquals(0, emptyProducts.size());
-    }
-
-    @Test
-    public void testGetCountOfProducts() {
+    public void shouldGetCountOfProducts() {
         // Arrange
         Product product1 = new Product("Name1", "Author1", "Publisher1",
                 "Description1", "ImgUrl1", 2022, 100, 99.99);
