@@ -52,7 +52,7 @@ public class CartService implements ICartService {
     public void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException {
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
         List<CartItem> newCartItems = cart.getCartItems();
-        newCartItems.removeIf(entry -> entry.getProductId() == itemId);
+        newCartItems.removeIf(entry -> entry.getId().equals(itemId));
         cart.setCartItems(newCartItems);
         cartRepository.save(cart);
     }

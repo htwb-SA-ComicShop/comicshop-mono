@@ -103,15 +103,9 @@ const CartItemsListPage = (): ReactElement => {
                 {currCart.cartItems.length > 0 ? (
                     <CartItemStack cartItems={currCart.cartItems}/>
                 ) : (
-                    <Spinner
-                        my={40}
-                        size='xl'
-                        emptyColor='teal.200'
-                        color='teal.500'
-                        speed='0.75s'
-                        thickness='5px'
-                        justify='center'
-                    />
+                    <Stack borderWidth='1px'>
+                        <Heading fontSize='l'>Wow! So empty...</Heading>
+                    </Stack>
                 )}
             </Stack>
             <Stack p={5} shadow='md' borderWidth='1px' direction='row'>
