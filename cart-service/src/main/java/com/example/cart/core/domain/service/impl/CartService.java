@@ -39,7 +39,7 @@ public class CartService implements ICartService {
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
 
         List<CartItem> cartItems = cart.getCartItems();
-        if(cartItems.stream().noneMatch(cartItem -> cartItem.getProductId()==item.getProductId())) {
+        if (cartItems.stream().noneMatch(cartItem -> cartItem.getProductId() == item.getProductId())) {
             cartItems.add(item);
             cart.setCartItems(cartItems);
             System.out.println("CART ITEMS ARE: " + cart.getCartItems().stream().collect(Collectors.toList()));
@@ -50,11 +50,10 @@ public class CartService implements ICartService {
 
     @Override
     public void removeFromCart(UUID itemId, UUID cartId) throws CartItemNotFoundException {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId));
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
         List<CartItem> newCartItems = cart.getCartItems();
-        newCartItems.removeIf(entry -> entry.getId().equals(itemId));
+        newCartItems.removeIf(entry -> entry.getProductId() == itemId);
         cart.setCartItems(newCartItems);
-
         cartRepository.save(cart);
     }
 
@@ -62,20 +61,31 @@ public class CartService implements ICartService {
     public Cart checkoutCart(UUID id) throws StripeException {
         Cart boughtCart = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
         boughtCart.setBoughtAt(LocalDate.now());
-
+        System.out.println("in checkout cart eemail:" + boughtCart.getEmail());
+        //TODO make writing in file and stripe reading it work
+/*
         boughtCart.setLinkToInvoice(
                 stripeService.getLinkToFile(
                         boughtCart.generateInvoice()).toString());
 
-        StringBuilder invoiceBuilder = new StringBuilder();
+        StringBuilder contentBuilder = new StringBuilder();
         for (CartItem item :
                 boughtCart.getCartItems()) {
-            invoiceBuilder.append(item.getName()).append(": ")
+            contentBuilder.append(item.getName()).append(": ")
                     .append(stripeService.getLinkToFile(
                             boughtCart.getPathToComic(item.getName())).toString()).append("\n");
         }
         boughtCart.setLinkToContent(invoiceBuilder.toString());
 
+ */
+        boughtCart.setLinkToInvoice(" LinkToInvoice ");
+
+        StringBuilder contentBuilder = new StringBuilder();
+        for (CartItem item :
+                boughtCart.getCartItems()) {
+            contentBuilder.append("LinkTo").append(item.getName()).append(":\n ");
+        }
+        boughtCart.setLinkToContent(contentBuilder.toString());
         return cartRepository.save(boughtCart);
     }
 
@@ -99,9 +109,13 @@ public class CartService implements ICartService {
     @Override
     public Cart updateCart(Cart cart, UUID id) throws CartNotFoundException {
         Cart cartToBeUpdated = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
-        if (cartToBeUpdated.isBought()){ throw new NoPurchaseException(); }
+        if (cartToBeUpdated.isBought()) {
+            throw new NoPurchaseException();
+        }
+        System.out.println("in update cart eemail:" + cart.getEmail());
         cartToBeUpdated.setUsername(cart.getUsername());
         cartToBeUpdated.setCartItems(cart.getCartItems());
+        cartToBeUpdated.setEmail(cart.getEmail());
 
         return cartRepository.save(cartToBeUpdated);
     }
