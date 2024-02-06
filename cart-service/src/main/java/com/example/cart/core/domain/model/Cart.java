@@ -6,9 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.*;
@@ -38,10 +41,13 @@ public class Cart {
 
     @Column(name = "boughtAt")
     private LocalDate boughtAt;
+    @Column(name = "email")
+    private String email;
 
     private String linkToInvoice;
     private String linkToContent;
-    private String email;
+
+
 
     @Column(name = "isBought")
     private boolean isBought = false;
@@ -66,10 +72,13 @@ public class Cart {
     }
 
     public double calculateTotalPrice(){
-        return this.cartItems
-                .stream()
-                .map(CartItem::getPrice)
-                .reduce(0.0, Double::sum);
+       if (this.cartItems.size()>=1) {
+           return this.cartItems
+                   .stream()
+                   .map(CartItem::getPrice)
+                   .reduce(0.0, Double::sum);
+       }
+       return 0;
     }
 
     public String generateInvoice() {
@@ -99,13 +108,7 @@ public class Cart {
             invoiceBuilder.append("Total Price: $").append(totalPrice).append("\n");
 
             //Save into file
-            Path filePath = Path.of("cart-service/files/invoice.pdf");
-            try {
-                Files.write(filePath, invoiceBuilder.toString().getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return filePath.toString();
+           return writeFIle(invoiceBuilder.toString(), "Invoice");
         }
         throw new NoPurchaseException();
     }
@@ -113,18 +116,23 @@ public class Cart {
     //TODO get the comic from the db
     public String getPathToComic(String comicName) {
         if (isBought) {
-
-            Path filePath = Path.of("cart-service/files/" + comicName + ".pdf");
-            try {
-                Files.write(filePath, comicName.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return filePath.toString();
+            return writeFIle(comicName, comicName);
         }
         throw new NoPurchaseException();
     }
 
+    private String writeFIle(String content, String name){
+        Path path = Paths.get( name + ".txt");
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path.toString()));
+            writer.write(content);
+            writer.close();
+
+            return path.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public void setBoughtAt(LocalDate boughtAt) {
         this.boughtAt = boughtAt;
         this.isBought = true;

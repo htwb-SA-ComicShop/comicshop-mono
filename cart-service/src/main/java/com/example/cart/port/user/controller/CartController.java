@@ -159,7 +159,7 @@ public class CartController {
         } catch (StripeException e) {
             throw new RuntimeException(e);
         }
-
+        boughtCart.setEmail("adobe@gmx.net");
         SendOrderInfoToNotificationDTO sendOrder =
                 new SendOrderInfoToNotificationDTO(boughtCart.getLinkToContent(),
                         boughtCart.getLinkToInvoice(), boughtCart.getEmail(), boughtCart.getId().toString());

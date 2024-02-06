@@ -83,7 +83,7 @@ public class CartService implements ICartService {
         StringBuilder contentBuilder = new StringBuilder();
         for (CartItem item :
                 boughtCart.getCartItems()) {
-            contentBuilder.append("LinkTo").append(item.getName()).append(":\n ");
+            contentBuilder.append("LinkTo ").append(item.getName()).append(":\n ");
         }
         boughtCart.setLinkToContent(contentBuilder.toString());
         return cartRepository.save(boughtCart);
@@ -109,10 +109,6 @@ public class CartService implements ICartService {
     @Override
     public Cart updateCart(Cart cart, UUID id) throws CartNotFoundException {
         Cart cartToBeUpdated = cartRepository.findById(id).orElseThrow(() -> new CartNotFoundException(id));
-        if (cartToBeUpdated.isBought()) {
-            throw new NoPurchaseException();
-        }
-        System.out.println("in update cart eemail:" + cart.getEmail());
         cartToBeUpdated.setUsername(cart.getUsername());
         cartToBeUpdated.setCartItems(cart.getCartItems());
         cartToBeUpdated.setEmail(cart.getEmail());

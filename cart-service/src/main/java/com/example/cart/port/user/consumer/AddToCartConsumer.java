@@ -35,7 +35,7 @@ public class AddToCartConsumer {
 
         LOGGER.info(String.format("Received message -> %s", addToCart));
 
-        String cartId;
+
         JSONObject cartItem = new JSONObject(addToCart);
         CartItem item = new CartItem(
                 UUID.fromString(cartItem.get("productId").toString()),
@@ -49,6 +49,8 @@ public class AddToCartConsumer {
             throw new NullPointerException("product id and price have to be valid");
         }
 
+        /*
+        String cartId;
 
         /*
         String username = cartItem.getString("username");
@@ -64,8 +66,10 @@ public class AddToCartConsumer {
             throw new CartNotFoundException(null);
         }
         */
-
+        //TODO remove hard coded cart
+        Cart updatedCart = cartService.getCart(UUID.fromString("00e8df61-c08f-47d4-96cb-c70fad2973f0"));
+        updatedCart.setEmail(cartItem.get("email").toString());;
+        cartService.addToCart(item, updatedCart.getId());
         System.out.println("CART ITEM RECEIVED. ID IS: " + item.getProductId());
-        cartService.addToCart(item, UUID.fromString("b5993af9-9eee-4f01-a279-3817ca7742e2"));
     }
 }
