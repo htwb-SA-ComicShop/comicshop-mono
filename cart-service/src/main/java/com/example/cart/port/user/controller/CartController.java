@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.Map;
 
+
 @RestController
 public class CartController {
     @Autowired
@@ -41,6 +42,13 @@ public class CartController {
     @Autowired
     AddOrderInfoProducer addOrderInfoProducer;
 
+
+    /**
+     * Create a new shopping cart.
+     *
+     * @param cart JSON representation of the cart.
+     * @return ID of the created cart.
+     */
     @PostMapping(path = "/cart")
     @ResponseStatus(HttpStatus.OK)
     public String create(@RequestBody String cart) {
@@ -74,6 +82,12 @@ public class CartController {
         }
     }
 
+    /**
+     * Retrieve a shopping cart by ID.
+     *
+     * @param id Unique identifier of the shopping cart.
+     * @return Retrieved cart.
+     */
     @GetMapping("/cart/{id}")
     public @ResponseBody Cart getCart(@PathVariable String id) {
         System.out.println("IN GETCART, ID: " + id);
@@ -82,6 +96,12 @@ public class CartController {
         return cart;
     }
 
+    /**
+     * Update an existing shopping cart.
+     *
+     * @param cart Updated cart details.
+     * @param id   Unique identifier of the shopping cart to be updated.
+     */
     @PutMapping(path = "/cart/{id}")
     @ResponseStatus(HttpStatus.OK)
     @CrossOrigin(origins = "*")
@@ -90,6 +110,11 @@ public class CartController {
         cartService.updateCart(cart, UUID.fromString(id));
     }
 
+    /**
+     * Delete a shopping cart by ID.
+     *
+     * @param id Unique identifier of the shopping cart to be deleted.
+     */
     @DeleteMapping(path = "/cart/{id}")
     @CrossOrigin(origins = "*")
     public @ResponseBody void deleteCart(@PathVariable String id) {
@@ -97,17 +122,33 @@ public class CartController {
     }
 
 
+    /**
+     * Retrieve a list of all shopping carts.
+     *
+     * @return List of shopping carts.
+     */
     @GetMapping("/carts")
     public @ResponseBody List<Cart> getCarts() {
         return cartService.getAllCarts();
     }
 
+    /**
+     * Delete an item from a shopping cart.
+     *
+     * @param cartId Unique identifier of the cart.
+     * @param itemId  Unique identifier of the item to be removed.
+     */
     @DeleteMapping(path = "/cart/items/{itemId}")
     @CrossOrigin("*")
     public @ResponseBody void deleteItemFromCart(@PathVariable String itemId, @RequestBody String cartId){
         cartService.removeFromCart(UUID.fromString(itemId), UUID.fromString(cartId));
     }
 
+    /**
+     * Purchase a shopping cart.
+     *
+     * @param id Unique identifier of the shopping cart to be purchased.
+     */
     @GetMapping(path = "/cart/buy-cart/{id}")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody void buyCart(@PathVariable String id) {
