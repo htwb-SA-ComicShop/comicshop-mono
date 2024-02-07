@@ -131,19 +131,17 @@ class IntTest_ProductController {
                 .andExpect(jsonPath("$[2].publisher").value(product3.getPublisher()));
     }
 
-    /*@Test
-    public void getProduct_ifNotExists_shouldThrowException() throws Exception {
+    @Test
+    public void getProduct_ifNotExists_shouldReturn404() throws Exception {
         UUID uuid = UUID.randomUUID();
         String apiUUID = uuid.toString();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", apiUUID));
 
-        assertThrows(ProductNotFoundException.class, () -> {
         mockMvc.perform(MockMvcRequestBuilders.get("/product/{id}", apiUUID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
-        });
-    }*/
+    }
 
     @Test
     public void shouldUpdateProduct() throws Exception {
@@ -173,6 +171,16 @@ class IntTest_ProductController {
         assertEquals("Updated Author", testProduct.getAuthor());
         assertEquals(2, testProduct.getPublishYear());
         assertEquals(2.0, testProduct.getPrice());
+    }
+
+    @Test
+    public void UpdateProduct_ifNotExists_shouldReturn400() throws Exception {
+        String apiUUID = UUID.randomUUID().toString();
+        url = url + port + "/product/" + apiUUID;
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/product/{id}", apiUUID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -208,4 +216,13 @@ class IntTest_ProductController {
         assertFalse(productExists);
     }
 
+    @Test
+    public void deleteProduct_ifNotExists_shouldReturn404() throws Exception {
+        String apiUUID = UUID.randomUUID().toString();
+        url = url + port + "/product/" + apiUUID;
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/{id}", apiUUID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 }
