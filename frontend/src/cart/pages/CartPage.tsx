@@ -55,7 +55,7 @@ const CartItemsListPage = (): ReactElement => {
     useEffect(() => {
         async function fetchCart() {
             if (currCartId != null && currCartId != "null" && currCartId != "") {
-                const response = await fetch(`http://localhost:8082/cart/b5993af9-9eee-4f01-a279-3817ca7742e2`, { // TODO change to use user CartId from keycloak: http://localhost:8082/cart/${currCartId}
+                const response = await fetch(`http://localhost:8082/cart/b5993af9-9eee-4f01-a279-3817ca7742e2`, {
                     mode: 'cors',
                     cache: 'no-cache',
                     headers: {

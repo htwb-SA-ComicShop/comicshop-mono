@@ -45,7 +45,6 @@ const ProductsListPage = (): ReactElement => {
                 if (!response.ok) {
                     throw new Error('Something went wrong!');
                 }
-                //token.cartId = response.text(); TODO assign cartId to user
             }
         }
 
