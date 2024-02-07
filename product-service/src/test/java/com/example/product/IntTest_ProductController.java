@@ -174,7 +174,7 @@ class IntTest_ProductController {
     }
 
     @Test
-    public void UpdateProduct_ifNotExists_shouldReturn404() throws Exception {
+    public void UpdateProduct_ifNotExists_shouldReturn400() throws Exception {
         String apiUUID = UUID.randomUUID().toString();
         url = url + port + "/product/" + apiUUID;
 
