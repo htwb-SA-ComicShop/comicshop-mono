@@ -45,11 +45,14 @@ public class UnitTest_ProductService {
 
         assertNotNull(foundProduct);
         assertEquals(savedProduct.getId(), foundProduct.getId());
+    }
 
+    @Test
+    public void getProduct_ifNotExists_shouldThrowException() {
         Optional<Product> nonExistentProduct = productRepository.findById(UUID.randomUUID());
-        assertTrue(nonExistentProduct.isEmpty());
 
-        assertThrows(ProductNotFoundException.class, () -> productService.getProduct(UUID.randomUUID()));
+        assertTrue(nonExistentProduct.isEmpty());
+        assertThrows(ProductNotFoundException.class, () -> productService.getProduct(UUID.randomUUID()));assertThrows(ProductNotFoundException.class, () -> productService.getProduct(UUID.randomUUID()));
     }
 
     @Test
