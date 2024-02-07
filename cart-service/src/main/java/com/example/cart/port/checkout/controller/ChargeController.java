@@ -22,8 +22,7 @@ public class ChargeController {
     private StripeService paymentsService;
 
     @PostMapping("/charge")
-    public String charge(ChargeRequest chargeRequest, Model model)
-            throws StripeException {
+    public String charge(ChargeRequest chargeRequest, Model model) throws StripeException {
         chargeRequest.setDescription("Example charge");
         chargeRequest.setCurrency(ChargeRequest.Currency.USD);
         Charge charge = paymentsService.charge(chargeRequest);

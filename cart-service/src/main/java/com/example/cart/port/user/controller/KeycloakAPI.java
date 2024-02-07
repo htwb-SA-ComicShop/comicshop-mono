@@ -2,16 +2,17 @@ package com.example.cart.port.user.controller;
 
 
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.concurrent.TimeUnit;
 
 public class KeycloakAPI {
 
-    public KeycloakAPI() {}
+    public KeycloakAPI() {
+    }
 
     public String getAdminToken() throws IOException, InterruptedException {
         String url = "http://localhost:8090/auth/realms/master/protocol/openid-connect/token/";
@@ -47,7 +48,7 @@ public class KeycloakAPI {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         String searchForString = "\"attributes\":{\"cart_id\":[\"";
 
-        if(!response.body().contains(searchForString))
+        if (!response.body().contains(searchForString))
             return "NO CART ID";
 
         cartIdStartIndex = response.body().indexOf(searchForString) + searchForString.length();
@@ -99,10 +100,10 @@ public class KeycloakAPI {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         String result;
-        if(response.statusCode() == 204)
+        if (response.statusCode() == 204)
             result = "PASSWORD CHANGED!";
         else
-            result =  "ERROR!";
+            result = "ERROR!";
 
         return result;
     }
@@ -112,7 +113,7 @@ public class KeycloakAPI {
         String authorizationHeaderValue = "Bearer " + getAdminToken();
         String url = "http://localhost:8090/auth/admin/realms/profile-service/users/" + getUserId(userName);
 
-        String jsonPayload = "{\"attributes\": {\"cart_id\": \"" +  newCartId + "\"}}";
+        String jsonPayload = "{\"attributes\": {\"cart_id\": \"" + newCartId + "\"}}";
 
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -125,10 +126,10 @@ public class KeycloakAPI {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
         String result;
-        if(response.statusCode() == 204)
+        if (response.statusCode() == 204)
             result = "new cart_id: " + newCartId;
         else
-            result =  "ERROR!";
+            result = "ERROR!";
 
         return result;
     }

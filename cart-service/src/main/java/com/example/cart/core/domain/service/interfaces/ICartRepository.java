@@ -6,7 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Repository interface for persisting cart data
+ */
 @Repository
-public interface ICartRepository extends JpaRepository<Cart, UUID> {}
+public interface ICartRepository extends JpaRepository<Cart, UUID> {
+}
 
 

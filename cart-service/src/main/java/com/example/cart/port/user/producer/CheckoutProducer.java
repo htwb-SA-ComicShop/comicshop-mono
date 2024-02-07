@@ -9,21 +9,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class CheckoutProducer {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutProducer.class);
+    private final RabbitTemplate rabbitTemplate;
     @Value("cart_exchange")
     private String exchange;
-
     @Value("order_info_routing_key")
     private String routingKey;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutProducer.class);
-
-    private final RabbitTemplate rabbitTemplate;
 
     public CheckoutProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         LOGGER.info(String.format("Message sent -> %s", message));
         rabbitTemplate.convertAndSend(exchange, routingKey, message);
     }

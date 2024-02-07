@@ -1,14 +1,14 @@
-import { Outlet } from 'react-router';
-import { AdminStatusBar, NavBar } from '../../global/components';
+import {Outlet} from 'react-router';
+import {AdminStatusBar, NavBar} from '../../global/components';
 
 const NavBarWrapper = () => {
-  return (
-    <>
-      <AdminStatusBar />
-      <NavBar />
-      <Outlet />
-    </>
-  );
+    return (
+        <>
+            <AdminStatusBar/>
+            <NavBar/>
+            <Outlet/>
+        </>
+    );
 };
 
 export default NavBarWrapper;

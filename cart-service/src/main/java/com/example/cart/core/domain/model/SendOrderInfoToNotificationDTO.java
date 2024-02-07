@@ -13,7 +13,7 @@ public class SendOrderInfoToNotificationDTO {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String orderId;
+    private final String orderId;
 
     private String linkToInvoice;
 
@@ -28,14 +28,16 @@ public class SendOrderInfoToNotificationDTO {
         this.orderId = orderId;
     }
 
-    public UUID getId() { return id;}
-
-    public void setLinkToContent(String linkToContent) {
-        this.linkToContent = linkToContent;
+    public UUID getId() {
+        return id;
     }
 
     public String getLinkToContent() {
         return linkToContent;
+    }
+
+    public void setLinkToContent(String linkToContent) {
+        this.linkToContent = linkToContent;
     }
 
     public String getLinkToInvoice() {
@@ -45,6 +47,7 @@ public class SendOrderInfoToNotificationDTO {
     public void setLinkToInvoice(String linkToInvoice) {
         this.linkToInvoice = linkToInvoice;
     }
+
     public String getRecipient() {
         return recipient;
     }
@@ -53,7 +56,9 @@ public class SendOrderInfoToNotificationDTO {
         this.recipient = recipient;
     }
 
-    public String getOrderId(){ return this.orderId; }
+    public String getOrderId() {
+        return this.orderId;
+    }
 
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();

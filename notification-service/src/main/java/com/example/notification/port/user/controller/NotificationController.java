@@ -1,8 +1,6 @@
 package com.example.notification.port.user.controller;
 
-import com.example.notification.core.domain.model.KindOfNotification;
 import com.example.notification.core.domain.model.Notification;
-
 import com.example.notification.core.domain.service.interfaces.INotificationService;
 import com.example.notification.port.user.exception.NotificationNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ public class NotificationController {
     private INotificationService notificationService;
 
     /**
-     * Creates a new notification.
+     * Creates a new notification. And saves it in the Database.
      *
      * @param notification The notification to be created.
      */

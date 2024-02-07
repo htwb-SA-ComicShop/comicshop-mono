@@ -18,7 +18,7 @@ public class ProductConsumer {
     private IProductService productService;
 
     @RabbitListener(queues = {"product"})
-    public void consume(String message){
+    public void consume(String message) {
 
         LOGGER.info(String.format("Received message -> %s", message));
         productService.getProduct(new UUID(1L, 2L));

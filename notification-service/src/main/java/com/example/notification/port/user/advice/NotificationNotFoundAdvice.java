@@ -13,7 +13,7 @@ public class NotificationNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(value = NotificationNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String notificationNotFoundHandler(NotificationNotFoundException ex){
+    String notificationNotFoundHandler(NotificationNotFoundException ex) {
         return ex.getMessage();
     }
 

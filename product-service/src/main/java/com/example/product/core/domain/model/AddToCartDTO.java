@@ -19,11 +19,11 @@ public class AddToCartDTO implements Serializable {
     private UUID id;
     private String username;
     private String email;
-    private UUID productId;
-    private String productName;
-    private String author;
-    private String imgUrl;
-    private double price;
+    private final UUID productId;
+    private final String productName;
+    private final String author;
+    private final String imgUrl;
+    private final double price;
 
 
     public AddToCartDTO(String username, String email, Product product) {
@@ -36,7 +36,9 @@ public class AddToCartDTO implements Serializable {
         this.email = email;
     }
 
-    public UUID getId() { return id;}
+    public UUID getId() {
+        return id;
+    }
 
     public String getUsername() {
         return username;

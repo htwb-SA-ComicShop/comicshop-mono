@@ -6,7 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
+/**
+ * Repository interface for persisting notification data
+ */
 @Repository
-public interface INotificationRepository extends JpaRepository<Notification, UUID> {}
+public interface INotificationRepository extends JpaRepository<Notification, UUID> {
+}
 
 

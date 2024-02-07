@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @EnableMethodSecurity
 @EnableWebSecurity
 @Component
-class SecurityConfig  {
+class SecurityConfig {
 
 
     @Bean
@@ -42,14 +42,14 @@ class SecurityConfig  {
                 authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
                 .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/product").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/product/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/product/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/product").hasRole("admin")
+                .requestMatchers(HttpMethod.PUT, "/product/**").hasRole("admin")
+                .requestMatchers(HttpMethod.DELETE, "/product/**").hasRole("admin")
                 .requestMatchers(HttpMethod.GET, "/seed-database").permitAll()
-                .requestMatchers(HttpMethod.POST, "/add-to-cart").permitAll()
-                .requestMatchers(HttpMethod.GET, "/edit-product/**").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/edit-product/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/edit-product/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/add-to-cart").hasRole("customer")
+                .requestMatchers(HttpMethod.GET, "/edit-product/**").hasRole("admin")
+                .requestMatchers(HttpMethod.PUT, "/edit-product/**").hasRole("admin")
+                .requestMatchers(HttpMethod.POST, "/edit-product/**").hasRole("admin")
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()

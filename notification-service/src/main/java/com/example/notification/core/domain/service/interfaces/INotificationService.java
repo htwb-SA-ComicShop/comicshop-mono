@@ -36,19 +36,7 @@ public interface INotificationService {
      */
     void deleteNotification(UUID id) throws NotificationNotFoundException;
 
-    /**
-     * Retrieves a notification by its unique identifier.
-     *
-     * @param id The unique identifier of the notification.
-     * @return The retrieved notification.
-     * @throws NotificationNotFoundException If the notification with the given ID is not found.
-     */
     Notification getNotification(UUID id) throws NotificationNotFoundException;
 
-    /**
-     * Retrieves a list of all notifications.
-     *
-     * @return List of notifications.
-     */
     List<Notification> getAllNotifications();
 }

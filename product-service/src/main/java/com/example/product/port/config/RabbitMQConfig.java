@@ -27,34 +27,28 @@ public class RabbitMQConfig {
     private String cartItemRoutingKey;
 
     @Bean
-    public Queue queue(){
+    public Queue queue() {
         return new Queue(queue);
     }
 
     @Bean
-    public Queue cartQueue(){
+    public Queue cartQueue() {
         return new Queue(cartQueue);
     }
 
     @Bean
-    public TopicExchange exchange(){
+    public TopicExchange exchange() {
         return new TopicExchange(exchange);
     }
 
     @Bean
-    public Binding binding(){
-        return BindingBuilder
-                .bind(queue())
-                .to(exchange())
-                .with(routingKey);
+    public Binding binding() {
+        return BindingBuilder.bind(queue()).to(exchange()).with(routingKey);
     }
 
     @Bean
-    public Binding itemBinding(){
-        return BindingBuilder
-                .bind(cartQueue())
-                .to(exchange())
-                .with(cartItemRoutingKey);
+    public Binding itemBinding() {
+        return BindingBuilder.bind(cartQueue()).to(exchange()).with(cartItemRoutingKey);
     }
 
 }

@@ -1,13 +1,13 @@
 package com.example.notification.core.domain.service.impl;
 
 import com.example.notification.core.domain.model.Notification;
-import com.example.notification.core.domain.service.interfaces.INotificationService;
 import com.example.notification.core.domain.service.interfaces.INotificationRepository;
+import com.example.notification.core.domain.service.interfaces.INotificationService;
 import com.example.notification.port.user.exception.NotificationNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,16 +22,12 @@ public class NotificationService implements INotificationService {
     private final INotificationRepository notificationRepository;
 
     private final EmailService emailService;
-    //private final SMSService smsService;
 
     @Override
     public void createNotification(Notification notification) {
-        if (sendNotification(notification)) {
-            System.out.println("EMAIL SUCCESSFULLY SENT!");
-            //TODO: find workaround saving bodyText -> too long for DB
-            notification.setBodyText("--");
-            notificationRepository.save(notification);
-        } else { System.out.println("EMAIL NOT SENT!"); }
+        sendNotification(notification);
+        notification.setBodyText("--");
+        notificationRepository.save(notification);
     }
 
     @Override
@@ -66,10 +62,9 @@ public class NotificationService implements INotificationService {
         try {
             emailService.sendEmail(notification.getRecipient(), notification.getSubject(), notification.getBodyText());
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
-        //return false;
     }
 }

@@ -9,13 +9,12 @@ import lombok.Data;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -33,7 +32,6 @@ public class Cart {
 
     @Column(name = "cartItems")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    //@JoinColumn(name = "cart_id")
     private List<CartItem> cartItems = new LinkedList<>();
 
     @Column(name = "totalPrice")
@@ -48,37 +46,20 @@ public class Cart {
     private String linkToContent;
 
 
-
     @Column(name = "isBought")
     private boolean isBought = false;
 
-    public Cart() {}
-
-    public String getUsername() {
-        return username;
+    public Cart() {
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
-        this.cartItems = cartItems;
-        this.totalPrice = calculateTotalPrice();
-    }
-
-    public List<CartItem> getCartItems() {
-        return cartItems;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public double calculateTotalPrice(){
-       if (this.cartItems.size()>=1) {
-           return this.cartItems
-                   .stream()
-                   .map(CartItem::getPrice)
-                   .reduce(0.0, Double::sum);
-       }
-       return 0;
+    public double calculateTotalPrice() {
+        if (this.cartItems.size() >= 1) {
+            return this.cartItems
+                    .stream()
+                    .map(CartItem::getPrice)
+                    .reduce(0.0, Double::sum);
+        }
+        return 0;
     }
 
     public String generateInvoice() {
@@ -108,12 +89,11 @@ public class Cart {
             invoiceBuilder.append("Total Price: $").append(totalPrice).append("\n");
 
             //Save into file
-           return writeFIle(invoiceBuilder.toString(), "Invoice");
+            return writeFIle(invoiceBuilder.toString(), "Invoice");
         }
         throw new NoPurchaseException();
     }
 
-    //TODO get the comic from the db
     public String getPathToComic(String comicName) {
         if (isBought) {
             return writeFIle(comicName, comicName);
@@ -121,8 +101,8 @@ public class Cart {
         throw new NoPurchaseException();
     }
 
-    private String writeFIle(String content, String name){
-        Path path = Paths.get( name + ".txt");
+    private String writeFIle(String content, String name) {
+        Path path = Paths.get(name + ".txt");
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(path.toString()));
             writer.write(content);
@@ -133,29 +113,47 @@ public class Cart {
             throw new RuntimeException(e);
         }
     }
-    public void setBoughtAt(LocalDate boughtAt) {
-        this.boughtAt = boughtAt;
-        this.isBought = true;
-    }
 
-    public LocalDate getBoughtAt() {
-        return boughtAt;
-    }
-
-    public UUID getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public void setBought(boolean bought) {
-        isBought = bought;
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+        this.totalPrice = calculateTotalPrice();
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public LocalDate getBoughtAt() {
+        return boughtAt;
+    }
+
+    public void setBoughtAt(LocalDate boughtAt) {
+        this.boughtAt = boughtAt;
+        this.isBought = true;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public boolean isBought() {
         return isBought;
+    }
+
+    public void setBought(boolean bought) {
+        isBought = bought;
     }
 
     public String getLinkToInvoice() {
@@ -181,6 +179,4 @@ public class Cart {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 }

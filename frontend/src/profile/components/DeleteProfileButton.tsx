@@ -1,16 +1,12 @@
-import { Button } from '@chakra-ui/react';
+import {Button} from '@chakra-ui/react';
 
-const DeleteButton = ({ children }) => {
+const DeleteButton = ({children}) => {
     const handleClick = () => {
-        // Execute code when the button is pressed
-        console.log('Delete Profile!');
     };
 
-    return (
-        <Button colorScheme="red" onClick={handleClick}>
+    return (<Button colorScheme="red" onClick={handleClick}>
             {children}
-        </Button>
-    );
+        </Button>);
 };
 
 export default DeleteButton;

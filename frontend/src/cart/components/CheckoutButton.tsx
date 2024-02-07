@@ -1,19 +1,18 @@
 import {useState} from 'react';
 import {
     Button,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalCloseButton,
-    ModalBody,
-    ModalFooter,
     Input,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Text,
     useToast,
 } from '@chakra-ui/react';
 import useAuth from '../../auth/hooks/useAuth.hook';
-import { Cart} from '../../types';
 
 const CheckoutButton = ({cartId}: { cartId: string }) => {
     const {token} = useAuth();
@@ -33,9 +32,7 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
     };
 
     const handlePurchaseClick = async () => {
-        //TODO handle credit card information
         if (creditCard.length >= 10) {
-            alert("going to try")
             try {
                 const response = await fetch(`http://localhost:8082/cart/buy-cart/${cartId}`, {
                     method: 'GET',
@@ -45,7 +42,6 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
-                  //  body: JSON.stringify(cartId),
                 });
                 if (!response.ok) {
                     alert(`Something went wrong!${response}`);
@@ -59,7 +55,6 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
                     duration: 5000,
                     isClosable: true,
                 });
-                alert(`cart bought successfully with credit card: ${creditCard}`);
                 setIsPaymentSuccessful(true);
             } catch (error) {
                 if (error instanceof Error) {
@@ -76,8 +71,6 @@ const CheckoutButton = ({cartId}: { cartId: string }) => {
         } else {
             setIsCreditCardValid(false);
         }
-
-
     };
 
     return (

@@ -4,9 +4,9 @@ import com.example.product.core.domain.model.Product;
 import com.example.product.core.domain.service.interfaces.IProductRepository;
 import com.example.product.core.domain.service.interfaces.IProductService;
 import com.example.product.port.user.exception.ProductNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

@@ -15,14 +15,12 @@ import java.io.File;
 @Component
 public class EmailService implements IEmailService {
 
+    private final String EmailAddress = "SA.ComicShop@gmail.com";
     @Autowired
     private JavaMailSender emailSender;
-    private final String EmailAddress = "SA.ComicShop@gmail.com";
 
     @Override
-    public void sendEmail(
-            String to, String subject, String text) {
-        System.out.println("IN EMAIL SEND METHOD");
+    public void sendEmail(String to, String subject, String text) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(EmailAddress);
@@ -33,8 +31,7 @@ public class EmailService implements IEmailService {
     }
 
     @Override
-    public void sendEmail(
-            String to, String subject, String text, String pathToAttachment) throws MessagingException {
+    public void sendEmail(String to, String subject, String text, String pathToAttachment) throws MessagingException {
 
         MimeMessage message = emailSender.createMimeMessage();
 
@@ -45,8 +42,7 @@ public class EmailService implements IEmailService {
         helper.setSubject(subject);
         helper.setText(text);
 
-        FileSystemResource file
-                = new FileSystemResource(new File(pathToAttachment));
+        FileSystemResource file = new FileSystemResource(new File(pathToAttachment));
         helper.addAttachment("Invoice", file);
         emailSender.send(message);
     }

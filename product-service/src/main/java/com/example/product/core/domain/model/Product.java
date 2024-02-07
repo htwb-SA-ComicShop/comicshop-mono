@@ -43,7 +43,8 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
-    public Product(){}
+    public Product() {
+    }
 
     public Product(String name, String author, String publisher, String description, String imgUrl, Integer publishYear, Integer pages, Double price) {
         this.name = name;
@@ -56,31 +57,57 @@ public class Product {
         this.price = price;
     }
 
-    public UUID getId() { return id;}
+    public UUID getId() {
+        return id;
+    }
 
-    public void setId(UUID id) { this.id = id; }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) {this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getAuthor() { return author; }
+    public String getAuthor() {
+        return author;
+    }
 
-    public void setAuthor(String author) { this.author = author; }
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
-    public String getPublisher() { return publisher; }
+    public String getPublisher() {
+        return publisher;
+    }
 
-    public void setPublisher(String publisher) { this.publisher = publisher; }
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 
-    public Integer getPublishYear() { return publishYear; }
+    public Integer getPublishYear() {
+        return publishYear;
+    }
 
-    public void setPublishDate(Integer publishYear) { this.publishYear = publishYear; }
+    public void setPublishDate(Integer publishYear) {
+        this.publishYear = publishYear;
+    }
 
-    public Integer getPages() {return pages; }
+    public Integer getPages() {
+        return pages;
+    }
 
-    public void setPages(Integer pages) {this.pages = pages; }
+    public void setPages(Integer pages) {
+        this.pages = pages;
+    }
 
-    public void setPrice(Double price) { this.price = price; }
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
     public String getDescription() {
         return description;

@@ -40,14 +40,14 @@ class SecurityConfig  {
         http.
                 csrf().disable().
                 authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/carts").permitAll()
+                .requestMatchers(HttpMethod.GET, "/carts").hasRole("admin")
                 .requestMatchers(HttpMethod.POST, "/cart").permitAll()
-                .requestMatchers(HttpMethod.GET, "/cart/**").permitAll() //todo change to only customer
-                .requestMatchers(HttpMethod.PUT, "/cart/**").permitAll()//todo change to only customer
-                .requestMatchers(HttpMethod.DELETE, "/cart/items/**").permitAll()
-                .requestMatchers(HttpMethod.DELETE, "/cart/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/cart/buy-cart/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/keycloak/userCartId/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/cart/**").hasRole("customer")
+                .requestMatchers(HttpMethod.PUT, "/cart/**").hasRole("customer")
+                .requestMatchers(HttpMethod.DELETE, "/cart/items/**").hasRole("customer")
+                .requestMatchers(HttpMethod.DELETE, "/cart/**").hasAnyRole("customer", "admin")
+                .requestMatchers(HttpMethod.POST, "/cart/buy-cart/**").hasRole("customer")
+                .requestMatchers(HttpMethod.GET, "/keycloak/userCartId/**").hasAnyRole("customer", "admin")
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement()

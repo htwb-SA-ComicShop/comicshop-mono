@@ -31,7 +31,7 @@ public class Notification {
     private String linkToInvoice;
     private String bodyText;
     private Date timeStamp;
-    private  String subject;
+    private String subject;
 
     private KindOfNotification kind;
 
@@ -55,7 +55,6 @@ public class Notification {
         this.linkToInvoice = linkToInvoice;
     }
 
-    //TODO do we need two constructors here??
     public Notification(String recipient, String orderId, String linkToContent, String linkToInvoice) {
         this.recipient = recipient;
         this.linkToContent = linkToContent;
@@ -71,6 +70,7 @@ public class Notification {
             case WELCOME -> welcomeText();
         };
     }
+
     private String crateSubject() {
         return switch (kind) {
             case ORDER -> orderSubject();
@@ -89,15 +89,15 @@ public class Notification {
     private String welcomeText() {
         StringBuilder welcomeLetter = new StringBuilder();
 
-        welcomeLetter.append("Dear ").append(recipient).append(",\n\n")
+        welcomeLetter
+                .append("Dear ").append(recipient).append(",\n\n")
                 .append("Welcome to our Online Comic Shop!\n\n")
                 .append("We're thrilled to have you as a member of our community. ")
                 .append("Get ready to dive into a world of superheroes, adventures, and more!\n\n")
                 .append("As a registered member, you can explore our extensive collection of comics, ")
                 .append("manage your preferences, and make your orders even faster with the Quickcheckout option.\n\n")
                 .append("If you have any questions or need assistance, don't hesitate to reach out to us.\n\n")
-                .append("Happy reading!\n\n")
-                .append("Best regards,\nyour    ComicShop Team");
+                .append("Happy reading!\n\n").append("Best regards,\nyour    ComicShop Team");
 
         return welcomeLetter.toString();
     }
@@ -109,8 +109,7 @@ public class Notification {
                 .append("Thank you for your order (Order ID: ").append(orderId).append("), ")
                 .append("placed at ").append(timeStamp).append(". \n")
                 .append("You can download your purchased items using the following link:\n")
-                .append(linkToContent).append("\n\n")
-                .append("You can download your invoice here:\n")
+                .append(linkToContent).append("\n\n").append("You can download your invoice here:\n")
                 .append(linkToInvoice).append("\n\n")
                 .append("If you have any questions or need further assistance, feel free to contact us.\n\n")
                 .append("Best regards,\nYour ComicShop");
@@ -155,7 +154,7 @@ public class Notification {
         return subject;
     }
 
-    public void setKind(KindOfNotification kind){
+    public void setKind(KindOfNotification kind) {
         this.kind = kind;
     }
 }

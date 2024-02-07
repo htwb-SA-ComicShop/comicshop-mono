@@ -44,21 +44,14 @@ public class RabbitMQConfig {
 
     @Bean
     public Binding binding() {
-        return BindingBuilder
-                .bind(queue())
-                .to(exchange())
-                .with(orderRoutingKey);
+        return BindingBuilder.bind(queue()).to(exchange()).with(orderRoutingKey);
     }
 
 
     @Bean
     public Binding itemBinding() {
-        return BindingBuilder
-                .bind(cartQueue())
-                .to(exchange())
-                .with(cartRoutingKey);
+        return BindingBuilder.bind(cartQueue()).to(exchange()).with(cartRoutingKey);
     }
-
 
 
 }

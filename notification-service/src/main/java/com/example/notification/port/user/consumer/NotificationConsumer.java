@@ -13,29 +13,16 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class NotificationConsumer {
 
-    private final ObjectMapper mapper = new ObjectMapper();
-
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationConsumer.class);
-
+    private final ObjectMapper mapper = new ObjectMapper();
     @Autowired
     private INotificationService notificationService;
 
-    /*
-    @RabbitListener(queues = {"notification"})
-    public void consume(String message){
-
-        LOGGER.info(String.format("Received message -> %s", message));
-        notificationService.getNotification(new UUID(1L, 2L));
-    }
-
-     */
     @RabbitListener(queues = {"orderInfo"})
-    public void consumeOrderInfo(String orderInfo){
+    public void consumeOrderInfo(String orderInfo) {
 
         LOGGER.info(String.format("Received message -> %s", orderInfo));
 
@@ -48,13 +35,9 @@ public class NotificationConsumer {
 
             Notification notification = new Notification(recipient, orderId, linkToContent, linkToInvoice, KindOfNotification.ORDER);
 
-            System.out.println("NOTIFICATION RECEIVED. BODY IS: " + notification.getBodyText());
-
             notificationService.createNotification(notification);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-        //Notification notification = new Notification(orderInfo.getRecipient(), orderInfo.getId(), orderInfo.getLinkToContent(), orderInfo.getLinkToInvoice(), KindOfNotification.ORDER);
     }
 }

@@ -21,21 +21,18 @@ public class RabbitMQConfig {
     private String orderInfoRoutingKey;
 
     @Bean
-    public Queue itemQueue(){
+    public Queue itemQueue() {
         return new Queue(orderQueue);
     }
 
     @Bean
-    public TopicExchange exchange(){
+    public TopicExchange exchange() {
         return new TopicExchange(exchange);
     }
 
     @Bean
-    public Binding itemBinding(){
-        return BindingBuilder
-                .bind(itemQueue())
-                .to(exchange())
-                .with(orderInfoRoutingKey);
+    public Binding itemBinding() {
+        return BindingBuilder.bind(itemQueue()).to(exchange()).with(orderInfoRoutingKey);
     }
 
 }
