@@ -42,35 +42,7 @@ public class UnitTest_ProductController {
     }
 
     @Test
-    public void testAddProduct() throws Exception {
-
-        Product testProduct = new Product("TestName", "TestAuthor", "TestPublisher",
-                "TestDescription", "TestImgUrl", 2022, 100, 99.99);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/add-product")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(testProduct)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-
-        Mockito.verify(productService, Mockito.times(1)).createProduct(Mockito.eq(testProduct));
-    }
-
-    @Test
-    public void testUpdateProduct() throws Exception {
-        UUID productId = UUID.randomUUID();
-        Product updatedProduct = new Product("UpdatedName", "UpdatedAuthor", "UpdatedPublisher",
-                "UpdatedDescription", "UpdatedImgUrl", 2023, 150, 129.99);
-
-        mockMvc.perform(MockMvcRequestBuilders.put("/product/{id}", productId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(updatedProduct)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-
-        Mockito.verify(productService, Mockito.times(1)).updateProduct(Mockito.eq(updatedProduct), Mockito.eq(productId));
-    }
-
-    @Test
-    public void testGetProduct() throws Exception {
+    public void shouldGetProduct() throws Exception {
         UUID productId = UUID.randomUUID();
         Product mockProduct = new Product("TestName", "TestAuthor", "TestPublisher",
                 "TestDescription", "TestImgUrl", 2022, 100, 99.99);
@@ -92,7 +64,7 @@ public class UnitTest_ProductController {
     }
 
     @Test
-    public void testGetAllProducts() throws Exception {
+    public void shouldGetAllProducts() throws Exception {
         List<Product> mockProducts = Arrays.asList(
                 new Product("TestName1", "TestAuthor1", "TestPublisher1",
                         "TestDescription1", "TestImgUrl1", 2022, 100, 99.99),
@@ -114,7 +86,35 @@ public class UnitTest_ProductController {
     }
 
     @Test
-    public void testDeleteProduct() throws Exception {
+    public void shouldAddProduct() throws Exception {
+
+        Product testProduct = new Product("TestName", "TestAuthor", "TestPublisher",
+                "TestDescription", "TestImgUrl", 2022, 100, 99.99);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/add-product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(testProduct)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Mockito.verify(productService, Mockito.times(1)).createProduct(Mockito.eq(testProduct));
+    }
+
+    @Test
+    public void shouldUpdateProduct() throws Exception {
+        UUID productId = UUID.randomUUID();
+        Product updatedProduct = new Product("UpdatedName", "UpdatedAuthor", "UpdatedPublisher",
+                "UpdatedDescription", "UpdatedImgUrl", 2023, 150, 129.99);
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/product/{id}", productId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new ObjectMapper().writeValueAsString(updatedProduct)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Mockito.verify(productService, Mockito.times(1)).updateProduct(Mockito.eq(updatedProduct), Mockito.eq(productId));
+    }
+
+    @Test
+    public void shouldDeleteProduct() throws Exception {
 
         UUID productIdToDelete = UUID.randomUUID();
 
